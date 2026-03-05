@@ -1,24 +1,31 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/kraftzen-logo.png";
 
 const navLinks = [
-  { label: "Innovations", href: "#innovations" },
-  { label: "Digital Toolcraft", href: "#toolcraft" },
-  { label: "Bro AI", href: "#bro-ai" },
-  { label: "About Us", href: "#about" },
+  { label: "Home", to: "/" },
+  { label: "Our Products", to: "/products" },
+  { label: "About Us", to: "/about" },
+  { label: "Contact Us", to: "/contact" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
 
   return (
     <header
@@ -29,20 +36,24 @@ export default function Navbar() {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
-        <a href="#" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="Kraftzen logo" className="h-10 w-auto" />
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
-              href={link.href}
-              className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-primary after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left"
+              to={link.to}
+              className={`text-sm font-medium transition-colors relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-primary after:transition-transform after:duration-300 ${
+                location.pathname === link.to
+                  ? "text-foreground after:scale-x-100"
+                  : "text-foreground/70 hover:text-foreground after:scale-x-0 after:origin-right hover:after:scale-x-100 hover:after:origin-left"
+              }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -66,14 +77,13 @@ export default function Navbar() {
         <div className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border animate-fade-in">
           <nav className="flex flex-col items-center gap-4 py-6">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
-                className="text-foreground/70 hover:text-foreground font-medium"
-                onClick={() => setMobileOpen(false)}
+                to={link.to}
+                className={`font-medium ${location.pathname === link.to ? "text-foreground" : "text-foreground/70 hover:text-foreground"}`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <Button className="bg-primary text-primary-foreground rounded-full px-6 mt-2">
               Enter Zen Mode

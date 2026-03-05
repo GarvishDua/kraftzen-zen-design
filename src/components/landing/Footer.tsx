@@ -1,8 +1,16 @@
 import { Send, Github, Twitter, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/kraftzen-logo.png";
 
-const quickLinks = ["Privacy Policy", "Terms of Service", "Support", "Careers"];
+const quickLinks = [
+  { label: "About Us", to: "/about" },
+  { label: "Our Products", to: "/products" },
+  { label: "Contact Us", to: "/contact" },
+  { label: "Privacy Policy", to: "/privacy" },
+  { label: "Terms of Service", to: "/terms" },
+];
+
 const socialIcons = [
   { icon: Twitter, label: "Twitter" },
   { icon: Github, label: "GitHub" },
@@ -29,13 +37,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
                     className="text-sm text-navy-foreground/50 hover:text-primary transition-colors"
                   >
-                    {link}
-                  </a>
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
