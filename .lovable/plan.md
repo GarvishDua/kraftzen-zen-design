@@ -1,42 +1,70 @@
 
 
-# Kraftzen Landing Page Enhancement Plan
+# Kraftzen Website Enhancement Plan
 
-## Three workstreams
+## 1. New Pages
 
-### 1. Bro AI Section -- FeatureSteps component
-Replace the current `BroAISection.tsx` with an auto-rotating stepped feature showcase. Adapt the provided `FeatureSteps` component (remove Next.js `Image`, use standard `<img>`) and integrate it directly into the Bro AI section.
+Create four new pages with proper content:
 
-- Create `src/components/ui/feature-steps.tsx` -- the adapted FeatureSteps component (no `next/image`, plain `<img>` with Unsplash images for each Bro: Designer Bro, Animator Bro, Study Bro, Command Deck).
-- Rewrite `src/components/landing/BroAISection.tsx` to use `<FeatureSteps>` with the four Bro features, autoplay interval ~4s, wrapped in the existing section styling (gradient orbs, section id, heading).
+- **`src/pages/About.tsx`** -- Company story, mission, team section, values
+- **`src/pages/Products.tsx`** -- Bro AI ecosystem overview, product cards for each Bro tool
+- **`src/pages/Contact.tsx`** -- Contact form (name, email, subject, message), office info, map placeholder
+- **`src/pages/PrivacyPolicy.tsx`** -- Standard privacy policy content
+- **`src/pages/TermsOfService.tsx`** -- Standard terms of service content
 
-### 2. Testimonials Section -- AnimatedTestimonials component
-Replace the current `TestimonialsSection.tsx` with the animated testimonials component.
+Each page will include the Navbar and Footer for consistent layout.
 
-- Create `src/components/ui/animated-testimonials.tsx` -- the adapted component (remove `"use client"` directive, keep framer-motion scroll animations, avatar, star ratings, auto-rotate, dot navigation, decorative gradients). Style the dark navy background via the parent section wrapper.
-- Rewrite `src/components/landing/TestimonialsSection.tsx` to render `<AnimatedTestimonials>` with the existing four testimonials (add ratings, avatar URLs from randomuser.me), plus a trusted companies list. The section keeps the navy background and glow accents.
+## 2. Navbar Update
 
-### 3. SEO and AI-discoverability
-All within the constraints of a Vite SPA (no SSR):
+Update `src/components/landing/Navbar.tsx`:
+- Replace hash-based navLinks with React Router `Link` navigation
+- New links: **Home** (`/`), **Our Products** (`/products`), **About Us** (`/about`), **Contact Us** (`/contact`)
+- Keep "Enter Zen Mode" CTA button
+- Add smooth scroll behavior for on-page sections
 
-- **`index.html`**: Update `<title>` to "Kraftzen | AI Tools & Digital Automation Platform", add keyword-rich `<meta description>`, OpenGraph/Twitter tags with Kraftzen branding, canonical URL, and a `<script type="application/ld+json">` block with schema.org Organization + SoftwareApplication structured data.
-- **`public/robots.txt`**: Already exists; keep as-is (all allowed).
-- **`public/sitemap.xml`**: Create a static XML sitemap with the single `/` page entry.
-- **`public/llms.txt`**: Create an LLM-discoverability file describing Kraftzen, its products (Bro AI ecosystem), and page structure.
-- **Heading hierarchy**: Audit existing sections to ensure single H1 in Hero, H2 per section, H3 for sub-items. Minor fixes where needed.
-- **Image alt text**: Ensure all `<img>` tags have descriptive alt text.
+## 3. Hero Section Background Enhancement
 
-### Files to create/modify
+Update `src/components/landing/HeroSection.tsx`:
+- Add more gradient orbs with varied colors (green, sand, soft blue tones)
+- Add animated mesh/grid pattern overlay
+- Add particle-like floating dots with framer-motion
+- More floating icons (Sparkles, Zap, Star) alongside existing Leaf icons
+- Add a subtle radial gradient behind the content area
+
+## 4. Lazy Loading with Animated Loading Effect
+
+Update `src/App.tsx`:
+- Use `React.lazy()` for all page imports
+- Wrap routes in `<Suspense>` with a custom loading component
+- Create `src/components/ui/page-loader.tsx` -- a full-screen loader with the Kraftzen logo pulsing/spinning and a progress bar animation using framer-motion
+
+## 5. Footer Update
+
+Update `src/components/landing/Footer.tsx`:
+- Update quick links to point to the new pages (Privacy Policy -> `/privacy`, Terms -> `/terms`, About -> `/about`, Contact -> `/contact`)
+- Use React Router `Link` instead of `<a href="#">`
+
+## 6. SEO Updates
+
+- Update `public/sitemap.xml` with new page URLs
+- Update `public/llms.txt` with new page descriptions
+
+## Files to create/modify
 
 | File | Action |
 |------|--------|
-| `src/components/ui/feature-steps.tsx` | Create |
-| `src/components/ui/animated-testimonials.tsx` | Create |
-| `src/components/landing/BroAISection.tsx` | Rewrite |
-| `src/components/landing/TestimonialsSection.tsx` | Rewrite |
-| `index.html` | Update meta tags, add JSON-LD |
-| `public/sitemap.xml` | Create |
-| `public/llms.txt` | Create |
+| `src/pages/About.tsx` | Create |
+| `src/pages/Products.tsx` | Create |
+| `src/pages/Contact.tsx` | Create |
+| `src/pages/PrivacyPolicy.tsx` | Create |
+| `src/pages/TermsOfService.tsx` | Create |
+| `src/components/ui/page-loader.tsx` | Create |
+| `src/components/landing/Navbar.tsx` | Rewrite (Router links) |
+| `src/components/landing/HeroSection.tsx` | Enhance background |
+| `src/components/landing/Footer.tsx` | Update links |
+| `src/App.tsx` | Add lazy routes + Suspense |
+| `public/sitemap.xml` | Add new pages |
+| `public/llms.txt` | Add new page descriptions |
 
-No new npm dependencies needed -- framer-motion, lucide-react, radix avatar/separator are already installed.
+No new dependencies needed.
 
