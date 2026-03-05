@@ -1,57 +1,42 @@
 
 
-# Kraftzen Landing Page
+# Kraftzen Landing Page Enhancement Plan
 
-## Overview
-A polished, animated landing page for Kraftzen with 6 sections, using the brand's color palette (Bamboo Green, Deep Navy, Soft Sand) and the official logo.
+## Three workstreams
 
-## Design System
-- **Background**: White with soft gradient accents inspired by the logo's sand/green tones
-- **Primary Text**: Deep Navy (#001F4F)
-- **CTA Buttons**: Bamboo Green (#367E30)
-- **Accent Backgrounds**: Soft Sand (#F0E8D9)
-- **Dark Section**: Deep Navy for testimonials
-- **Animations**: Smooth fade-in on scroll, hover scale effects, floating decorative elements (leaves, zen stones motif)
+### 1. Bro AI Section -- FeatureSteps component
+Replace the current `BroAISection.tsx` with an auto-rotating stepped feature showcase. Adapt the provided `FeatureSteps` component (remove Next.js `Image`, use standard `<img>`) and integrate it directly into the Bro AI section.
 
-## Sections
+- Create `src/components/ui/feature-steps.tsx` -- the adapted FeatureSteps component (no `next/image`, plain `<img>` with Unsplash images for each Bro: Designer Bro, Animator Bro, Study Bro, Command Deck).
+- Rewrite `src/components/landing/BroAISection.tsx` to use `<FeatureSteps>` with the four Bro features, autoplay interval ~4s, wrapped in the existing section styling (gradient orbs, section id, heading).
 
-### 1. Navigation Header
-- Kraftzen logo (uploaded image) on the left
-- Center links: Innovations, Digital Toolcraft, The Bro AI Ecosystem, About Us
-- Green "Enter Zen Mode" CTA button on right
-- Sticky header with subtle backdrop blur
+### 2. Testimonials Section -- AnimatedTestimonials component
+Replace the current `TestimonialsSection.tsx` with the animated testimonials component.
 
-### 2. Hero Section
-- Left: Large headline "Krafting Tools. Delivering Zen." with subtext and two CTA buttons (green primary + navy outline)
-- Right: The Kraftzen logo/graphic displayed prominently with a subtle floating animation
-- Decorative bamboo leaf illustrations scattered with parallax-like motion
+- Create `src/components/ui/animated-testimonials.tsx` -- the adapted component (remove `"use client"` directive, keep framer-motion scroll animations, avatar, star ratings, auto-rotate, dot navigation, decorative gradients). Style the dark navy background via the parent section wrapper.
+- Rewrite `src/components/landing/TestimonialsSection.tsx` to render `<AnimatedTestimonials>` with the existing four testimonials (add ratings, avatar URLs from randomuser.me), plus a trusted companies list. The section keeps the navy background and glow accents.
 
-### 3. What We Do (3-Column Cards)
-- Soft Sand background
-- "Precision Engineering for a Complex World." headline
-- Three cards with Lucide icons: Digital Toolcraft (Wrench/Cog), AI Innovations (Brain/Network), Seamless Harmony (Scale/Balance)
-- Cards animate in on scroll with staggered fade-up
+### 3. SEO and AI-discoverability
+All within the constraints of a Vite SPA (no SSR):
 
-### 4. Bro AI Product Spotlight
-- White background
-- Headline + subheadline about Bro AI
-- Mock dashboard visual (styled dark glassmorphism card showing Designer Bro, Animator Bro, Study Bro, Command sections)
-- Feature breakdown with icons
-- Green "Launch Bro AI" CTA
+- **`index.html`**: Update `<title>` to "Kraftzen | AI Tools & Digital Automation Platform", add keyword-rich `<meta description>`, OpenGraph/Twitter tags with Kraftzen branding, canonical URL, and a `<script type="application/ld+json">` block with schema.org Organization + SoftwareApplication structured data.
+- **`public/robots.txt`**: Already exists; keep as-is (all allowed).
+- **`public/sitemap.xml`**: Create a static XML sitemap with the single `/` page entry.
+- **`public/llms.txt`**: Create an LLM-discoverability file describing Kraftzen, its products (Bro AI ecosystem), and page structure.
+- **Heading hierarchy**: Audit existing sections to ensure single H1 in Hero, H2 per section, H3 for sub-items. Minor fixes where needed.
+- **Image alt text**: Ensure all `<img>` tags have descriptive alt text.
 
-### 5. Testimonials
-- Deep Navy background, white text
-- "From Chaos to Clarity." headline
-- Horizontal carousel of 3-4 testimonial cards with avatar, name, role, and quote
-- Subtle glow/gradient accents
+### Files to create/modify
 
-### 6. Footer
-- Dark navy/charcoal background
-- Logo + tagline on left, quick links center, social icons + newsletter input on right
+| File | Action |
+|------|--------|
+| `src/components/ui/feature-steps.tsx` | Create |
+| `src/components/ui/animated-testimonials.tsx` | Create |
+| `src/components/landing/BroAISection.tsx` | Rewrite |
+| `src/components/landing/TestimonialsSection.tsx` | Rewrite |
+| `index.html` | Update meta tags, add JSON-LD |
+| `public/sitemap.xml` | Create |
+| `public/llms.txt` | Create |
 
-## Animations & Polish
-- Intersection Observer-based scroll animations (fade-in, slide-up)
-- Floating decorative leaf/zen elements
-- Smooth hover effects on cards and buttons
-- Gradient orbs as soft dynamic background accents matching logo colors (green, sand, grey)
+No new npm dependencies needed -- framer-motion, lucide-react, radix avatar/separator are already installed.
 
