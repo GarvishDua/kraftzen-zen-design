@@ -15,6 +15,12 @@ Bro AI is Kraftzen's flagship product — a unified AI workspace with specialize
 
 ## Website Structure
 - `/` — Landing page with hero, services overview, Bro AI product showcase, testimonials, and footer.
+- `/products` — Full product catalog with details on Designer Bro, Animator Bro, Study Bro, and Command Deck.
+- `/about` — Company story, mission, core values, and team members.
+- `/contact` — Contact form and office information.
+- `/privacy` — Privacy policy detailing data collection, usage, and user rights.
+- `/terms` — Terms of service for using Kraftzen's platform.
 
 ## Contact
 Website: https://kraftzen.com
+Email: hello@kraftzen.com
