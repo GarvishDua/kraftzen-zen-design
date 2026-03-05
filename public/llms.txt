@@ -1,0 +1,20 @@
+# Kraftzen
+
+## Overview
+Kraftzen is an AI tools and digital automation platform. Our tagline: "Krafting Tools. Delivering Zen." We engineer advanced digital toolcraft and AI innovations that eliminate workflow chaos.
+
+## Products
+
+### Bro AI — Omni-Studio Command Deck
+Bro AI is Kraftzen's flagship product — a unified AI workspace with specialized modules:
+
+- **Designer Bro**: AI-powered graphic design and ad creative generation.
+- **Animator Bro**: Dynamic motion and animation from static ideas.
+- **Study Bro**: Accelerated research and complex topic distillation.
+- **Command Deck**: Unified control center for all AI-powered workflows.
+
+## Website Structure
+- `/` — Landing page with hero, services overview, Bro AI product showcase, testimonials, and footer.
+
+## Contact
+Website: https://kraftzen.com
