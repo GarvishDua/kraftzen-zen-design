@@ -133,6 +133,9 @@ export default function HeroSection() {
               src={logo}
               alt="Kraftzen AI tools and digital automation platform logo"
               className="relative w-52 sm:w-72 md:w-96 lg:w-[420px] h-auto drop-shadow-2xl"
+              loading="eager"
+              // @ts-ignore
+              fetchPriority="high"
               animate={{ y: [-10, 10, -10] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />

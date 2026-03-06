@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Heart, Target, Users, Lightbulb, Leaf, Shield, Zap } from "lucide-react";
+import { Heart, Target, Lightbulb, Leaf, Shield, Zap } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
+import FounderSection from "@/components/landing/FounderSection";
 
 const values = [
   { icon: Lightbulb, title: "Innovation First", description: "We push boundaries with AI-driven solutions that redefine how teams work and create." },
@@ -10,12 +11,6 @@ const values = [
   { icon: Zap, title: "Relentless Efficiency", description: "Eliminating friction is our obsession. We craft workflows that feel effortless." },
 ];
 
-const team = [
-  { name: "Arjun Mehta", role: "Founder & CEO", avatar: "https://randomuser.me/api/portraits/men/75.jpg" },
-  { name: "Priya Sharma", role: "CTO", avatar: "https://randomuser.me/api/portraits/women/65.jpg" },
-  { name: "Ravi Patel", role: "Head of AI", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Ananya Das", role: "Head of Design", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
-];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -87,30 +82,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="py-12 sm:py-20 bg-muted/30">
-        <div className="container mx-auto px-4 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 md:mb-16 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-              <Users size={14} className="text-primary" />
-              <span className="text-xs font-medium text-primary">The Team</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-foreground">Meet the Minds Behind Kraftzen</h2>
-          </motion.div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {team.map((m, i) => (
-              <motion.div key={m.name} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center group">
-                <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-3 sm:mb-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-sand/40 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <img src={m.avatar} alt={`${m.name}, ${m.role} at Kraftzen`} className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-border group-hover:border-primary/40 transition-colors" loading="lazy" />
-                </div>
-                <h3 className="font-display font-semibold text-foreground text-sm sm:text-base">{m.name}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground">{m.role}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Founder */}
+      <FounderSection />
 
       <Footer />
     </div>

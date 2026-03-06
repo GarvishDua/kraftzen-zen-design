@@ -37,7 +37,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Kraftzen logo" className="h-10 w-auto" />
+          <img src={logo} alt="Kraftzen logo" className="h-10 w-auto" loading="eager" fetchPriority="high" />
         </Link>
 
         {/* Desktop nav */}
