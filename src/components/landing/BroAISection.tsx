@@ -1,4 +1,5 @@
 import { FeatureSteps } from "@/components/ui/feature-steps";
+import broLogo from "@/assets/bro-ai-logo.svg";
 
 const broFeatures = [
   {
@@ -29,17 +30,26 @@ const broFeatures = [
 
 export default function BroAISection() {
   return (
-    <section id="bro-ai" className="py-24 md:py-32 relative overflow-hidden">
+    <section id="bro-ai" className="py-16 md:py-24 lg:py-32 relative overflow-hidden">
       {/* Decorative gradient orbs */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
       <div className="absolute top-20 right-20 w-64 h-64 bg-sand/50 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 left-1/3 w-72 h-72 bg-primary/8 rounded-full blur-3xl" />
 
       <div className="relative z-10">
+        {/* Bro AI badge */}
+        <div className="flex flex-col items-center gap-3 mb-6 px-4">
+          <img src={broLogo} alt="Bro AI" className="h-12 w-12 md:h-14 md:w-14" />
+          <p className="text-sm md:text-base text-muted-foreground text-center max-w-md">
+            Your AI-powered creative platform — a suite of specialized tools working together.
+          </p>
+        </div>
+
         <FeatureSteps
           features={broFeatures}
           title="Meet Bro AI."
           autoPlayInterval={4000}
-          imageHeight="h-[400px] md:h-[500px]"
+          imageHeight="h-[280px] sm:h-[350px] md:h-[400px] lg:h-[500px]"
         />
       </div>
     </section>

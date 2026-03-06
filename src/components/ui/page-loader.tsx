@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import logo from "@/assets/kraftzen-logo.png";
+import logo from "@/assets/kraftzen-logo.webp";
 
 export default function PageLoader() {
   return (
