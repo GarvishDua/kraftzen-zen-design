@@ -45,10 +45,10 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section id="about" className="py-24 md:py-32 bg-navy relative overflow-hidden">
+    <section id="about" className="py-16 md:py-24 lg:py-32 bg-navy relative overflow-hidden">
       {/* Glow accents */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-sand/10 rounded-full blur-3xl" />
+      <div className="absolute top-0 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-48 md:w-80 h-48 md:h-80 bg-sand/10 rounded-full blur-3xl" />
 
       <AnimatedTestimonials
         className="container mx-auto px-4 lg:px-8 relative z-10"
