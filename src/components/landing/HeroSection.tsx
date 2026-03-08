@@ -25,26 +25,55 @@ const particles = Array.from({ length: 12 }, (_, i) => ({
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
-      {/* Background orbs */}
+      {/* Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-20 left-10 w-48 md:w-72 h-48 md:h-72 bg-primary/10 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-20 right-10 w-64 md:w-96 h-64 md:h-96 bg-sand/60 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "2s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute top-10 right-[30%] w-32 md:w-52 h-32 md:h-52 bg-green-400/8 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1s" }} />
-        <div className="absolute bottom-[30%] left-[20%] w-40 md:w-64 h-40 md:h-64 bg-blue-400/6 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "3s" }} />
-        <div className="absolute top-[40%] right-[10%] w-28 md:w-40 h-28 md:h-40 bg-sand/30 rounded-full blur-2xl animate-pulse-glow" style={{ animationDelay: "4s" }} />
+        {/* Animated gradient orbs */}
+        <motion.div
+          className="absolute -top-20 -left-20 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full blur-[100px] opacity-60"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.25), transparent 70%)" }}
+          animate={{ x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.15, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute -bottom-10 -right-10 w-[350px] md:w-[600px] h-[350px] md:h-[600px] rounded-full blur-[120px] opacity-50"
+          style={{ background: "radial-gradient(circle, hsl(var(--sand) / 0.7), transparent 70%)" }}
+          animate={{ x: [0, -30, 0], y: [0, -40, 0], scale: [1, 1.1, 1] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-[30%] right-[20%] w-[200px] md:w-[400px] h-[200px] md:h-[400px] rounded-full blur-[80px] opacity-40"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.15), hsl(var(--sand) / 0.1), transparent 70%)" }}
+          animate={{ x: [0, -20, 20, 0], y: [0, 20, -10, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-[60%] left-[15%] w-[180px] md:w-[320px] h-[180px] md:h-[320px] rounded-full blur-[90px] opacity-30"
+          style={{ background: "radial-gradient(circle, hsl(115 50% 45% / 0.2), transparent 70%)" }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
 
-        {/* Mesh grid overlay */}
+        {/* Noise texture overlay */}
+        <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
+
+        {/* Mesh grid */}
         <div
-          className="absolute inset-0 opacity-[0.03] hidden md:block"
+          className="absolute inset-0 opacity-[0.04] hidden md:block"
           style={{
-            backgroundImage: `linear-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary) / 0.3) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
+            backgroundImage: `linear-gradient(hsl(var(--primary) / 0.2) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary) / 0.2) 1px, transparent 1px)`,
+            backgroundSize: "80px 80px",
           }}
         />
 
-        {/* Radial glow behind content */}
-        <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-gradient-radial from-primary/8 to-transparent rounded-full" />
+        {/* Diagonal accent lines */}
+        <div className="absolute inset-0 opacity-[0.02] hidden lg:block" style={{
+          backgroundImage: `repeating-linear-gradient(45deg, hsl(var(--primary) / 0.3), hsl(var(--primary) / 0.3) 1px, transparent 1px, transparent 120px)`,
+        }} />
+
+        {/* Central radial glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] md:w-[900px] h-[500px] md:h-[900px] rounded-full"
+          style={{ background: "radial-gradient(ellipse, hsl(var(--primary) / 0.06), hsl(var(--sand) / 0.03) 50%, transparent 70%)" }}
+        />
       </div>
 
       {/* Floating particles - hidden on small screens */}
