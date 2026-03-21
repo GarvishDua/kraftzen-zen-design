@@ -145,14 +145,13 @@ export default function HeroSection() {
 
         {/* Right - Logo graphic */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0.8, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex justify-center mt-8 lg:mt-0"
         >
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-sand/30 to-transparent rounded-full blur-3xl scale-125" />
-            {/* Animated ring */}
             <motion.div
               className="absolute inset-0 rounded-full border-2 border-primary/20 scale-110"
               animate={{ scale: [1.1, 1.15, 1.1], opacity: [0.3, 0.6, 0.3] }}
@@ -161,7 +160,7 @@ export default function HeroSection() {
             <motion.img
               src={logo}
               alt="Kraftzen AI tools and digital automation platform logo"
-              className="relative w-52 sm:w-72 md:w-96 lg:w-[420px] h-auto drop-shadow-2xl"
+              className="relative w-52 sm:w-72 md:w-96 lg:w-[420px] h-auto drop-shadow-2xl will-change-transform"
               loading="eager"
               // @ts-ignore
               fetchPriority="high"
