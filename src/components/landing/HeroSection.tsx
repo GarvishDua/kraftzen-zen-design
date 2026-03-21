@@ -11,10 +11,10 @@ const floatingIcons = [
   { Icon: Star, className: "absolute top-[15%] left-[20%] text-sand/40 hidden md:block", size: 18, anim: { y: [-5, 8, -5], scale: [1, 1.3, 1] }, dur: 6 },
 ];
 
-const particles = Array.from({ length: 12 }, (_, i) => ({
-  left: `${8 + (i * 7.5) % 85}%`,
-  top: `${10 + (i * 13) % 80}%`,
-  delay: i * 0.4,
+const particles = Array.from({ length: 6 }, (_, i) => ({
+  left: `${8 + (i * 15) % 85}%`,
+  top: `${10 + (i * 16) % 80}%`,
+  delay: i * 0.5,
   dur: 4 + (i % 3) * 2,
   size: 2 + (i % 3),
 }));
