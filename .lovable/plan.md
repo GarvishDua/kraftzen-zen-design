@@ -1,36 +1,44 @@
 
 
-# Add AniVerseX Product + Automated Blogging Service Section
+# Performance Optimization + Products Layout Revamp
 
-## Overview
-Add AniVerseX as a second Kraftzen product alongside Bro AI on the Products page, and add an "Automated Blogging Service" CTA section offering custom blog websites (React or WordPress).
+## Problems to Fix
+1. **Slow logo/icon loading** -- The hero logo animates in via framer-motion with `initial={{ opacity: 0, scale: 0.9 }}` causing perceived delay. The WebP is preloaded in HTML but the motion animation masks it.
+2. **Products page too long** -- Bro AI tools displayed as full-width alternating sections with huge spacing, AniVerseX buried at the bottom. Too much scrolling.
+3. **AniVerseX uses a stock photo** instead of an actual website screenshot.
 
-## 1. Update Products page hero
-Change the hero from being Bro AI-specific to a general "Our Products" page that showcases all Kraftzen products. Keep the Bro AI section as one product block, then add AniVerseX as a second product block below.
+## Plan
 
-## 2. Add AniVerseX product section
-After the Bro AI tools section, add an AniVerseX product block:
-- **Name**: AniVerseX
-- **Description**: AI-automated blog posting platform that publishes high-quality SEO-optimized blogs automatically on a regular schedule
-- **Link**: aniblogs.vercel.app (external link button "Visit AniVerseX")
-- **Features**: AI-generated SEO content, automated publishing schedule, category/tag management, view tracking, newsletter integration
-- **Visual**: Use the uploaded screenshots as reference for styling -- dark themed card with a gradient accent (teal/mint green matching the AniVerseX brand color `#4ade80`)
-- **Image**: Screenshot-style mockup using an Unsplash blog/writing image
+### 1. Smoother, faster hero logo animation
+In `HeroSection.tsx`:
+- Change logo `initial` from `{ opacity: 0, scale: 0.9 }` to `{ opacity: 0.8, scale: 0.95 }` with shorter duration (0.5s, no delay) so it appears almost instantly
+- Use CSS `will-change: transform` on the logo for GPU acceleration
+- Reduce the number of floating particles from 12 to 6 and floating icons from 7 to 4 to reduce animation overhead
 
-## 3. Add "Automated Blogging Service" CTA section
-After the products, add a service offering section:
-- Title: "Want Your Own Automated Blog?"
-- Description: Kraftzen builds custom AI-automated blogging websites for businesses -- available in both React and WordPress
-- Features listed: Custom design, SEO optimization, auto-publishing, analytics dashboard
-- CTA button linking to `/contact` -- "Get in Touch"
-- Styled as a prominent gradient card/banner
+### 2. Optimize Navbar logo
+In `Navbar.tsx`:
+- Add `decoding="async"` alongside existing eager loading for non-blocking decode
 
-## 4. Update homepage WhatWeDoSection or BroAISection context
-No changes needed to homepage -- AniVerseX is a Products page addition only.
+### 3. Revamp Products page layout -- compact card grid
+In `Products.tsx`:
+- **Replace the full-width alternating Bro AI tool sections** with a compact 2x2 card grid. Each tool gets a card with icon, name, tagline, short description, and features list. Much less scrolling.
+- **Move AniVerseX up** to appear right after the Bro AI grid as a featured product card (side-by-side with details), not buried at the bottom
+- **Use the actual AniVerseX website screenshot** (fetched screenshot) instead of the Unsplash stock image. Store a reference screenshot or use the user-uploaded screenshots (`image-2.png`, `image-3.png`) as the product visual
+- **Keep the "Automated Blogging Service" CTA** section at the bottom but tighten spacing
+- Overall: Hero -> Bro AI badge + 2x2 grid -> AniVerseX featured section -> Service CTA -> Footer
 
-## Files to modify
+### 4. Use uploaded screenshots for AniVerseX
+Copy `user-uploads://image-2.png` to `src/assets/aniversex-screenshot.png` and use it as the AniVerseX product image instead of the Unsplash placeholder.
+
+### 5. Reduce motion animation load site-wide
+- Add `loading="eager"` to the Bro AI SVG logo in `BroAISection.tsx`
+- Ensure all Unsplash images on Products use `loading="lazy"` with smaller `w=400` sizes for cards
+
+## Files to create/modify
 
 | File | Action |
 |------|--------|
-| `src/pages/Products.tsx` | Restructure hero, add AniVerseX section, add blogging service CTA |
+| `src/assets/aniversex-screenshot.png` | Copy from user upload |
+| `src/components/landing/HeroSection.tsx` | Faster logo animation, fewer particles/icons |
+| `src/pages/Products.tsx` | Compact card grid for Bro AI, move AniVerseX up, use real screenshot |
 
