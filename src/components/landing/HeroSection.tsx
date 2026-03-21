@@ -6,18 +6,15 @@ import logo from "@/assets/kraftzen-logo.webp";
 
 const floatingIcons = [
   { Icon: Leaf, className: "absolute top-32 right-[15%] text-primary/20 hidden md:block", size: 40, anim: { y: [-10, 10, -10], rotate: [0, 15, 0] }, dur: 7 },
-  { Icon: Leaf, className: "absolute bottom-32 left-[10%] text-primary/15 hidden md:block", size: 28, anim: { y: [10, -15, 10], rotate: [0, -10, 0] }, dur: 9 },
   { Icon: Sparkles, className: "absolute top-[25%] right-[8%] text-sand/60 hidden lg:block", size: 24, anim: { y: [-8, 12, -8], scale: [1, 1.2, 1] }, dur: 5 },
-  { Icon: Zap, className: "absolute top-[70%] left-[5%] text-primary/15 hidden lg:block", size: 22, anim: { y: [5, -10, 5], rotate: [-5, 10, -5] }, dur: 8 },
-  { Icon: Star, className: "absolute top-[15%] left-[20%] text-sand/40 hidden md:block", size: 18, anim: { y: [-5, 8, -5], scale: [1, 1.3, 1] }, dur: 6 },
   { Icon: Leaf, className: "absolute top-[60%] right-[5%] text-sand/80 hidden lg:block", size: 32, anim: { y: [5, -20, 5], rotate: [10, -5, 10] }, dur: 6 },
-  { Icon: Sparkles, className: "absolute bottom-[20%] right-[25%] text-primary/10 hidden md:block", size: 20, anim: { y: [0, -12, 0], rotate: [0, 20, 0] }, dur: 10 },
+  { Icon: Star, className: "absolute top-[15%] left-[20%] text-sand/40 hidden md:block", size: 18, anim: { y: [-5, 8, -5], scale: [1, 1.3, 1] }, dur: 6 },
 ];
 
-const particles = Array.from({ length: 12 }, (_, i) => ({
-  left: `${8 + (i * 7.5) % 85}%`,
-  top: `${10 + (i * 13) % 80}%`,
-  delay: i * 0.4,
+const particles = Array.from({ length: 6 }, (_, i) => ({
+  left: `${8 + (i * 15) % 85}%`,
+  top: `${10 + (i * 16) % 80}%`,
+  delay: i * 0.5,
   dur: 4 + (i % 3) * 2,
   size: 2 + (i % 3),
 }));
@@ -145,14 +142,13 @@ export default function HeroSection() {
 
         {/* Right - Logo graphic */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0.8, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex justify-center mt-8 lg:mt-0"
         >
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-sand/30 to-transparent rounded-full blur-3xl scale-125" />
-            {/* Animated ring */}
             <motion.div
               className="absolute inset-0 rounded-full border-2 border-primary/20 scale-110"
               animate={{ scale: [1.1, 1.15, 1.1], opacity: [0.3, 0.6, 0.3] }}
@@ -161,7 +157,7 @@ export default function HeroSection() {
             <motion.img
               src={logo}
               alt="Kraftzen AI tools and digital automation platform logo"
-              className="relative w-52 sm:w-72 md:w-96 lg:w-[420px] h-auto drop-shadow-2xl"
+              className="relative w-52 sm:w-72 md:w-96 lg:w-[420px] h-auto drop-shadow-2xl will-change-transform"
               loading="eager"
               // @ts-ignore
               fetchPriority="high"
