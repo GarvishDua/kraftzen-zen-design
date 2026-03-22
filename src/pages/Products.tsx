@@ -13,7 +13,7 @@ const broTools = [
     name: "Designer Bro",
     tagline: "AI-Powered Design Studio",
     description: "Generate stunning ad creatives, social graphics, and brand assets in seconds.",
-    features: ["Brand-aware generation", "Template library", "Batch export", "Style transfer"],
+    features: ["Brand-aware generation", "Cinematic Thumbnails", "Professional Photoshoot", "Ad Creatives"],
     color: "from-purple-500/20 to-pink-500/20",
   },
   {
@@ -21,7 +21,7 @@ const broTools = [
     name: "Animator Bro",
     tagline: "Motion Made Effortless",
     description: "Transform static ideas into dynamic motion graphics and animations instantly.",
-    features: ["Text-to-animation", "Scene transitions", "Character animation", "Export MP4/GIF"],
+    features: ["Text-to-animation", "Scene transitions", "Character animation", "Cinematic Shorts"],
     color: "from-blue-500/20 to-cyan-500/20",
   },
   {
@@ -37,7 +37,7 @@ const broTools = [
     name: "Emailer Bro",
     tagline: "AI Email Campaign Studio",
     description: "Design professional promotional emails within one click with AI. Craft campaigns that convert.",
-    features: ["Email templates", "AI copywriting", "Campaign analytics", "A/B testing"],
+    features: ["Email templates", "Working Components", "Download HTML", "Responsive Design"],
     color: "from-orange-500/20 to-yellow-500/20",
   },
 ];
