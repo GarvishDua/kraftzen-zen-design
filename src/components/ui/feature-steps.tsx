@@ -15,6 +15,7 @@ interface FeatureStepsProps {
   title?: string
   autoPlayInterval?: number
   imageHeight?: string
+  ctaContent?: React.ReactNode
 }
 
 export function FeatureSteps({
@@ -23,6 +24,7 @@ export function FeatureSteps({
   title = "How to get Started",
   autoPlayInterval = 3000,
   imageHeight = "h-[400px]",
+  ctaContent,
 }: FeatureStepsProps) {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [progress, setProgress] = useState(0)
@@ -106,35 +108,38 @@ export function FeatureSteps({
             ))}
           </div>
 
-          {/* Image area */}
-          <div
-            className={cn(
-              "order-1 md:order-2 relative overflow-hidden rounded-2xl w-full",
-              imageHeight
-            )}
-          >
-            <AnimatePresence mode="wait">
-              {features.map(
-                (feature, index) =>
-                  index === currentFeature && (
-                    <motion.div
-                      key={index}
-                      className="absolute inset-0"
-                      initial={{ opacity: 0, scale: 0.96 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 1.04 }}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                    >
-                      <img
-                        src={feature.image}
-                        alt={feature.title || feature.step}
-                        className="w-full h-full object-cover rounded-2xl"
-                      />
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-foreground/20 to-transparent" />
-                    </motion.div>
-                  )
-              )}
-            </AnimatePresence>
+          {/* Right column: Image + CTA */}
+          <div className="order-1 md:order-2 space-y-4">
+            {/* Image area */}
+            <div
+              className="relative overflow-hidden rounded-2xl w-full aspect-[16/7] bg-muted/30"
+            >
+              <AnimatePresence mode="wait">
+                {features.map(
+                  (feature, index) =>
+                    index === currentFeature && (
+                      <motion.div
+                        key={index}
+                        className="absolute inset-0"
+                        initial={{ opacity: 0, scale: 0.96 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.04 }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                      >
+                        <img
+                          src={feature.image}
+                          alt={feature.title || feature.step}
+                          className="w-full h-full object-cover rounded-2xl"
+                        />
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-foreground/20 to-transparent" />
+                      </motion.div>
+                    )
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* CTA below image */}
+            {ctaContent && ctaContent}
           </div>
         </div>
       </div>

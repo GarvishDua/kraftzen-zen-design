@@ -10,9 +10,9 @@ import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 
 const contactInfo = [
-  { icon: Mail, label: "Email", value: "hello@kraftzen.com" },
-  { icon: MapPin, label: "Office", value: "Bangalore, India" },
-  { icon: Phone, label: "Phone", value: "+91 80 1234 5678" },
+  { icon: Mail, label: "Email", value: "officialkraftzen@gmail.com" },
+  { icon: MapPin, label: "Office", value: "Delhi, India" },
+  { icon: Phone, label: "Phone", value: "+91 9310367672" },
 ];
 
 export default function Contact() {

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Palette, Film, BookOpen, LayoutDashboard, ArrowRight, Leaf, Sparkles, PenTool, Clock, Tags, BarChart3, Mail, ExternalLink, Code, Globe } from "lucide-react";
+import { Palette, Film, Briefcase, ArrowRight, Leaf, Sparkles, PenTool, Clock, Tags, BarChart3, Mail, ExternalLink, Code, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/landing/Navbar";
@@ -25,19 +25,19 @@ const broTools = [
     color: "from-blue-500/20 to-cyan-500/20",
   },
   {
-    icon: BookOpen,
-    name: "Study Bro",
-    tagline: "Research Accelerator",
-    description: "Distill complex topics into digestible insights. Read, summarize, organize.",
-    features: ["Paper summarization", "Topic mapping", "Citation management", "Knowledge graphs"],
+    icon: Briefcase,
+    name: "Portfolio Bro",
+    tagline: "One-Click Portfolio Builder",
+    description: "Design your customized, stunning portfolio within one click. Showcase your work beautifully with AI.",
+    features: ["Custom themes", "One-click deploy", "Responsive layouts", "Project showcase"],
     color: "from-green-500/20 to-emerald-500/20",
   },
   {
-    icon: LayoutDashboard,
-    name: "Command Deck",
-    tagline: "Unified Control Center",
-    description: "One dashboard to orchestrate all your AI workflows with monitoring & scheduling.",
-    features: ["Workflow automation", "Team management", "Analytics dashboard", "API integrations"],
+    icon: Mail,
+    name: "Emailer Bro",
+    tagline: "AI Email Campaign Studio",
+    description: "Design professional promotional emails within one click with AI. Craft campaigns that convert.",
+    features: ["Email templates", "AI copywriting", "Campaign analytics", "A/B testing"],
     color: "from-orange-500/20 to-yellow-500/20",
   },
 ];

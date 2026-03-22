@@ -1,30 +1,32 @@
 import { FeatureSteps } from "@/components/ui/feature-steps";
 import broLogo from "@/assets/bro-ai-logo.svg";
+import { Link } from "react-router-dom";
+import { ArrowRight, Sparkles, Bot } from "lucide-react";
 
 const broFeatures = [
   {
     step: "Designer Bro",
     title: "Designer Bro",
     content: "Generate professional, on-brand graphics and ad creatives instantly. Your dedicated visual expert.",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop",
+    image: "/designerbro.png",
   },
   {
     step: "Animator Bro",
     title: "Animator Bro",
     content: "Bring static ideas to life with dynamic motion and animation. Create stunning visuals effortlessly.",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
+    image: "/Animatorbro.png",
   },
   {
-    step: "Study Bro",
-    title: "Study Bro",
-    content: "Accelerate research and distill complex topics in seconds. Your AI-powered knowledge companion.",
-    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2073&auto=format&fit=crop",
+    step: "Portfolio Bro",
+    title: "Portfolio Bro",
+    content: "Design your customized, stunning portfolio within one click. Showcase your work beautifully with AI.",
+    image: "/PortfolioBro.png",
   },
   {
-    step: "Command Deck",
-    title: "Command Deck",
-    content: "Unified control center for all your AI-powered workflows. One interface, total command.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+    step: "Emailer Bro",
+    title: "Emailer Bro",
+    content: "Design professional promotional emails within one click with AI. Craft campaigns that convert.",
+    image: "/Emailerbro.png",
   },
 ];
 
@@ -50,6 +52,51 @@ export default function BroAISection() {
           title="Meet Bro AI."
           autoPlayInterval={4000}
           imageHeight="h-[280px] sm:h-[350px] md:h-[400px] lg:h-[500px]"
+          ctaContent={
+            <div className="relative rounded-2xl overflow-hidden group">
+              {/* Gradient background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-emerald-700" />
+              {/* Radial glow */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--sand)/0.2),transparent_60%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.15),transparent_60%)]" />
+              {/* Subtle dot pattern */}
+              <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+
+              <div className="relative z-10 p-5 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                {/* Icon */}
+                <div className="flex-shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Bot size={28} className="text-white" />
+                  </div>
+                </div>
+
+                {/* Text content */}
+                <div className="flex-1 text-center sm:text-left space-y-1">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/15">
+                    <Sparkles size={11} className="text-amber-300" />
+                    <span className="text-[10px] font-medium text-white/90 tracking-wide uppercase">Custom Solutions</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-display font-bold text-white leading-tight">
+                    Want Custom AI Agents or Workflows?
+                  </h3>
+                  <p className="text-white/70 text-xs sm:text-sm leading-relaxed">
+                    We build tailor-made AI agents & intelligent workflows for your business.
+                  </p>
+                </div>
+
+                {/* CTA button */}
+                <div className="flex-shrink-0">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-primary font-semibold text-sm hover:bg-white/90 hover:shadow-lg hover:shadow-white/20 transition-all duration-300 group/btn"
+                  >
+                    Contact Us
+                    <ArrowRight size={15} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          }
         />
       </div>
     </section>

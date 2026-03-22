@@ -37,7 +37,7 @@ const testimonials = [
     role: "Product Lead",
     company: "Horizon AI",
     content:
-      "The Command Deck changed how we collaborate. Every AI tool we need, unified under one beautiful interface.",
+      "Emailer Bro transformed our email marketing. Professional promotional campaigns designed in one click — our open rates jumped 3x.",
     rating: 5,
     avatar: "https://randomuser.me/api/portraits/women/65.jpg",
   },
