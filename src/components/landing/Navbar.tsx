@@ -58,8 +58,8 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden md:block">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 font-medium shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:scale-105">
-            Enter Zen Mode
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 font-medium shadow-lg shadow-primary/25 transition-all hover:shadow-primary/40 hover:scale-105" asChild>
+            <Link to="/contact">Get Started</Link>
           </Button>
         </div>
 
