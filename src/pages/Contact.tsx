@@ -40,18 +40,33 @@ export default function Contact() {
         </div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center mb-10 md:mb-16 space-y-4 max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-10 md:mb-16 space-y-4 max-w-2xl mx-auto"
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
               <Leaf size={14} className="text-primary" />
               <span className="text-xs font-medium text-primary">Get in Touch</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-foreground">Contact <span className="text-gradient-green">Us</span></h1>
-            <p className="text-sm sm:text-base text-muted-foreground px-4">Have a question or want to work together? We'd love to hear from you.</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-foreground">
+              Contact <span className="text-gradient-green">Us</span>
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground px-4">
+              Have a question or want to work together? We'd love to hear from you.
+            </p>
           </motion.div>
 
           <div className="grid md:grid-cols-5 gap-6 sm:gap-8 md:gap-12 max-w-5xl mx-auto">
             {/* Form */}
-            <motion.form initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} onSubmit={handleSubmit} className="md:col-span-3 space-y-4 sm:space-y-6 p-6 sm:p-8 rounded-2xl bg-card border border-border">
+            <motion.form
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              onSubmit={handleSubmit}
+              className="md:col-span-3 space-y-4 sm:space-y-6 p-6 sm:p-8 rounded-2xl bg-card border border-border"
+            >
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
@@ -70,13 +85,22 @@ export default function Contact() {
                 <Label htmlFor="message">Message</Label>
                 <Textarea id="message" placeholder="Tell us more..." rows={5} required />
               </div>
-              <Button type="submit" disabled={loading} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
                 {loading ? "Sending..." : "Send Message"} <Send size={16} className="ml-2" />
               </Button>
             </motion.form>
 
             {/* Info */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="md:col-span-2 space-y-4 sm:space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="md:col-span-2 space-y-4 sm:space-y-6"
+            >
               {contactInfo.map((c) => (
                 <div key={c.label} className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -92,7 +116,7 @@ export default function Contact() {
               <div className="w-full h-36 sm:h-48 rounded-xl bg-muted/50 border border-border flex items-center justify-center">
                 <div className="text-center text-muted-foreground">
                   <MapPin size={32} className="mx-auto mb-2 text-primary/40" />
-                  <p className="text-sm">Bangalore, India</p>
+                  <p className="text-sm">Delhi, India</p>
                 </div>
               </div>
             </motion.div>
