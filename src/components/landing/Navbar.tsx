@@ -85,8 +85,8 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Button className="bg-primary text-primary-foreground rounded-full px-6 mt-2">
-              Enter Zen Mode
+            <Button className="bg-primary text-primary-foreground rounded-full px-6 mt-2" asChild>
+              <Link to="/contact">Get Started</Link>
             </Button>
           </nav>
         </div>
