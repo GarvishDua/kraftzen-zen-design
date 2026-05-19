@@ -2,106 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap');
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 213 100% 15%;
+    /* Dark 3D-portfolio palette */
+    --background: 0 0% 5%;            /* #0C0C0C */
+    --foreground: 210 18% 88%;        /* #D7E2EA */
 
-    --card: 0 0% 100%;
-    --card-foreground: 213 100% 15%;
+    --card: 0 0% 7%;
+    --card-foreground: 210 18% 88%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 213 100% 15%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 210 18% 88%;
 
-    --primary: 115 46% 34%;
+    --primary: 115 46% 40%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 36 43% 89%;
-    --secondary-foreground: 213 100% 15%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 210 18% 88%;
 
-    --muted: 36 43% 89%;
-    --muted-foreground: 215 19% 35%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 210 10% 65%;
 
-    --accent: 36 43% 89%;
-    --accent-foreground: 213 100% 15%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 210 18% 88%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 36 30% 85%;
-    --input: 36 30% 85%;
-    --ring: 115 46% 34%;
+    --border: 210 10% 20%;
+    --input: 210 10% 20%;
+    --ring: 115 46% 40%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --navy: 213 100% 15%;
-    --navy-foreground: 0 0% 100%;
-    --bamboo: 115 46% 34%;
-    --bamboo-foreground: 0 0% 100%;
-    --sand: 36 43% 89%;
-    --sand-foreground: 213 100% 15%;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --bamboo: 115 46% 40%;
+    --sand: 36 43% 75%;
   }
 
-  .dark {
-    --background: 213 100% 15%;
-    --foreground: 210 40% 98%;
-    --card: 213 80% 12%;
-    --card-foreground: 210 40% 98%;
-    --popover: 213 80% 12%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 115 46% 34%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  * { @apply border-border; box-sizing: border-box; }
+  html, body, #root {
+    background: #0C0C0C;
+    color: #D7E2EA;
+    margin: 0;
+    padding: 0;
   }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
-  }
+  body { font-family: 'Kanit', sans-serif; -webkit-font-smoothing: antialiased; }
+  h1,h2,h3,h4,h5,h6 { font-family: 'Kanit', sans-serif; }
 }
 
 @layer utilities {
+  .hero-heading {
+    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .btn-contact-gradient {
+    background: linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%);
+    box-shadow: 0px 4px 4px rgba(181, 1, 167, 0.25), inset 4px 4px 12px #7721B1;
+    outline: 2px solid #FFFFFF;
+    outline-offset: -3px;
+  }
   .text-gradient-green {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--bamboo)), hsl(115 50% 45%));
+    background-image: linear-gradient(135deg, hsl(var(--bamboo)), hsl(115 50% 55%));
   }
 }
