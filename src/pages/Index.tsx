@@ -1,22 +1,20 @@
-import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
-import WhatWeDoSection from "@/components/landing/WhatWeDoSection";
-import BroAISection from "@/components/landing/BroAISection";
-import TestimonialsSection from "@/components/landing/TestimonialsSection";
-import FounderSection from "@/components/landing/FounderSection";
-import Footer from "@/components/landing/Footer";
+import MarqueeSection from "@/components/landing/MarqueeSection";
+import AboutBlockSection from "@/components/landing/AboutBlockSection";
+import ServicesSection from "@/components/landing/ServicesSection";
+import ProductsStackSection from "@/components/landing/ProductsStackSection";
+import Footer3D from "@/components/three-d/Footer3D";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <main className="min-h-screen bg-[#0C0C0C]" style={{ overflowX: "clip" }}>
       <HeroSection />
-      <WhatWeDoSection />
-      <BroAISection />
-      <TestimonialsSection />
-      <FounderSection />
-      <Footer />
-    </div>
+      <MarqueeSection />
+      <AboutBlockSection />
+      <ServicesSection />
+      <ProductsStackSection />
+      <Footer3D />
+    </main>
   );
 };
 
