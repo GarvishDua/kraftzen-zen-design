@@ -12,7 +12,7 @@ export default function Products() {
       <section className="px-6 md:px-10 pt-16 md:pt-24 pb-10 text-center">
         <FadeIn delay={0.1} y={40}>
           <h1 className="hero-heading font-black uppercase tracking-tight leading-none" style={{ fontSize: "clamp(3rem, 14vw, 200px)" }}>
-            Our Products
+            Toolcraft
           </h1>
         </FadeIn>
         <FadeIn delay={0.3} y={20}>

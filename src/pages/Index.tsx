@@ -13,7 +13,9 @@ const Index = () => {
       <AboutBlockSection />
       <ServicesSection />
       <ProductsStackSection />
-      <Footer3D />
+      <div className="relative z-30 bg-[#0C0C0C]">
+        <Footer3D />
+      </div>
     </main>
   );
 };

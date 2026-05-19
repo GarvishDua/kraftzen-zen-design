@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { useRef, ReactNode } from "react";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 interface Project {
   number: string;
@@ -54,9 +55,9 @@ function Card({ project, index, total, progress, targetScale }: { project: Proje
               {project.cta.label}
             </a>
           ) : (
-            <a href={project.cta.to || "/contact"} className="inline-flex items-center rounded-full border-2 border-[#D7E2EA] px-5 py-2 text-xs uppercase tracking-widest text-[#D7E2EA] hover:bg-[#D7E2EA]/10">
+            <Link to={project.cta.to || "/contact"} className="inline-flex items-center rounded-full border-2 border-[#D7E2EA] px-5 py-2 text-xs uppercase tracking-widest text-[#D7E2EA] hover:bg-[#D7E2EA]/10">
               {project.cta.label}
-            </a>
+            </Link>
           )}
         </div>
 

@@ -14,7 +14,7 @@ const projects = [
     number: "01",
     category: "Platform",
     name: "Bro AI",
-    cta: { label: "Explore Bro AI", to: "/products" },
+    cta: { label: "Explore Bro AI", href: "https://bro.ai.in" },
     images: { col1Top: designerBro, col1Bottom: animatorBro, col2: portfolioBro },
     blurb: "An omni-studio command deck — Designer Bro, Animator Bro, Portfolio Bro, Emailer Bro and more, all under one roof.",
   },
