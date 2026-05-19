@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import designerBro from "/designerbro.png";
-import animatorBro from "/Animatorbro.png";
-import portfolioBro from "/PortfolioBro.png";
-import emailerBro from "/Emailerbro.png";
 import aniversex from "@/assets/aniversex-screenshot.png";
+
+const designerBro = "/designerbro.png";
+const animatorBro = "/Animatorbro.png";
+const portfolioBro = "/PortfolioBro.png";
+const emailerBro = "/Emailerbro.png";
 
 const row1 = [designerBro, animatorBro, portfolioBro, emailerBro, aniversex];
 const row2 = [aniversex, emailerBro, portfolioBro, animatorBro, designerBro];

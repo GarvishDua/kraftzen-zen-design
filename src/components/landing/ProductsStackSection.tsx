@@ -1,12 +1,13 @@
 import FadeIn from "@/components/three-d/FadeIn";
 import StackingCardList from "@/components/three-d/StackingCard";
-import designerBro from "/designerbro.png";
-import animatorBro from "/Animatorbro.png";
-import portfolioBro from "/PortfolioBro.png";
-import emailerBro from "/Emailerbro.png";
 import aniversex from "@/assets/aniversex-screenshot.png";
 import hero3d from "@/assets/hero-3d.png";
 import cluster from "@/assets/decor/cluster.png";
+
+const designerBro = "/designerbro.png";
+const animatorBro = "/Animatorbro.png";
+const portfolioBro = "/PortfolioBro.png";
+const emailerBro = "/Emailerbro.png";
 
 const projects = [
   {
