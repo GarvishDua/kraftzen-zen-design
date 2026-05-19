@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { useRef, ReactNode } from "react";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 interface Project {
   number: string;
