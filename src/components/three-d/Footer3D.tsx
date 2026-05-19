@@ -31,9 +31,6 @@ export default function Footer3D() {
           <h4 className="text-xs uppercase tracking-widest text-[#D7E2EA]/50 mb-3">Connect</h4>
           <div className="flex gap-3">
             <a href="mailto:officialkraftzen@gmail.com" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10"><Mail size={16} /></a>
-            <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10"><Instagram size={16} /></a>
-            <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10"><Linkedin size={16} /></a>
-            <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10"><Github size={16} /></a>
           </div>
         </div>
       </div>
