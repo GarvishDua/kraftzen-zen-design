@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import Navbar from "@/components/landing/Navbar";
-import Footer from "@/components/landing/Footer";
+import Navbar3D from "@/components/three-d/Navbar3D";
+import Footer3D from "@/components/three-d/Footer3D";
 
 const sections = [
   { title: "Acceptance of Terms", content: "By accessing or using Kraftzen's website and services, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services." },
@@ -16,26 +16,26 @@ const sections = [
 
 export default function TermsOfService() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <section className="pt-28 pb-20">
-        <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
+    <main className="min-h-screen bg-[#0C0C0C]" style={{ overflowX: "clip" }}>
+      <Navbar3D />
+      <section className="px-6 md:px-10 pt-16 md:pt-24 pb-20">
+        <div className="max-w-3xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-4 mb-12">
-            <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground">Terms of Service</h1>
-            <p className="text-muted-foreground">Last updated: March 5, 2026</p>
+            <h1 className="hero-heading font-black uppercase tracking-tight leading-none" style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)" }}>Terms of Service</h1>
+            <p className="text-[#D7E2EA]/50 uppercase text-xs tracking-widest">Last updated: March 5, 2026</p>
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="space-y-8">
-            <p className="text-muted-foreground leading-relaxed">Please read these Terms of Service carefully before using the Kraftzen website and services.</p>
+            <p className="text-[#D7E2EA]/70 leading-relaxed">Please read these Terms of Service carefully before using the Kraftzen website and services.</p>
             {sections.map((s, i) => (
               <div key={i} className="space-y-3">
-                <h2 className="text-xl font-display font-semibold text-foreground">{s.title}</h2>
-                <p className="text-muted-foreground leading-relaxed">{s.content}</p>
+                <h2 className="text-lg text-[#D7E2EA] font-medium uppercase tracking-wide">{s.title}</h2>
+                <p className="text-[#D7E2EA]/70 leading-relaxed font-light">{s.content}</p>
               </div>
             ))}
           </motion.div>
         </div>
       </section>
-      <Footer />
-    </div>
+      <Footer3D />
+    </main>
   );
 }

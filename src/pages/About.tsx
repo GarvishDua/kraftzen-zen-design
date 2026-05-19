@@ -1,91 +1,84 @@
-import { motion } from "framer-motion";
-import { Heart, Target, Lightbulb, Leaf, Shield, Zap } from "lucide-react";
-import Navbar from "@/components/landing/Navbar";
-import Footer from "@/components/landing/Footer";
-import FounderSection from "@/components/landing/FounderSection";
+import Navbar3D from "@/components/three-d/Navbar3D";
+import Footer3D from "@/components/three-d/Footer3D";
+import FadeIn from "@/components/three-d/FadeIn";
+import AnimatedText from "@/components/three-d/AnimatedText";
+import ContactButton from "@/components/three-d/ContactButton";
+import Magnet from "@/components/three-d/Magnet";
+import founderPhoto from "@/assets/founder-garv.jpeg";
 
 const values = [
-  { icon: Lightbulb, title: "Innovation First", description: "We push boundaries with AI-driven solutions that redefine how teams work and create." },
-  { icon: Heart, title: "Human-Centered", description: "Technology should serve people. Every tool we build starts with empathy and ends with impact." },
-  { icon: Shield, title: "Trust & Transparency", description: "We believe in honest products, clear communication, and respecting our users' data and time." },
-  { icon: Zap, title: "Relentless Efficiency", description: "Eliminating friction is our obsession. We craft workflows that feel effortless." },
+  { n: "01", name: "Innovation First", desc: "We push boundaries with AI-driven solutions that redefine how teams work and create." },
+  { n: "02", name: "Human-Centered", desc: "Technology should serve people. Every tool we build starts with empathy and ends with impact." },
+  { n: "03", name: "Trust & Transparency", desc: "We believe in honest products, clear communication, and respect for our users' data and time." },
+  { n: "04", name: "Relentless Efficiency", desc: "Eliminating friction is our obsession. We craft workflows that feel effortless." },
 ];
-
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" as const } }),
-};
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <main className="min-h-screen bg-[#0C0C0C]" style={{ overflowX: "clip" }}>
+      <Navbar3D />
 
-      {/* Hero */}
-      <section className="pt-24 sm:pt-28 pb-12 sm:pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 right-20 w-48 md:w-72 h-48 md:h-72 bg-primary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 left-10 w-64 md:w-96 h-64 md:h-96 bg-sand/40 rounded-full blur-3xl" />
-        </div>
-        <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-3xl mx-auto text-center space-y-4 sm:space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-              <Leaf size={14} className="text-primary" />
-              <span className="text-xs font-medium text-primary">Our Story</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground">About <span className="text-gradient-green">Kraftzen</span></h1>
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed px-4">We're a team of engineers, designers, and dreamers building AI tools that bring clarity to creative chaos. Our mission: craft digital tools that deliver zen.</p>
-          </motion.div>
-        </div>
+      <section className="px-6 md:px-10 pt-16 md:pt-20 pb-16 text-center">
+        <FadeIn delay={0.1} y={40}>
+          <h1 className="hero-heading font-black uppercase tracking-tight leading-none" style={{ fontSize: "clamp(3rem, 14vw, 200px)" }}>
+            About Us
+          </h1>
+        </FadeIn>
       </section>
 
-      {/* Mission */}
-      <section className="py-12 sm:py-20 bg-muted/30">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="space-y-4 sm:space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-                <Target size={14} className="text-primary" />
-                <span className="text-xs font-medium text-primary">Our Mission</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-foreground">Engineering Harmony in Every Workflow</h2>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">Founded with the belief that powerful tools shouldn't be complex, Kraftzen builds AI-first platforms that eliminate workflow chaos. We blend cutting-edge machine learning with thoughtful design to create products that feel intuitive yet deliver extraordinary results.</p>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">From our flagship Bro AI ecosystem to our digital toolcraft innovations, every product embodies our core philosophy: technology should amplify human creativity, not replace it.</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-sand/30 rounded-3xl blur-2xl" />
-              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format" alt="Kraftzen team collaborating on AI tools" className="relative rounded-3xl shadow-2xl w-full object-cover h-56 sm:h-72 md:h-80" loading="lazy" />
-            </motion.div>
-          </div>
-        </div>
+      <section className="px-6 md:px-10 py-16 max-w-3xl mx-auto">
+        <AnimatedText
+          text="Kraftzen is a studio of engineers, designers and dreamers building AI-first tools that bring clarity to creative chaos. Founded with the belief that powerful tools shouldn't be complex, we blend cutting-edge machine learning with thoughtful design to create products that feel intuitive yet deliver extraordinary results."
+          className="text-[#D7E2EA] font-medium text-center leading-relaxed"
+        />
       </section>
 
-      {/* Values */}
-      <section className="py-12 sm:py-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 md:mb-16 space-y-4">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-foreground">Our Core Values</h2>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">The principles that guide every decision we make and every product we ship.</p>
-          </motion.div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {values.map((v, i) => (
-              <motion.div key={v.title} custom={i} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="p-4 sm:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/5 group">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-primary/20 transition-colors">
-                  <v.icon size={20} className="text-primary sm:w-6 sm:h-6" />
+      <section className="bg-white rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32">
+        <FadeIn>
+          <h2 className="text-[#0C0C0C] font-black uppercase text-center mb-16 sm:mb-20 md:mb-28" style={{ fontSize: "clamp(3rem, 12vw, 160px)", lineHeight: 1 }}>
+            Values
+          </h2>
+        </FadeIn>
+        <div className="max-w-5xl mx-auto">
+          {values.map((v, i) => (
+            <FadeIn key={v.n} delay={i * 0.1}>
+              <div className="flex items-center gap-6 sm:gap-10 py-8 sm:py-10 md:py-12 border-b" style={{ borderColor: "rgba(12,12,12,0.15)" }}>
+                <span className="font-black text-[#0C0C0C] leading-none flex-shrink-0" style={{ fontSize: "clamp(3rem, 10vw, 140px)" }}>{v.n}</span>
+                <div className="flex-1">
+                  <h3 className="text-[#0C0C0C] font-medium uppercase" style={{ fontSize: "clamp(1rem, 2.2vw, 2.1rem)" }}>{v.name}</h3>
+                  <p className="font-light leading-relaxed max-w-2xl text-[#0C0C0C] mt-2" style={{ fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)", opacity: 0.6 }}>{v.desc}</p>
                 </div>
-                <h3 className="text-sm sm:text-lg font-display font-semibold text-foreground mb-1 sm:mb-2">{v.title}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{v.description}</p>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            </FadeIn>
+          ))}
         </div>
       </section>
 
       {/* Founder */}
-      <FounderSection />
+      <section className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 relative z-10 px-6 md:px-10 py-24 md:py-32">
+        <FadeIn>
+          <h2 className="hero-heading font-black uppercase text-center leading-none" style={{ fontSize: "clamp(2.5rem, 10vw, 140px)" }}>
+            Founder
+          </h2>
+        </FadeIn>
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16 max-w-5xl mx-auto mt-16 items-center">
+          <FadeIn delay={0.2} x={-40}>
+            <Magnet padding={120} strength={4}>
+              <img src={founderPhoto} alt="Kraftzen founder Garv" loading="lazy" className="w-full rounded-[40px] border-2 border-[#D7E2EA]/30 object-cover" />
+            </Magnet>
+          </FadeIn>
+          <FadeIn delay={0.3} x={40} className="space-y-6">
+            <p className="text-[#D7E2EA]/50 uppercase tracking-widest text-xs">Founder & CEO</p>
+            <h3 className="text-[#D7E2EA] font-medium uppercase" style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}>Garv</h3>
+            <p className="text-[#D7E2EA]/70 font-light leading-relaxed" style={{ fontSize: "clamp(0.9rem, 1.4vw, 1.1rem)" }}>
+              Garv founded Kraftzen with one mission: build AI tools that feel as quiet and intentional as they are powerful. From product strategy to engineering, he leads with the conviction that great toolcraft eliminates noise instead of adding it.
+            </p>
+            <ContactButton label="Get in Touch" />
+          </FadeIn>
+        </div>
+      </section>
 
-      <Footer />
-    </div>
+      <Footer3D />
+    </main>
   );
 }
