@@ -1,7 +1,9 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
 const GATEWAY_URL = 'https://connector-gateway.lovable.dev/resend';
-const TO_EMAIL = 'officialkraftzen@gmail.com';
+// Until a domain is verified at resend.com/domains, Resend only allows sending
+// to the account owner's email. Update TO_EMAIL after verifying kraftzen.in.
+const TO_EMAIL = 'garvishdua01@gmail.com';
 
 interface ContactBody {
   name: string;
@@ -79,25 +81,8 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Auto-reply confirmation to the user
-    await fetch(`${GATEWAY_URL}/emails`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'X-Connection-Api-Key': RESEND_API_KEY,
-      },
-      body: JSON.stringify({
-        from: 'Kraftzen <onboarding@resend.dev>',
-        to: [email],
-        subject: 'We received your message — Kraftzen',
-        html: `<div style="font-family:Arial,sans-serif;color:#111">
-          <p>Hi ${escape(name)},</p>
-          <p>Thanks for reaching out to Kraftzen. We've received your message and will get back to you within 24 hours.</p>
-          <p style="color:#555">— The Kraftzen Team</p>
-        </div>`,
-      }),
-    }).catch((e) => console.error('Auto-reply failed', e));
+    // Auto-reply skipped: Resend test mode blocks sends to arbitrary recipients.
+    // Re-enable after verifying a domain at resend.com/domains.
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
