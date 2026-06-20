@@ -6,6 +6,7 @@ import Footer3D from "@/components/three-d/Footer3D";
 import FadeIn from "@/components/three-d/FadeIn";
 import AnimatedText from "@/components/three-d/AnimatedText";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactInfo = [
   { icon: Mail, label: "Email", value: "officialkraftzen@gmail.com" },
@@ -17,14 +18,32 @@ export default function Contact() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") || "").trim(),
+      email: String(data.get("email") || "").trim(),
+      subject: String(data.get("subject") || "").trim(),
+      message: String(data.get("message") || "").trim(),
+    };
+    if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+      toast({ title: "Please fill all fields", variant: "destructive" });
+      return;
+    }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-email", { body: payload });
+      if (error) throw error;
       toast({ title: "Message sent!", description: "We'll get back to you within 24 hours." });
-      (e.target as HTMLFormElement).reset();
-    }, 1000);
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      toast({ title: "Failed to send", description: "Please try again or email us directly.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
