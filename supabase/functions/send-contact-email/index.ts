@@ -1,7 +1,9 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
 const GATEWAY_URL = 'https://connector-gateway.lovable.dev/resend';
-const TO_EMAIL = 'officialkraftzen@gmail.com';
+// Until a domain is verified at resend.com/domains, Resend only allows sending
+// to the account owner's email. Update TO_EMAIL after verifying kraftzen.in.
+const TO_EMAIL = 'garvishdua01@gmail.com';
 
 interface ContactBody {
   name: string;
