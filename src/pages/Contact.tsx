@@ -99,7 +99,7 @@ export default function Contact() {
             <Field id="subject" label="Subject" placeholder="How can we help?" />
             <div>
               <label htmlFor="message" className="block text-xs uppercase tracking-widest text-[#D7E2EA]/50 mb-2">Message</label>
-              <textarea id="message" required rows={5} placeholder="Tell us more..." className="w-full bg-white/[0.04] border border-white/10 rounded-2xl px-4 py-3 text-[#D7E2EA] placeholder:text-[#D7E2EA]/30 focus:outline-none focus:border-[#D7E2EA]/40" />
+              <textarea id="message" name="message" required rows={5} placeholder="Tell us more..." className="w-full bg-white/[0.04] border border-white/10 rounded-2xl px-4 py-3 text-[#D7E2EA] placeholder:text-[#D7E2EA]/30 focus:outline-none focus:border-[#D7E2EA]/40" />
             </div>
             <button
               type="submit"
@@ -121,7 +121,7 @@ function Field({ id, label, placeholder, type = "text" }: { id: string; label: s
   return (
     <div>
       <label htmlFor={id} className="block text-xs uppercase tracking-widest text-[#D7E2EA]/50 mb-2">{label}</label>
-      <input id={id} type={type} required placeholder={placeholder} className="w-full bg-white/[0.04] border border-white/10 rounded-full px-4 py-3 text-[#D7E2EA] placeholder:text-[#D7E2EA]/30 focus:outline-none focus:border-[#D7E2EA]/40" />
+      <input id={id} name={id} type={type} required placeholder={placeholder} className="w-full bg-white/[0.04] border border-white/10 rounded-full px-4 py-3 text-[#D7E2EA] placeholder:text-[#D7E2EA]/30 focus:outline-none focus:border-[#D7E2EA]/40" />
     </div>
   );
 }
