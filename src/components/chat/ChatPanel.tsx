@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, KeyboardEvent } from "react";
-import { Send, X, RotateCcw, Sparkles } from "lucide-react";
+import { Send, X, RotateCcw, Bot } from "lucide-react";
 import { useKraftzenChat } from "@/hooks/useKraftzenChat";
 import ChatMessage from "./ChatMessage";
 import TypingIndicator from "./TypingIndicator";
