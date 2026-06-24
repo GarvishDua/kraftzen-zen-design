@@ -50,7 +50,7 @@ const ChatPanel = ({ onClose }: { onClose: () => void }) => {
       <div className="relative flex items-center justify-between px-4 py-3 border-b border-[#001F4F]/10 bg-white/40 backdrop-blur">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-full bg-[#001F4F] flex items-center justify-center text-white">
-            <Sparkles className="w-4 h-4" />
+            <Bot className="w-5 h-5" />
           </div>
           <div>
             <div className="text-sm font-semibold text-[#001F4F] leading-tight">
@@ -88,7 +88,7 @@ const ChatPanel = ({ onClose }: { onClose: () => void }) => {
         {messages.length === 0 && (
           <div className="text-center mt-10 animate-fade-in">
             <div className="mx-auto w-14 h-14 rounded-full bg-[#001F4F] flex items-center justify-center text-white mb-3 shadow-lg">
-              <Sparkles className="w-6 h-6" />
+              <Bot className="w-7 h-7" />
             </div>
             <h3 className="text-base font-semibold text-[#001F4F]">
               Hi, I'm Kraftzen Assistant
