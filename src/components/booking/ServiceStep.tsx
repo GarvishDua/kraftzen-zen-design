@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import { SERVICES, type Service } from "@/lib/booking";
 import {
   Code2, Bot, PhoneCall, FileText, Layout, Box, CalendarRange, Zap, HelpCircle,
+  type LucideIcon,
 } from "lucide-react";
 
-const ICONS: Record<Service, React.ComponentType<{ size?: number; className?: string }>> = {
+const ICONS: Record<Service, LucideIcon> = {
   "Custom Websites": Code2,
   Chatbots: Bot,
   "Voice Calling Agents": PhoneCall,
