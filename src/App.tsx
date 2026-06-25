@@ -13,6 +13,8 @@ const Products = lazy(() => import("./pages/Products"));
 const Contact = lazy(() => import("./pages/Contact"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminAuth = lazy(() => import("./pages/AdminAuth"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
