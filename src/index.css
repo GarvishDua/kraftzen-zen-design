@@ -2,70 +2,300 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------
+   Kraftzen design tokens. Source of truth: DESIGN.md
+   Values are HSL triplets so Tailwind can compose hsl(var(--x) / a).
+   --------------------------------------------------------------- */
+
 @layer base {
   :root {
-    /* Dark 3D-portfolio palette */
-    --background: 0 0% 5%;            /* #0C0C0C */
-    --foreground: 210 18% 88%;        /* #D7E2EA */
+    /* Brand surfaces */
+    --paper: 38 44% 97%;
+    --surface: 0 0% 100%;
+    --surface-sunken: 36 33% 93%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 210 18% 88%;
+    /* Ink */
+    --ink: 34 19% 7%;
+    --ink-soft: 33 14% 20%;
+    --muted-ink: 31 10% 39%;
+    --faint: 31 9% 56%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 210 18% 88%;
+    /* Structure */
+    --line: 34 30% 85%;
+    --line-strong: 35 24% 75%;
 
-    --primary: 115 46% 40%;
-    --primary-foreground: 0 0% 100%;
+    /* Accent. One colour, used rarely. */
+    --accent-brand: 13 78% 53%;
+    --accent-brand-hover: 13 71% 47%;
+    --accent-soft: 19 71% 94%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 210 18% 88%;
+    /* Semantic. Form states and status dots only. */
+    --success: 156 45% 34%;
+    --warning: 38 71% 42%;
+    --error: 8 72% 44%;
+    --info: 208 51% 36%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 210 10% 65%;
+    /* shadcn/ui compatibility layer, mapped onto the brand tokens
+       so every existing ui/ primitive inherits the system. */
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary: var(--accent-brand);
+    --primary-foreground: 38 44% 97%;
+    --secondary: var(--surface-sunken);
+    --secondary-foreground: var(--ink);
+    --muted: var(--surface-sunken);
+    --muted-foreground: var(--muted-ink);
+    --accent: var(--accent-soft);
+    --accent-foreground: var(--ink);
+    --destructive: var(--error);
+    --destructive-foreground: 38 44% 97%;
+    --border: var(--line);
+    --input: var(--line);
+    --ring: var(--accent-brand);
 
-    --accent: 0 0% 14%;
-    --accent-foreground: 210 18% 88%;
+    /* Type scale */
+    --fs-display: clamp(3.25rem, 7vw, 6.5rem);
+    --fs-h1: clamp(2.5rem, 5.5vw, 4.5rem);
+    --fs-h2: clamp(1.875rem, 3.6vw, 3.25rem);
+    --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+    --fs-lead: clamp(1.0625rem, 1.5vw, 1.375rem);
+    --fs-body: 1.0625rem;
+    --fs-small: 0.875rem;
+    --fs-label: 0.6875rem;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    /* Radii */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 14px;
+    --radius-xl: 24px;
+    --radius: var(--radius-lg);
 
-    --border: 210 10% 20%;
-    --input: 210 10% 20%;
-    --ring: 115 46% 40%;
-
-    --radius: 1rem;
-
-    --bamboo: 115 46% 40%;
-    --sand: 36 43% 75%;
+    /* Motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in: cubic-bezier(0.4, 0, 0.2, 1);
+    --dur-micro: 120ms;
+    --dur-short: 240ms;
+    --dur-medium: 420ms;
+    --dur-long: 700ms;
   }
 
-  * { @apply border-border; box-sizing: border-box; }
-  html, body, #root {
-    background: #0C0C0C;
-    color: #D7E2EA;
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html,
+  body,
+  #root {
     margin: 0;
     padding: 0;
+    background: hsl(var(--paper));
+    color: hsl(var(--ink));
   }
-  body { font-family: 'Kanit', sans-serif; -webkit-font-smoothing: antialiased; }
-  h1,h2,h3,h4,h5,h6 { font-family: 'Kanit', sans-serif; }
+
+  body {
+    font-family: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: var(--fs-body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: hsl(var(--accent-brand));
+    color: hsl(var(--paper));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent-brand));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Kill every transform-based motion for people who asked for less of it.
+     Content still reaches its readable end state via opacity. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Editorial display type. Serif is a display face only, never below 1.25rem. */
+  .t-display {
+    font-family: "Instrument Serif", ui-serif, Georgia, serif;
+    font-size: var(--fs-display);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .t-h1 {
+    font-family: "Instrument Serif", ui-serif, Georgia, serif;
+    font-size: var(--fs-h1);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .t-h2 {
+    font-family: "Instrument Serif", ui-serif, Georgia, serif;
+    font-size: var(--fs-h2);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+  }
+
+  .t-h3 {
+    font-size: var(--fs-h3);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+
+  .t-lead {
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+    color: hsl(var(--muted-ink));
+  }
+
+  .t-small {
+    font-size: var(--fs-small);
+    line-height: 1.5;
+  }
+
+  /* Mono label. Eyebrows, section numbers, metadata. */
+  .t-label {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-size: var(--fs-label);
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .t-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The accented word inside a display heading. One per heading, at most. */
+  .t-accent {
+    font-style: italic;
+    color: hsl(var(--accent-brand));
+  }
+
+  /* Page shell */
+  .shell {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 32px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .shell {
+      padding-inline: 48px;
+    }
+  }
+
+  .prose-measure {
+    max-width: 68ch;
+  }
+
+  .lead-measure {
+    max-width: 46ch;
+  }
+
+  /* Faint paper grain. The only texture on the site. */
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hairline {
+    border-top: 1px solid hsl(var(--line));
+  }
 }
 
 @layer utilities {
-  .hero-heading {
-    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+  .link-underline {
+    background-image: linear-gradient(hsl(var(--accent-brand)), hsl(var(--accent-brand)));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--dur-short) var(--ease-out);
   }
-  .btn-contact-gradient {
-    background: linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%);
-    box-shadow: 0px 4px 4px rgba(181, 1, 167, 0.25), inset 4px 4px 12px #7721B1;
-    outline: 2px solid #FFFFFF;
-    outline-offset: -3px;
+
+  .link-underline:hover {
+    background-size: 100% 1px;
   }
-  .text-gradient-green {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--bamboo)), hsl(115 50% 55%));
+
+  /* Marquee base drift. Scroll scrub layers on top of this. */
+  @keyframes marquee-drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .marquee-track {
+    animation: marquee-drift 48s linear infinite;
+  }
+
+  .marquee-track-reverse {
+    animation: marquee-drift 48s linear infinite reverse;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track,
+    .marquee-track-reverse {
+      animation: none;
+    }
   }
 }

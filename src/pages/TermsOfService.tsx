@@ -1,41 +1,81 @@
-import { motion } from "framer-motion";
-import Navbar3D from "@/components/three-d/Navbar3D";
-import Footer3D from "@/components/three-d/Footer3D";
+import LegalPage, { type LegalSection } from "@/components/site/LegalPage";
+import { SITE } from "@/lib/site";
 
-const sections = [
-  { title: "Acceptance of Terms", content: "By accessing or using Kraftzen's website and services, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services." },
-  { title: "Use of Services", content: "You may use our services only for lawful purposes and in accordance with these terms. You agree not to misuse, reverse engineer, or attempt to gain unauthorized access to our platform or systems." },
-  { title: "User Accounts", content: "When you create an account, you are responsible for maintaining the confidentiality of your credentials and for all activities that occur under your account." },
-  { title: "Intellectual Property", content: "All content, trademarks, and intellectual property on the Kraftzen platform are owned by Kraftzen or its licensors. You may not copy, modify, or distribute our content without prior written consent." },
-  { title: "Limitation of Liability", content: "Kraftzen shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services. Our total liability is limited to the amount you paid for the services in question." },
-  { title: "Termination", content: "We reserve the right to suspend or terminate your access to our services at any time, with or without cause, and with or without notice." },
-  { title: "Governing Law", content: "These terms shall be governed by and construed in accordance with the laws of India, without regard to conflict of law principles." },
-  { title: "Changes to Terms", content: "We may modify these terms at any time. Continued use of our services after changes constitutes acceptance of the updated terms." },
-  { title: "Contact", content: "For questions about these terms, please contact us at legal@kraftzen.com." },
+const sections: LegalSection[] = [
+  {
+    title: "What these terms cover",
+    body: [
+      "These terms apply to this website. Client work is governed by the written proposal and agreement we sign for that project, and where the two disagree, the signed agreement wins.",
+      "Using this site means you accept what is written here.",
+    ],
+  },
+  {
+    title: "Using this site",
+    body: [
+      "Read it, share it, quote it. Do not attempt to break into it, scrape it at a volume that degrades it for other people, or use it to send us anything unlawful.",
+    ],
+  },
+  {
+    title: "Who owns what",
+    body: [
+      "The Kraftzen name, the writing, the design and the code of this site belong to Kraftzen unless stated otherwise. Product screenshots show our own products.",
+      "Work we build for a client is different. Once a project is paid for, the client owns the deliverables outright, including source code and accounts. We keep the right to describe the work publicly unless the agreement says we cannot.",
+    ],
+  },
+  {
+    title: "Quotes and estimates",
+    body: [
+      "Prices, timelines and figures shown on this site are indicative. A binding number only exists once we have sent you a written quote for your specific project.",
+      "Where we quote a fixed price, that price holds for the scope described in the quote. Changes to scope get repriced before we build them, not after.",
+    ],
+  },
+  {
+    title: "What we do not promise",
+    body: [
+      "This site is provided as it is. We keep it accurate but we do not warrant that everything on it is current or error free at every moment.",
+      "AI systems produce imperfect output. Where a project involves them, we build in review steps and say plainly what the system can and cannot be trusted to do. We do not promise a specific commercial outcome from any tool we build.",
+    ],
+  },
+  {
+    title: "Limits on liability",
+    body: [
+      "To the extent the law allows, Kraftzen is not liable for indirect or consequential loss arising from your use of this site.",
+      "For client work, our liability is capped at the fees paid for the project in question, as set out in the project agreement.",
+    ],
+  },
+  {
+    title: "Links out",
+    body: [
+      "This site links to products we run and to third party tools. We are not responsible for the content or the terms of sites we do not control.",
+    ],
+  },
+  {
+    title: "Governing law",
+    body: [
+      `These terms are governed by the laws of ${SITE.country}, and the courts of ${SITE.city} have jurisdiction over any dispute arising from them.`,
+    ],
+  },
+  {
+    title: "Changes",
+    body: [
+      "We may update these terms. The date at the top of the page shows when they last changed. Continuing to use the site after a change means you accept the updated version.",
+    ],
+  },
+  {
+    title: "Getting in touch",
+    body: [`Questions about these terms go to ${SITE.email}.`],
+  },
 ];
 
 export default function TermsOfService() {
   return (
-    <main className="min-h-screen bg-[#0C0C0C]" style={{ overflowX: "clip" }}>
-      <Navbar3D />
-      <section className="px-6 md:px-10 pt-16 md:pt-24 pb-20">
-        <div className="max-w-3xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-4 mb-12">
-            <h1 className="hero-heading font-black uppercase tracking-tight leading-none" style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)" }}>Terms of Service</h1>
-            <p className="text-[#D7E2EA]/50 uppercase text-xs tracking-widest">Last updated: March 5, 2026</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="space-y-8">
-            <p className="text-[#D7E2EA]/70 leading-relaxed">Please read these Terms of Service carefully before using the Kraftzen website and services.</p>
-            {sections.map((s, i) => (
-              <div key={i} className="space-y-3">
-                <h2 className="text-lg text-[#D7E2EA] font-medium uppercase tracking-wide">{s.title}</h2>
-                <p className="text-[#D7E2EA]/70 leading-relaxed font-light">{s.content}</p>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-      <Footer3D />
-    </main>
+    <LegalPage
+      title="Terms of Service"
+      path="/terms"
+      description="Terms covering the Kraftzen website. Client work is governed by the signed project agreement, and clients own the deliverables once a project is paid for."
+      updated="7 August 2026"
+      intro="These cover the website itself. If we are working together, the agreement we signed for your project is the document that matters, and it takes precedence over anything here."
+      sections={sections}
+    />
   );
 }

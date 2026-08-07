@@ -1,84 +1,139 @@
-import Navbar3D from "@/components/three-d/Navbar3D";
-import Footer3D from "@/components/three-d/Footer3D";
-import FadeIn from "@/components/three-d/FadeIn";
-import AnimatedText from "@/components/three-d/AnimatedText";
-import ContactButton from "@/components/three-d/ContactButton";
-import Magnet from "@/components/three-d/Magnet";
-import founderPhoto from "@/assets/founder-garv.jpeg";
-
-const values = [
-  { n: "01", name: "Innovation First", desc: "We push boundaries with AI-driven solutions that redefine how teams work and create." },
-  { n: "02", name: "Human-Centered", desc: "Technology should serve people. Every tool we build starts with empathy and ends with impact." },
-  { n: "03", name: "Trust & Transparency", desc: "We believe in honest products, clear communication, and respect for our users' data and time." },
-  { n: "04", name: "Relentless Efficiency", desc: "Eliminating friction is our obsession. We craft workflows that feel effortless." },
-];
+import Layout from "@/components/site/Layout";
+import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo";
+import PageHeader from "@/components/site/PageHeader";
+import { PillLink } from "@/components/site/Cta";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
+import { ABOUT, PRINCIPLES, FOUNDER, SITE } from "@/lib/site";
 
 export default function About() {
   return (
-    <main className="min-h-screen bg-[#0C0C0C]" style={{ overflowX: "clip" }}>
-      <Navbar3D />
+    <Layout>
+      <Seo
+        title="About"
+        description="Kraftzen is a small AI studio in Delhi, founded by Garvish Dua. We build our own products alongside client work, quote fixed numbers, and hand over everything we build."
+        path="/about"
+        schema={[
+          organizationSchema,
+          {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: `About ${SITE.name}`,
+            url: `${SITE.domain}/about`,
+            mainEntity: { "@id": `${SITE.domain}/#organization` },
+          },
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" },
+          ]),
+        ]}
+      />
 
-      <section className="px-6 md:px-10 pt-16 md:pt-20 pb-16 text-center">
-        <FadeIn delay={0.1} y={40}>
-          <h1 className="hero-heading font-black uppercase tracking-tight leading-none" style={{ fontSize: "clamp(3rem, 14vw, 200px)" }}>
-            About Us
-          </h1>
-        </FadeIn>
+      <PageHeader
+        eyebrow="About"
+        title="A small studio that would rather show you the"
+        accent="thing."
+        lead={ABOUT.lead}
+      />
+
+      {/* Narrative */}
+      <section className="py-section md:py-section-md">
+        <div className="shell grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-4">
+            <div className="md:sticky md:top-28">
+              <Reveal x={-16}>
+                <p className="t-label mb-7 text-brand">Who we are</p>
+              </Reveal>
+              <Stagger as="dl" className="border-t border-line">
+                {ABOUT.facts.map((fact) => (
+                  <StaggerItem
+                    key={fact.label}
+                    className="flex items-baseline justify-between gap-4 border-b border-line py-3.5"
+                  >
+                    <dt className="t-label text-faint">{fact.label}</dt>
+                    <dd className="t-small text-right text-ink">{fact.value}</dd>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </div>
+          </div>
+          <div className="md:col-span-8 space-y-7">
+            {ABOUT.body.map((para, i) => (
+              <Reveal key={i} delay={i * 0.06}>
+                <p className="t-lead max-w-measure !text-ink-soft">{para}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </section>
 
-      <section className="px-6 md:px-10 py-16 max-w-3xl mx-auto">
-        <AnimatedText
-          text="Kraftzen is a studio of engineers, designers and dreamers building AI-first tools that bring clarity to creative chaos. Founded with the belief that powerful tools shouldn't be complex, we blend cutting-edge machine learning with thoughtful design to create products that feel intuitive yet deliver extraordinary results."
-          className="text-[#D7E2EA] font-medium text-center leading-relaxed"
-        />
-      </section>
+      {/* Principles */}
+      <section
+        aria-labelledby="principles-heading"
+        className="border-y border-line bg-surface-sunken py-section md:py-section-md"
+      >
+        <div className="shell">
+          <Reveal>
+            <p className="t-label mb-5 text-brand">How we work</p>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <h2 id="principles-heading" className="t-h2 mb-14 max-w-[16ch]">
+              Four rules we do not <span className="t-accent">bend</span>.
+            </h2>
+          </Reveal>
 
-      <section className="bg-white rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32">
-        <FadeIn>
-          <h2 className="text-[#0C0C0C] font-black uppercase text-center mb-16 sm:mb-20 md:mb-28" style={{ fontSize: "clamp(3rem, 12vw, 160px)", lineHeight: 1 }}>
-            Values
-          </h2>
-        </FadeIn>
-        <div className="max-w-5xl mx-auto">
-          {values.map((v, i) => (
-            <FadeIn key={v.n} delay={i * 0.1}>
-              <div className="flex items-center gap-6 sm:gap-10 py-8 sm:py-10 md:py-12 border-b" style={{ borderColor: "rgba(12,12,12,0.15)" }}>
-                <span className="font-black text-[#0C0C0C] leading-none flex-shrink-0" style={{ fontSize: "clamp(3rem, 10vw, 140px)" }}>{v.n}</span>
-                <div className="flex-1">
-                  <h3 className="text-[#0C0C0C] font-medium uppercase" style={{ fontSize: "clamp(1rem, 2.2vw, 2.1rem)" }}>{v.name}</h3>
-                  <p className="font-light leading-relaxed max-w-2xl text-[#0C0C0C] mt-2" style={{ fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)", opacity: 0.6 }}>{v.desc}</p>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
+          <Stagger as="ul" className="grid gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-2">
+            {PRINCIPLES.map((p) => (
+              <StaggerItem as="li" key={p.n} className="bg-paper p-7 md:p-10">
+                <p className="t-label t-mono mb-6 text-faint">{p.n}</p>
+                <h3 className="t-h3 mb-3">{p.title}</h3>
+                <p className="t-small text-muted-foreground">{p.body}</p>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 
       {/* Founder */}
-      <section className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 relative z-10 px-6 md:px-10 py-24 md:py-32">
-        <FadeIn>
-          <h2 className="hero-heading font-black uppercase text-center leading-none" style={{ fontSize: "clamp(2.5rem, 10vw, 140px)" }}>
-            Founder
-          </h2>
-        </FadeIn>
-        <div className="grid md:grid-cols-2 gap-10 md:gap-16 max-w-5xl mx-auto mt-16 items-center">
-          <FadeIn delay={0.2} x={-40}>
-            <Magnet padding={120} strength={4}>
-              <img src={founderPhoto} alt="Kraftzen founder Garv" loading="lazy" className="w-full rounded-[40px] border-2 border-[#D7E2EA]/30 object-cover" />
-            </Magnet>
-          </FadeIn>
-          <FadeIn delay={0.3} x={40} className="space-y-6">
-            <p className="text-[#D7E2EA]/50 uppercase tracking-widest text-xs">Founder & CEO</p>
-            <h3 className="text-[#D7E2EA] font-medium uppercase" style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}>Garv</h3>
-            <p className="text-[#D7E2EA]/70 font-light leading-relaxed" style={{ fontSize: "clamp(0.9rem, 1.4vw, 1.1rem)" }}>
-              Garv founded Kraftzen with one mission: build AI tools that feel as quiet and intentional as they are powerful. From product strategy to engineering, he leads with the conviction that great toolcraft eliminates noise instead of adding it.
-            </p>
-            <ContactButton label="Get in Touch" />
-          </FadeIn>
+      <section aria-labelledby="founder-heading" className="py-section md:py-section-md">
+        <div className="shell grid items-center gap-12 md:grid-cols-12 md:gap-16">
+          <div className="md:col-span-5">
+            <Reveal x={-20}>
+              <img
+                src={FOUNDER.photo}
+                alt={`${FOUNDER.name}, founder of ${SITE.name}`}
+                loading="lazy"
+                decoding="async"
+                width={1000}
+                height={1304}
+                className="w-full rounded-lg border border-line object-cover"
+              />
+            </Reveal>
+          </div>
+
+          <div className="md:col-span-6 md:col-start-7">
+            <Reveal delay={0.08}>
+              <p className="t-label mb-6 text-brand">{FOUNDER.role}</p>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <h2 id="founder-heading" className="t-h2 mb-8">
+                {FOUNDER.name}
+              </h2>
+            </Reveal>
+            {FOUNDER.body.map((para, i) => (
+              <Reveal key={i} delay={0.16 + i * 0.05}>
+                <p className="mb-5 max-w-measure text-muted-foreground">{para}</p>
+              </Reveal>
+            ))}
+            <Reveal delay={0.3}>
+              <div className="mt-6">
+                <PillLink to="/contact">
+                  Talk to {FOUNDER.name.split(" ")[0]}
+                </PillLink>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
-
-      <Footer3D />
-    </main>
+    </Layout>
   );
 }

@@ -1,23 +1,31 @@
 import { motion } from "framer-motion";
-import logo from "@/assets/kraftzen-logo.webp";
 
+/**
+ * Route transition placeholder. Deliberately quiet: a wordmark and a hairline.
+ * A loud loader on a fast connection is a flash of noise, not a feature.
+ */
 export default function PageLoader() {
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">
-      <motion.img
-        src={logo}
-        alt="Loading Kraftzen"
-        className="w-20 h-20 mb-6"
-        animate={{ scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <div className="w-48 h-1 bg-muted rounded-full overflow-hidden">
+    <div className="fixed inset-0 z-[45] flex flex-col items-center justify-center gap-6 bg-paper">
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+        className="flex items-baseline gap-1.5 text-lg font-semibold tracking-tight text-ink"
+      >
+        Kraftzen
+        <span className="block h-1.5 w-1.5 rounded-full bg-brand" aria-hidden />
+      </motion.p>
+
+      <div
+        role="status"
+        aria-label="Loading"
+        className="h-px w-40 overflow-hidden bg-line"
+      >
         <motion.div
-          className="h-full bg-primary rounded-full"
-          initial={{ x: "-100%" }}
-          animate={{ x: "100%" }}
-          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-          style={{ width: "50%" }}
+          className="h-full w-1/3 bg-brand"
+          animate={{ x: ["-100%", "300%"] }}
+          transition={{ duration: 1.1, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
         />
       </div>
     </div>

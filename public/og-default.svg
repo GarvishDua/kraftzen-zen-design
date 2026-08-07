@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="1200" height="630" fill="#FBF8F3"/>
+
+  <!-- hairline frame -->
+  <rect x="56" y="56" width="1088" height="518" fill="none" stroke="#E4DCD0" stroke-width="1"/>
+
+  <!-- wordmark -->
+  <g transform="translate(104, 128)">
+    <text font-family="'Helvetica Neue', Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="-0.4" fill="#16130F">Kraftzen</text>
+    <circle cx="128" cy="-8" r="5" fill="#E5502A"/>
+  </g>
+
+  <!-- eyebrow -->
+  <text x="104" y="212" font-family="'Courier New', monospace" font-size="15" letter-spacing="2.4" fill="#E5502A">AI STUDIO &#183; DELHI, INDIA</text>
+
+  <!-- headline -->
+  <text x="104" y="304" font-size="72" fill="#16130F" letter-spacing="-1.5">We build AI tools that</text>
+  <text x="104" y="384" font-size="72" fill="#16130F" letter-spacing="-1.5">
+    <tspan font-style="italic" fill="#E5502A">remove</tspan><tspan dx="22">the busywork.</tspan>
+  </text>
+
+  <!-- rule -->
+  <line x1="104" y1="446" x2="1096" y2="446" stroke="#E4DCD0" stroke-width="1"/>
+
+  <!-- footer row -->
+  <text x="104" y="500" font-family="'Helvetica Neue', Arial, sans-serif" font-size="20" fill="#6E655B">AI tools &#183; Automation &#183; Websites &#183; Content systems</text>
+  <text x="1096" y="500" text-anchor="end" font-family="'Courier New', monospace" font-size="15" letter-spacing="2" fill="#9A9086">KRAFTZEN.COM</text>
+</svg>

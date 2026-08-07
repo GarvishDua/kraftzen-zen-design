@@ -1,26 +1,52 @@
 # Kraftzen
 
-## Overview
-Kraftzen is an AI tools and digital automation platform. Our tagline: "Krafting Tools. Delivering Zen." We engineer advanced digital toolcraft and AI innovations that eliminate workflow chaos.
+> An AI studio in Delhi, India. We build AI tools, workflow automation, websites
+> and automated content systems for small teams. Two of our own products are live
+> in public. Clients get a fixed quote, a date, and full ownership of the code.
+
+Contact: officialkraftzen@gmail.com · +91 9310367672
+Founder: Garvish Dua
+
+## Services
+
+- **AI tools and agents** — task specific tools and agents built around one job a team repeats. https://kraftzen.com/services#ai-tools-and-agents
+- **Workflow automation** — pipelines that move work between existing tools, with error handling and a readable run log. https://kraftzen.com/services#workflow-automation
+- **Websites and web apps** — marketing sites, product sites and landing pages in React or WordPress, with technical SEO built in. https://kraftzen.com/services#websites-and-web-apps
+- **Automated content systems** — automated blog engines on your own domain, with research, drafting, internal linking and indexing handled. https://kraftzen.com/services#automated-content-systems
 
 ## Products
 
-### Bro AI — Omni-Studio Command Deck
-Bro AI is Kraftzen's flagship product — a unified AI workspace with specialized modules:
+Kraftzen has exactly two products of its own. Both are live.
 
-- **Designer Bro**: AI-powered graphic design and ad creative generation.
-- **Animator Bro**: Dynamic motion and animation from static ideas.
-- **Study Bro**: Accelerated research and complex topic distillation.
-- **Command Deck**: Unified control center for all AI-powered workflows.
+- **Bro AI** — four narrow AI tools behind one login: Designer Bro (graphics from a
+  brief), Animator Bro (motion from a static design), Portfolio Bro (portfolio sites),
+  Emailer Bro (campaign copy and sequences). https://bro.ai.in
+- **AniVerseX** — a blog that runs itself: topic research, drafting, internal linking
+  and indexing, with no person in the loop unless you want one. The same system is
+  what we rebuild for clients. https://aniblogs.vercel.app
 
-## Website Structure
-- `/` — Landing page with hero, services overview, Bro AI product showcase, testimonials, and footer.
-- `/products` — Full product catalog with details on Designer Bro, Animator Bro, Study Bro, and Command Deck.
-- `/about` — Company story, mission, core values, and team members.
-- `/contact` — Contact form and office information.
-- `/privacy` — Privacy policy detailing data collection, usage, and user rights.
-- `/terms` — Terms of service for using Kraftzen's platform.
+## Pages
 
-## Contact
-Website: https://kraftzen.com
-Email: officialkraftzen@gmail.com
+- Home: https://kraftzen.com/
+- Services: https://kraftzen.com/services
+- Products: https://kraftzen.com/products
+- About: https://kraftzen.com/about
+- Contact: https://kraftzen.com/contact
+- Privacy Policy: https://kraftzen.com/privacy
+- Terms of Service: https://kraftzen.com/terms
+
+## How engagements work
+
+1. Send an enquiry. We reply within one business day.
+2. A 30 minute call to understand the actual work.
+3. A fixed price and a date, in writing.
+4. We build, hand over the code and accounts, and walk you through it.
+
+Engagement shapes:
+
+- **Sprint** — from ₹60,000, 1 to 2 weeks. One scoped deliverable.
+- **Build** — ₹1L to ₹5L, 3 to 8 weeks. A custom tool, content system or full site.
+- **Ongoing** — monthly, cancel anytime. We keep running and extending what we built.
+
+We work with clients outside India. Clients own the code, the accounts and the
+documentation at the end of every project.

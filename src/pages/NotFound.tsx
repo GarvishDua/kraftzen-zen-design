@@ -1,25 +1,61 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import ContactButton from "@/components/three-d/ContactButton";
+import Layout from "@/components/site/Layout";
+import Seo from "@/components/site/Seo";
+import { PillLink, ArrowLink } from "@/components/site/Cta";
+import { Reveal } from "@/components/motion/Reveal";
+import { NAV } from "@/lib/site";
 
-const NotFound = () => {
+export default function NotFound() {
   const location = useLocation();
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    console.warn("404: no route for", location.pathname);
   }, [location.pathname]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#0C0C0C] px-6 text-center">
-      <div className="space-y-6">
-        <h1 className="hero-heading font-black uppercase leading-none" style={{ fontSize: "clamp(5rem, 20vw, 18rem)" }}>404</h1>
-        <p className="text-[#D7E2EA]/70 uppercase tracking-widest text-sm">This page drifted into the void</p>
-        <div className="flex justify-center">
-          <ContactButton to="/" label="Return Home" />
-        </div>
-      </div>
-    </main>
-  );
-};
+    <Layout>
+      <Seo
+        title="Page not found"
+        description="That page does not exist on kraftzen.com."
+        path={location.pathname}
+        noIndex
+      />
 
-export default NotFound;
+      <section className="grain relative flex min-h-[70vh] items-center py-section pt-40">
+        <div className="shell relative z-10">
+          <Reveal>
+            <p className="t-label t-mono mb-8 text-brand">Error 404</p>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <h1 className="t-h1 mb-8 max-w-[14ch]">
+              That page is not <span className="t-accent">here</span>.
+            </h1>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="t-lead mb-12 max-w-lead">
+              The link is either old or slightly wrong. Everything on the site is one of
+              these five places.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.18}>
+            <div className="mb-12 flex flex-wrap items-center gap-4">
+              <PillLink to="/">Back to home</PillLink>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.24}>
+            <ul className="flex flex-wrap gap-x-8 gap-y-4 border-t border-line pt-8">
+              {NAV.map((item) => (
+                <li key={item.to}>
+                  <ArrowLink to={item.to}>{item.label}</ArrowLink>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+    </Layout>
+  );
+}

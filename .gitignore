@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local visual-check output from scripts/shoot.mjs
+.shots
