@@ -441,8 +441,32 @@ route that fails to prerender.
 Two things to know about the prerender step:
 - It force-sets `opacity:1` before capturing, because `whileInView` reveals start
   at opacity 0 and would otherwise be baked into the HTML invisible.
-- It skips silently if Chrome is not at the hardcoded path, so a build on a
-  machine without it still succeeds, just without static HTML.
+- It skips with a warning if no Chrome is found, so a build on a machine without
+  it still succeeds, just without static HTML. It checks `CHROME_PATH`, then
+  `PUPPETEER_EXECUTABLE_PATH`, then the usual Windows, macOS and Linux install
+  locations. It used to be one hardcoded Windows path, which meant it skipped
+  silently on every Linux builder and the deploy shipped an empty SPA shell.
+
+### Vercel routing
+
+**`vercel.json` is what makes a typed URL work.** Vercel serves files, so
+`/services` with no file there is a 404 and React Router never runs. The rewrite
+sends anything unmatched to `/index.html`.
+
+The order matters and is doing real work: Vercel checks the filesystem **before**
+applying rewrites, so a prerendered `dist/services/index.html` is served as
+itself, and only routes with no file fall through to the SPA shell. That is
+exactly right for a blog. Posts published after the last build have no static
+file, so they fall back to client rendering and still load, while everything
+present at build time keeps its real HTML.
+
+Two consequences worth knowing:
+- **Prerendering does not happen on Vercel.** There is no Chrome on the builder.
+  The site works there through the rewrite alone, but with no per-route HTML. To
+  get the SEO version, run `npm run build:static` locally and deploy that `dist`,
+  or install a Chromium package on the builder and set `CHROME_PATH`.
+- A newly published post is readable immediately but has no static HTML until the
+  next `build:static`. That is the same rebuild the social card already needs.
 
 What is already wired:
 

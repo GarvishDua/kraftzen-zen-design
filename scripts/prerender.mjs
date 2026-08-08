@@ -21,7 +21,29 @@ import { join, extname, dirname } from "node:path";
 import puppeteer from "puppeteer-core";
 import { createClient } from "@supabase/supabase-js";
 
-const CHROME = "C:/Program Files/Google/Chrome/Application/chrome.exe";
+/**
+ * Chrome, wherever it happens to live.
+ *
+ * `CHROME_PATH` wins, which is how you point this at a Chromium on a build
+ * machine. Otherwise the usual install locations are tried in turn. This used
+ * to be a single hardcoded Windows path, which meant the step silently skipped
+ * on every non-Windows machine, including CI and Vercel, and the deploy went
+ * out as an empty SPA shell without saying anything.
+ */
+const CHROME_CANDIDATES = [
+  process.env.CHROME_PATH,
+  process.env.PUPPETEER_EXECUTABLE_PATH,
+  "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/usr/bin/google-chrome-stable",
+  "/usr/bin/google-chrome",
+  "/usr/bin/chromium-browser",
+  "/usr/bin/chromium",
+].filter(Boolean);
+
+const CHROME = CHROME_CANDIDATES.find((path) => existsSync(path));
+
 const DIST = "dist";
 const PORT = 4178;
 const ORIGIN = "https://kraftzen.in";
@@ -151,9 +173,12 @@ if (!existsSync(DIST)) {
   process.exit(1);
 }
 
-if (!existsSync(CHROME)) {
-  console.warn(`! Chrome not found at ${CHROME}. Skipping prerender.`);
-  console.warn("  The build still works, but shared links will use the default card.");
+if (!CHROME) {
+  console.warn("! Chrome not found. Skipping prerender.");
+  console.warn(`  Looked in:\n    ${CHROME_CANDIDATES.join("\n    ")}`);
+  console.warn("  Set CHROME_PATH to point at a Chrome or Chromium binary.");
+  console.warn("  The build still works, but every route ships as an empty SPA");
+  console.warn("  shell: no static HTML, and shared links use the default card.");
   process.exit(0);
 }
 
