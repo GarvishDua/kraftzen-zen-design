@@ -1,39 +1,62 @@
+# Every named group below repeats `Disallow: /admin`, and that repetition is
+# load bearing. A crawler that matches its own named group uses ONLY that group
+# and ignores `User-agent: *` entirely. An earlier version of this file listed
+# the AI crawlers with a bare `Allow: /`, which silently exempted every one of
+# them from the admin rule. Do not "tidy up" the duplication.
+
 # Search crawlers
 User-agent: *
 Allow: /
+Disallow: /admin
+
+# AdSense. Mediapartners-Google reads page content to choose relevant ads, so
+# blocking it means blank or badly targeted ads. AdsBot-Google checks landing
+# page quality and, unlike every other crawler here, ignores `User-agent: *`
+# outright, so it only obeys a group that names it.
+User-agent: Mediapartners-Google
+Allow: /
+Disallow: /admin
+
+User-agent: AdsBot-Google
+Allow: /
+Disallow: /admin
 
 # AI answer engines, listed explicitly.
 #
-# A wildcard Allow already permits these, but naming them makes the decision
-# auditable and stops anyone adding a broad Disallow later without realising
-# it also cuts off AI citations. Blocking one of these means that platform
-# cannot cite kraftzen.in in an answer, which is the traffic the blog is for.
+# Naming them makes the decision auditable and stops anyone adding a broad
+# Disallow later without realising it also cuts off AI citations. Blocking one
+# of these means that platform cannot cite kraftzen.in in an answer, which is
+# the traffic the blog is for.
 User-agent: GPTBot
 Allow: /
+Disallow: /admin
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /admin
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /admin
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /admin
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin
 
 User-agent: Bingbot
 Allow: /
-
-# Admin is auth gated and noindex. Keep it out of crawl budget entirely.
-User-agent: *
 Disallow: /admin
 
 Sitemap: https://kraftzen.in/sitemap.xml

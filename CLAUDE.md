@@ -484,6 +484,12 @@ code rather than in the writing:
   OAI-SearchBot, PerplexityBot, ClaudeBot, anthropic-ai, Google-Extended,
   Bingbot). A wildcard already allowed them; naming them makes it auditable so a
   broad `Disallow` added later cannot silently kill AI citations.
+- **Every named group in `robots.txt` repeats `Disallow: /admin`, and that
+  duplication is load bearing.** A crawler matching its own named group uses
+  ONLY that group and ignores `User-agent: *` completely. The first version gave
+  each AI crawler a bare `Allow: /`, which silently exempted all of them from
+  the admin rule. `AdsBot-Google` is worse: it ignores `User-agent: *` by design,
+  so it obeys nothing unless a group names it. Do not deduplicate this file.
 - The post page shows a visible **Updated** date once a post is edited a day or
   more after publishing. `dateModified` was already in the JSON-LD, but freshness
   only counts as a signal if a reader can see it. The one day threshold exists
@@ -493,6 +499,26 @@ code rather than in the writing:
   how-to posts, `ItemList` schema for comparison posts.
 
 ---
+
+## AdSense
+
+Publisher id `ca-pub-1631267597697170`. The script is hardcoded in `index.html`
+and the id is in `public/ads.txt`. Neither is a secret: the id ships in the HTML
+of every site running ads, so putting it in an env var would only add a moving
+part.
+
+Three things keep the account safe, and all three are easy to undo by accident:
+
+- **`scripts/prerender.mjs` blocks the ad hosts.** The prerender opens every
+  route in headless Chrome on every build, so without the request interception
+  each deploy fired real ad requests from an automated client. That is the
+  definition of invalid traffic and it risks the account, not just the numbers.
+  Same class of bug as the view counter counting its own prerenders.
+- **`robots.txt` must let `Mediapartners-Google` through.** Blocking it does not
+  stop ads, it makes them untargeted. See the note above about named groups.
+- **Ads must never render on `/admin`.** Exclude it in the AdSense dashboard when
+  Auto ads is switched on. Ads shown to the signed-in owner are how accidental
+  self clicks happen, and self clicks are an automated permanent ban.
 
 ## Facts about the business
 
