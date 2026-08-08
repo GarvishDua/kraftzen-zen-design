@@ -6,14 +6,23 @@ const sections: LegalSection[] = [
     title: "What we collect",
     body: [
       `When you use the contact form on this site, your mail client sends us your name, email address, and anything else you typed into the form. That message arrives in our inbox at ${SITE.email} and nowhere else.`,
-      "This site does not run behavioural advertising trackers and does not build a profile of you across other websites.",
+      "On the blog we count how many browsers open each article. To do that we store one random identifier in your browser and record which posts it opened on which day. That identifier is not linked to your name, your email, or anything you do on other websites, and we cannot use it to work out who you are. Clearing your site data removes it.",
     ],
   },
   {
-    title: "Cookies",
+    title: "Advertising",
     body: [
-      "This site does not set marketing or advertising cookies. Any storage it uses is limited to keeping the site working in your browser during a visit.",
-      "If we add analytics later, we will name the provider here before it goes live.",
+      "The blog carries ads served by Google AdSense. Google and its partners set cookies and use similar technologies to choose which ads you see, to measure them, and in some cases to build a profile of your interests across the websites you visit. That processing is Google's, not ours, and we do not receive it.",
+      "You can review and change what Google uses at google.com/settings/ads, and read how Google handles data across its advertising products at policies.google.com/technologies/partner-sites.",
+      "If you are in the European Economic Area, the UK or Switzerland, you will be asked to make a choice about this before any advertising cookie is set, and you can change that choice at any time.",
+      "We do not sell advertising directly, and no advertiser is given your contact details or anything you send us through the contact form.",
+    ],
+  },
+  {
+    title: "Cookies and storage",
+    body: [
+      "Two kinds of storage are used here. The first is the blog view counter described above, which stays in your browser rather than on our servers. The second is advertising cookies set by Google and its partners, described in the previous section.",
+      "We do not set marketing cookies of our own, and we do not run a separate analytics product. If we add one later, we will name the provider here before it goes live.",
     ],
   },
   {
@@ -27,6 +36,7 @@ const sections: LegalSection[] = [
     title: "Who else sees it",
     body: [
       "Our email is hosted by a third party provider, so your message passes through their systems the same way any email does.",
+      "The blog and its view counts are stored with Supabase, who host the database. Ads are served by Google, as described above.",
       "If a project needs us to work inside your own tools, we use the access you grant us and nothing wider. We do not copy client data out of client systems.",
       "We share information with anyone else only where the law requires it.",
     ],
@@ -70,9 +80,9 @@ export default function PrivacyPolicy() {
     <LegalPage
       title="Privacy Policy"
       path="/privacy"
-      description="How Kraftzen handles the information you send through this website. Short version: we use it to reply to you, we do not sell it, and you can ask us to delete it."
-      updated="7 August 2026"
-      intro="Short version: we use what you send us to reply to you and do the work. We do not sell it, we do not track you across the internet, and you can ask us to delete it at any time."
+      description="How Kraftzen handles the information you send through this website, what the blog stores, and the advertising cookies Google sets. Short version: we use what you send us to reply to you, we do not sell it, and you can ask us to delete it."
+      updated="8 August 2026"
+      intro="Short version: we use what you send us to reply to you and do the work, and we never sell it. The blog carries Google ads, so Google sets advertising cookies and you can control those. You can ask us to delete anything we hold at any time."
       sections={sections}
     />
   );
