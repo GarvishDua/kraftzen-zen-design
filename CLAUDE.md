@@ -587,6 +587,44 @@ code rather than in the writing:
 
 ---
 
+## The contact form
+
+`api/contact.ts` is a Vercel serverless function that sends through Resend. The
+form posts to `/api/contact`.
+
+**The key lives in `RESEND_API_KEY` on Vercel, with no `VITE_` prefix.** That
+prefix is the whole point: every `VITE_` variable is compiled into the public
+bundle, so a key with it would be readable by anyone viewing source. A build is
+verified to contain neither the key nor the variable name.
+
+Two optional vars, both with sane fallbacks:
+- `CONTACT_TO_EMAIL`, defaults to `officialkraftzen@gmail.com`.
+- `CONTACT_FROM_EMAIL`, defaults to `onboarding@resend.dev`. **Resend only sends
+  from a domain you have verified**, so until kraftzen.in is verified in the
+  Resend dashboard, the fallback is the only address that works, and it delivers
+  to the account owner only. Verify the domain, then set this to something like
+  `hello@kraftzen.in`.
+
+Things that are load bearing:
+
+- **`vercel.json` excludes `/api` from the SPA rewrite.** The rule is
+  `/((?!api/).*)`. Without that exclusion the catch-all rewrite swallows the
+  endpoint and a POST gets an HTML page back instead of JSON.
+- **The mailto draft is still there as a fallback.** If the endpoint fails for
+  any reason the mail app opens carrying the same content. An enquiry is the
+  most valuable thing this site collects, so a failure must never end with
+  someone retyping their message.
+- **Validation is server side.** The form can be bypassed by posting to the URL
+  directly, so the checks in `Contact.tsx` are a convenience and the ones in the
+  function are the real ones.
+- **There is a honeypot field** called `website`, positioned off screen rather
+  than `display:none` because some bots skip hidden fields but follow the tab
+  order. A filled honeypot returns 200, so a bot gets no signal it was caught.
+
+Not built, and worth knowing: there is no rate limiting. Serverless functions are
+stateless so an in-memory counter does nothing. If it gets abused, add Upstash
+Redis or Vercel KV rather than trying to solve it in the function.
+
 ## AdSense
 
 Publisher id `ca-pub-1631267597697170`. The script is hardcoded in `index.html`
@@ -693,9 +731,7 @@ previous site had numbers nobody could source. If a number is needed, ask.
    screen captures at ~1200px wide would finish the job. Add them through the
    `screenshots` loop in `scripts/build-assets.mjs`, not as raw PNGs.
 2. **Prerendering** for per-route social cards. See SEO above.
-3. **Contact form has no backend.** It composes a mailto draft, which loses people
-   on devices with no mail client configured. A form endpoint (Formspree, a Worker,
-   an n8n webhook) is the fix.
+3. ~~Contact form has no backend.~~ Done. See below.
 4. **Confirm the unverified facts** listed above.
 5. `src/assets/kraftzen-logo.webp` is unreferenced. The `.png` is the asset source
    for `npm run assets`, keep it.

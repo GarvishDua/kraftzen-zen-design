@@ -1,0 +1,16 @@
+{
+  "//": "Serverless functions in api/ are not part of the Vite app, so they are not covered by tsconfig.app.json. This exists so `npx tsc -p tsconfig.api.json` typechecks them.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true
+  },
+  "include": ["api/**/*.ts"]
+}

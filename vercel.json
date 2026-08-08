@@ -2,7 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "//": "Everything except /api falls through to the SPA shell. Without the exclusion this rule swallows the contact endpoint and POSTs get an HTML page back.",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ],

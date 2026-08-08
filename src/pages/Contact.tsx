@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Copy, Check, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Copy, Check, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import Layout from "@/components/site/Layout";
 import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo";
@@ -31,17 +31,16 @@ const initial = {
 export default function Contact() {
   const [form, setForm] = useState(initial);
   const [copied, setCopied] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  /** Honeypot. Hidden from people, so anything in it came from a bot. */
+  const [honeypot, setHoneypot] = useState("");
 
   const set = (key: keyof typeof initial) => (value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
 
-  /**
-   * No backend on this site, so the form composes a mail draft. Everything the
-   * form collects is written into the body so nothing is lost in the handoff.
-   */
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  /** Composes the same message as a mail draft. The fallback, not the path. */
+  const openMailDraft = () => {
     const body = [
       `Name: ${form.name}`,
       `Email: ${form.email}`,
@@ -57,10 +56,49 @@ export default function Contact() {
     window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(
       `${form.topic} enquiry from ${form.name || "the website"}`
     )}&body=${encodeURIComponent(body)}`;
+  };
 
-    toast("Opening your mail app", {
-      description: `If nothing happens, write to ${SITE.email} directly.`,
-    });
+  /**
+   * Posts to the serverless function, which sends through Resend.
+   *
+   * If that fails for any reason the mail draft opens instead, carrying the
+   * same content. An enquiry is the most valuable thing this site collects, so
+   * a failure here must never end with the person retyping their message.
+   */
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (sending) return;
+
+    setSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ...form, website: honeypot }),
+      });
+
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
+
+      if (!res.ok || !data.ok) throw new Error(data.error ?? "Send failed");
+
+      setSent(true);
+      setForm(initial);
+      toast.success("Message sent", {
+        description: "We read it and reply within one business day.",
+      });
+    } catch (err) {
+      toast.error("Could not send that from here", {
+        description: "Opening your mail app with everything filled in instead.",
+      });
+      openMailDraft();
+      // Surfaced in the console so a real outage is diagnosable, not silent.
+      console.error("Contact form send failed", err);
+    } finally {
+      setSending(false);
+    }
   };
 
   const copyEmail = async () => {
@@ -170,7 +208,7 @@ export default function Contact() {
             <Reveal>
               <form
                 onSubmit={handleSubmit}
-                className="rounded-lg border border-line bg-surface p-6 md:p-10"
+                className="relative rounded-lg border border-line bg-surface p-6 md:p-10"
               >
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div>
@@ -270,19 +308,42 @@ export default function Contact() {
                   </div>
                 </div>
 
+                {/* Honeypot. Off screen rather than display:none, because some
+                    bots skip hidden fields but follow the tab order. Real
+                    people never reach it: it is aria-hidden and untabbable. */}
+                <div aria-hidden className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+                  <label htmlFor="website">Leave this field empty</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 <div className="mt-8 flex flex-wrap items-center gap-5">
                   <button
                     type="submit"
-                    className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-7 py-3.5 text-[0.9375rem] font-medium text-paper transition-colors duration-short ease-out hover:bg-brand"
+                    disabled={sending}
+                    className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-7 py-3.5 text-[0.9375rem] font-medium text-paper transition-colors duration-short ease-out hover:bg-brand disabled:pointer-events-none disabled:opacity-60"
                   >
-                    Send it
-                    <ArrowRight
-                      size={16}
-                      className="transition-transform duration-short ease-out group-hover:translate-x-1"
-                    />
+                    {sending ? "Sending" : sent ? "Send another" : "Send it"}
+                    {sending ? (
+                      <Loader2 size={16} aria-hidden className="animate-spin" />
+                    ) : (
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-short ease-out group-hover:translate-x-1"
+                      />
+                    )}
                   </button>
-                  <p className="t-small text-muted-foreground">
-                    This opens your mail app with everything filled in.
+                  <p className="t-small text-muted-foreground" aria-live="polite">
+                    {sent
+                      ? "Sent. We reply within one business day."
+                      : "Goes straight to our inbox. We reply within one business day."}
                   </p>
                 </div>
               </form>
