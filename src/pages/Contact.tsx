@@ -6,6 +6,13 @@ import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo
 import PageHeader from "@/components/site/PageHeader";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { SITE, CONTACT } from "@/lib/site";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const FIELD =
   "w-full rounded-md border border-line bg-surface px-4 py-3 text-[0.9375rem] text-ink outline-none transition-colors duration-short ease-out placeholder:text-faint focus:border-ink-soft";
@@ -215,32 +222,36 @@ export default function Contact() {
                     <label className={LABEL} htmlFor="topic">
                       What you need
                     </label>
-                    <select
-                      id="topic"
-                      className={FIELD}
-                      value={form.topic}
-                      onChange={(e) => set("topic")(e.target.value)}
-                    >
-                      {CONTACT.topics.map((t) => (
-                        <option key={t}>{t}</option>
-                      ))}
-                    </select>
+                    <Select value={form.topic} onValueChange={set("topic")}>
+                      <SelectTrigger id="topic" className={FIELD}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CONTACT.topics.map((t) => (
+                          <SelectItem key={t} value={t}>
+                            {t}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div>
                     <label className={LABEL} htmlFor="budget">
                       Rough budget
                     </label>
-                    <select
-                      id="budget"
-                      className={FIELD}
-                      value={form.budget}
-                      onChange={(e) => set("budget")(e.target.value)}
-                    >
-                      {CONTACT.budgets.map((b) => (
-                        <option key={b}>{b}</option>
-                      ))}
-                    </select>
+                    <Select value={form.budget} onValueChange={set("budget")}>
+                      <SelectTrigger id="budget" className={FIELD}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CONTACT.budgets.map((b) => (
+                          <SelectItem key={b} value={b}>
+                            {b}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="sm:col-span-2">

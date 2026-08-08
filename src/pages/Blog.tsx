@@ -7,6 +7,13 @@ import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo
 import WordReveal from "@/components/motion/WordReveal";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   fetchPosts,
   fetchCategories,
   formatPostDate,
@@ -250,21 +257,26 @@ export default function Blog() {
                   />
                 </label>
 
-                <label className="block">
-                  <span className="sr-only">Filter by category</span>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full rounded-full border border-line bg-paper px-5 py-3.5 text-[0.9375rem] outline-none transition-colors duration-short ease-out focus:border-ink-soft"
+                {/* Radix, not a native <select>. A native select renders its
+                    option list through the operating system, so no CSS reaches
+                    it: square corners, a system blue highlight and the OS font
+                    sat inside a rounded warm-paper page. */}
+                <Select value={category} onValueChange={setCategory}>
+                  <SelectTrigger
+                    aria-label="Filter by category"
+                    className="h-auto w-full rounded-full border-line bg-paper px-5 py-3.5 text-[0.9375rem] focus:border-ink-soft focus:ring-0 focus:ring-offset-0"
                   >
-                    <option value="all">All categories</option>
+                    <SelectValue placeholder="All categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All categories</SelectItem>
                     {(categories.data ?? []).map((c) => (
-                      <option key={c.id} value={c.slug}>
+                      <SelectItem key={c.id} value={c.slug}>
                         {c.name}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
-                </label>
+                  </SelectContent>
+                </Select>
 
                 {/* Sort is three buttons rather than a fourth select. There are
                     only ever three options and one is always active, which a
@@ -450,8 +462,15 @@ function Cover({
     <img
       src={post.cover_url}
       alt={post.cover_alt ?? ""}
+      /* The featured cover is the largest element on the page, so it is the
+         LCP element. `eager` alone still leaves it queued behind the scripts;
+         fetchPriority tells the browser to pull it first. Everything below the
+         fold stays lazy so it does not compete for the same bandwidth. */
       loading={eager ? "eager" : "lazy"}
+      fetchPriority={eager ? "high" : "low"}
       decoding="async"
+      width={1600}
+      height={900}
       className={`h-full w-full object-contain transition-transform duration-long ease-out group-hover:scale-[1.02] ${className}`}
     />
   );

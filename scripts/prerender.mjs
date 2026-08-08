@@ -238,12 +238,67 @@ for (const route of routes) {
     // Reveal animations start at opacity 0. A crawler reading the HTML does not
     // care, but a human viewing source or a scraper grabbing text does, so force
     // everything visible before capturing.
-    await page.addStyleTag({
-      content: "*{opacity:1 !important;transform:none !important;}",
-    });
+    const FORCE = "*{opacity:1 !important;transform:none !important;}";
+    await page.addStyleTag({ content: FORCE });
     await new Promise((r) => setTimeout(r, 250));
 
-    const html = await page.content();
+    /**
+     * Take the forcing rule back out before serializing, and strip the inline
+     * start states it was covering for.
+     *
+     * `page.content()` serializes the live DOM, so the injected <style> shipped
+     * inside every prerendered page. An `!important` rule on `*` beats the
+     * inline styles Framer Motion writes, which meant the deployed static build
+     * had every animation on the site permanently switched off: reveals, the
+     * nav hide-on-scroll, hover lifts, the marquee, the pinned pipeline. The
+     * page looked right and nothing moved, which is a hard bug to attribute.
+     *
+     * Removing the rule alone would re-hide the content, so the inline
+     * `opacity` and `transform` Framer left behind have to go with it. Only
+     * those two properties are touched; any other inline style is left alone,
+     * and CSS-driven transforms live in stylesheets so they are unaffected.
+     */
+    /**
+     * The strip and the serialize happen in ONE evaluate on purpose.
+     *
+     * Framer Motion rewrites its inline styles every animation frame, so doing
+     * this as two calls let a frame land in between and put `opacity: 0` back
+     * on any element whose reveal was still in flight. Returning the HTML from
+     * inside the same synchronous block means no frame can intervene.
+     */
+    const html = await page.evaluate((forceCss) => {
+      for (const el of document.querySelectorAll("style")) {
+        if (el.textContent?.includes(forceCss)) el.remove();
+      }
+
+      /**
+       * Put the font link back to `rel="preload"`.
+       *
+       * index.html ships it as a preload with an onload that swaps it to a
+       * stylesheet, so the first paint is never blocked on a third party. By
+       * capture time that swap has already run, so serializing the live DOM
+       * baked a plain render blocking <link rel="stylesheet"> into every
+       * prerendered page. That is the opposite of the intent, and it only hurt
+       * the prerendered routes, which are the ones real visitors land on.
+       */
+      for (const el of document.querySelectorAll('link[onload*="rel="]')) {
+        el.setAttribute("rel", "preload");
+        el.setAttribute("as", "style");
+      }
+
+      for (const el of document.querySelectorAll("[style]")) {
+        const style = /** @type {HTMLElement} */ (el).style;
+        if (style.opacity !== "" && Number(style.opacity) < 1) {
+          style.removeProperty("opacity");
+        }
+        if (style.transform && style.transform !== "none") {
+          style.removeProperty("transform");
+        }
+        if (style.length === 0) el.removeAttribute("style");
+      }
+
+      return `<!DOCTYPE html>\n${document.documentElement.outerHTML}`;
+    }, FORCE);
 
     const outDir =
       route.path === "/" ? DIST : join(DIST, route.path.replace(/^\//, ""));

@@ -425,6 +425,26 @@ Full detail in DESIGN.md. The short version:
 - Every scroll-driven component must handle `useReducedMotion()` and have a legible
   static end state. `ProcessPipeline` and `CapabilityMarquee` show the pattern.
 - MotionValues must go in `style`, never `animate`.
+- **Route changes reset scroll and fade in.** `components/motion/RouteTransition.tsx`
+  holds both. `ScrollToTop` resets the scroll position on a pathname change and
+  deliberately skips when there is a hash, because `/services#workflow-automation`
+  is a request to land at a section. `RouteTransition` is a 240ms opacity fade
+  with no movement and no exit animation: the sections inside each page already
+  animate through `Reveal`, so anything larger runs against them, and an exit
+  animation around lazy routes has to hold the old tree while the next chunk
+  loads, which feels slower rather than smoother. It skips the first paint so a
+  cold load is not delayed and the prerender is not fighting an opacity of 0.
+
+## Never use a native `<select>` on a public page
+
+A native `<select>` renders its option list through the operating system, so no
+CSS reaches it. On a warm rounded page you get square corners, a system blue
+highlight and the OS font, which is exactly the inconsistency it looks like.
+
+Use the vendored Radix `Select` from `components/ui/select.tsx`, which renders a
+real popover that inherits the brand tokens. `/blog` and `/contact` are both
+converted. The two remaining native selects are in `PostEditor` inside `/admin`,
+which is a tool rather than a page and is deliberately left utilitarian.
 
 ---
 
@@ -443,12 +463,52 @@ route that fails to prerender.
 
 Two things to know about the prerender step:
 - It force-sets `opacity:1` before capturing, because `whileInView` reveals start
-  at opacity 0 and would otherwise be baked into the HTML invisible.
+  at opacity 0 and would otherwise be baked into the HTML invisible. **It then
+  removes that rule and strips the inline start states, inside a single
+  `page.evaluate` that also returns the HTML.** Both halves are load bearing.
+  The forcing rule used to ship inside every prerendered page, and
+  `*{opacity:1!important;transform:none!important}` beats Framer's inline
+  styles, so the deployed static build had every animation on the site
+  permanently switched off while looking completely correct. Splitting the strip
+  and the serialize into two calls reintroduces a different version of the bug:
+  Framer rewrites its inline styles every frame, so a frame lands in between and
+  re-hides anything whose reveal was still in flight. Keep it atomic.
 - It skips with a warning if no Chrome is found, so a build on a machine without
   it still succeeds, just without static HTML. It checks `CHROME_PATH`, then
   `PUPPETEER_EXECUTABLE_PATH`, then the usual Windows, macOS and Linux install
   locations. It used to be one hardcoded Windows path, which meant it skipped
   silently on every Linux builder and the deploy shipped an empty SPA shell.
+
+### Performance
+
+PageSpeed Insights on 2026-08-08 scored mobile 59 and desktop 86, with FCP 5.4s
+and LCP 9.7s on mobile. Accessibility 95, Best Practices 100, SEO 100.
+
+**The cause was the deploy, not the code.** Every live route was serving the same
+301-word SPA shell while the local prerendered build had 1,249 to 1,850 words per
+route. With nothing in the HTML a phone has to download the JS, parse it, mount
+React, query Supabase and only then start fetching images, which is where a 9.7s
+LCP comes from. Deploying a `build:static` `dist` is the single biggest
+performance change available, and it costs nothing.
+
+Three code-level fixes went in alongside it:
+
+- **Google Fonts no longer block the first paint.** A plain
+  `<link rel="stylesheet">` to a third party stops the browser painting anything
+  until that round trip finishes. It now ships as `rel="preload"` with an
+  `onload` that swaps it to a stylesheet, plus a `<noscript>` fallback.
+  `display=swap` means text is readable in the fallback face meanwhile.
+- **The prerender resets that link to `rel="preload"` before serializing.** By
+  capture time the onload has already run, so the live DOM holds a plain
+  render-blocking stylesheet. Without this reset the optimisation was undone on
+  exactly the prerendered routes real visitors land on.
+- **LCP images carry `fetchPriority="high"`** plus explicit `width`/`height`.
+  `loading="eager"` alone still queues the image behind the scripts. Everything
+  below the fold stays `lazy` and `fetchPriority="low"` so it does not compete.
+
+Still open if more is needed: the main bundle is ~132 KB gzipped, and the
+AdSense script costs real time on mobile. Neither is worth touching before the
+prerendered build is actually deployed, because that change dwarfs both.
 
 ### Vercel routing
 

@@ -200,8 +200,12 @@ export default function BlogPost() {
               <img
                 src={p.cover_url}
                 alt={p.cover_alt ?? ""}
+                /* This is the LCP element on an article page. */
                 loading="eager"
+                fetchPriority="high"
                 decoding="async"
+                width={1600}
+                height={900}
                 className="w-full rounded-lg border border-line object-cover"
               />
             </Reveal>
