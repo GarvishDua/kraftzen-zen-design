@@ -154,12 +154,22 @@ function ProductSection({ product, flipped }: { product: Product; flipped: boole
             <p className="t-label mb-6 text-brand">What is inside</p>
           </Reveal>
 
+          {/* Separate bordered cards rather than one seamless hairline grid.
+              The seamless version leaves the divider colour showing in empty
+              cells whenever the module count does not divide by the column
+              count, which it stopped doing when Bro AI went to five tools. */}
           <Stagger
             as="ul"
-            className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
+            className={`grid gap-4 sm:grid-cols-2 ${
+              product.modules.length >= 5 ? "lg:grid-cols-5" : "lg:grid-cols-4"
+            }`}
           >
             {product.modules.map((mod, i) => (
-              <StaggerItem as="li" key={mod.name} className="bg-paper p-6">
+              <StaggerItem
+                as="li"
+                key={mod.name}
+                className="rounded-lg border border-line bg-paper p-5"
+              >
                 {mod.image ? (
                   <div className="mb-5 overflow-hidden rounded-md border border-line">
                     <img

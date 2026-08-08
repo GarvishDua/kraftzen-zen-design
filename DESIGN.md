@@ -136,8 +136,15 @@ something the copy would otherwise have to say.
   - exit: `cubic-bezier(0.4, 0, 0.2, 1)` (`--ease-in`)
   - scroll scrub: linear. Never ease a scrubbed timeline.
 - **Duration:** micro 120ms · short 240ms · medium 420ms · long 700ms.
-- **Reveal primitive:** 24px translateY + opacity 0 to 1, `medium`, 40ms stagger,
-  fires once at 20% viewport entry. Every section uses this same primitive.
+- **Reveal primitive:** 20px translateY + opacity 0 to 1, `medium`, 70ms stagger,
+  fires once as the element clears the bottom edge (`margin: "0px 0px -10% 0px"`,
+  `amount: 0.1`). Every section uses this same primitive.
+  - The trigger only insets the **bottom** edge. An earlier version also inset the
+    top by 12%, so anything already high in the viewport on load waited for a
+    scroll that never came and the section read as missing.
+  - 70ms stagger, not 40ms. At 40ms a row of cards arrived as one block and the
+    sequence was invisible, which made the timing look like a stutter instead of
+    a deliberate cascade.
 - **Scroll-driven motion is allowed only when it explains the product.** Decorative
   parallax is not allowed. Approved uses: the process pipeline that draws itself, the
   pinned product stack, the logo marquee, the hero word reveal.
@@ -186,3 +193,11 @@ The copy is part of the design. Rules are binding.
 | 2026-08-07 | Official Bro AI and AniVerseX marks adopted as product icons | Product cards were carrying the whole identity load through screenshots that are inconsistent. The marks give each product a stable visual anchor that survives a screenshot swap. |
 | 2026-08-07 | AniVerseX mark keeps its own black ground | Its neon artwork is designed against black. Keying it out or plating it light would break the glow. `Product.logoOnDark` exists to carry this exception rather than hardcoding it per placement. |
 | 2026-08-07 | Home closes on a founder section | The last thing before the CTA is now a person and a name, not another claim. Proof of a real small studio is the point of the whole positioning. |
+| 2026-08-08 | Blog added, article body uses the same tokens as the rest of the site | Article elements are mapped one by one in `PostBody.tsx` rather than handed to a prose plugin, so headings, tables and code inherit the real type scale instead of a generic default. A blog that looks like a different product undoes the studio positioning. |
+| 2026-08-08 | Comparison tables scroll inside their own container | Wide tables are worth ranking for, but a table that makes the whole page scroll sideways breaks the reading experience on a phone. |
+| 2026-08-08 | Unordered list markers are hairline dashes, not bullets | A filled bullet fights the editorial serif. A rule matches the dividers used everywhere else on the site. |
+| 2026-08-08 | Admin sits outside the marketing Layout | No nav, no footer, no scroll motion. It is a tool, not a page, and the reveal animations actively get in the way when you are editing. |
+| 2026-08-08 | Post covers are contained on a paper ground, not cropped | Covers are wide infographics with type inside them. `object-cover` in a tall card sliced the heading off, so the thumbnail showed a fragment of a diagram and half a face. Letterboxing on paper reads as a mount. |
+| 2026-08-08 | Blog featured post moved beside the h1, and shrank | It was a full width two column band under the header, so the first screen carried a heading and nothing else while the article pushed the archive below the fold. Beside the h1 it costs no extra vertical space. |
+| 2026-08-08 | Blog paginates at ten | The grid is the only place on the site that grows without bound. Ten keeps it to four rows on desktop and keeps the reveal animation cheap. |
+| 2026-08-08 | Reveal fires earlier and staggers slower | 40ms across a row arrived as one block, which read as a stutter rather than a cascade. The old trigger also inset the top edge, holding back anything already on screen at load. |

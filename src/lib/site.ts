@@ -22,6 +22,7 @@ export const SITE = {
 export const NAV = [
   { label: "Services", to: "/services" },
   { label: "Products", to: "/products" },
+  { label: "Blog", to: "/blog" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ] as const;
@@ -200,20 +201,28 @@ export const PRODUCTS: Product[] = [
     status: "Live",
     href: "https://bro.ai.in",
     ctaLabel: "Open Bro AI",
-    kicker: "Four narrow AI tools behind one login",
+    kicker: "Five narrow AI tools behind one login",
     summary:
-      "One place for the small creative jobs that usually need four separate subscriptions.",
+      "One place for the small creative jobs that usually need a separate subscription each.",
     body: [
       "Most AI products are a single chat box that claims to do everything. Bro AI is the opposite. Each tool does one narrow job and has a screen built for that job, so you are not describing your intent to an empty prompt every time.",
-      "It exists because we kept paying for four tools to do four small things. Now they sit behind one login and share the same brand settings.",
+      "It exists because we kept paying for a different tool for every small job. Now they sit behind one login and share the same brand settings.",
     ],
     /** The sub tools. This is what makes the product concrete rather than a claim. */
     modules: [
       {
         name: "Designer Bro",
-        detail: "Layouts, posts and graphics from a brief, in your brand colours.",
+        // Wording follows the product's own dashboard copy.
+        detail: "Visuals, professional headshots and cinematic thumbnails from a brief.",
         image: "/designerbro.png",
-        alt: "Designer Bro generating brand graphics inside Bro AI",
+        alt: "A product visual produced by Designer Bro",
+      },
+      {
+        name: "Gen-Z Bro",
+        detail:
+          "Turns your photos into whatever art style is trending, Ghibli and whatever comes after it.",
+        image: "/broai-genz.jpg",
+        alt: "Gen-Z Bro rendering a photo in a trending illustration style",
       },
       {
         name: "Animator Bro",
@@ -235,7 +244,10 @@ export const PRODUCTS: Product[] = [
       },
     ],
     tags: ["Product design", "Multi tool platform", "AI"],
-    cover: { src: "/designerbro.png", alt: "The Bro AI workspace" },
+    cover: {
+      src: "/broai-dashboard.jpg",
+      alt: "The Bro AI dashboard, with Designer Bro, Gen-Z Bro and Animator Bro on it",
+    },
     logo: "/logo-bro-ai.png",
   },
   {

@@ -259,6 +259,61 @@
   .hairline {
     border-top: 1px solid hsl(var(--line));
   }
+
+  /* ---------------------------------------------------------------
+     Blog post body lists.
+     Styled here rather than in PostBody.tsx because react-markdown
+     renders every <li> through the same component and does not say
+     whether the parent is a ul or an ol. CSS knows the parent.
+     --------------------------------------------------------------- */
+  .post-body ul {
+    margin-bottom: 1.5rem;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .post-body ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    list-style: decimal;
+  }
+
+  .post-body li {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: hsl(var(--ink-soft));
+    margin-bottom: 0.625rem;
+  }
+
+  .post-body ol li::marker {
+    color: hsl(var(--faint));
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875em;
+  }
+
+  /* Unordered items get a hairline dash. A filled bullet fights the
+     editorial type; a rule matches the dividers used everywhere else. */
+  .post-body ul > li {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .post-body ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.85em;
+    width: 0.75rem;
+    height: 1px;
+    background: hsl(var(--line-strong));
+  }
+
+  /* Nested lists tighten up rather than repeating the full rhythm. */
+  .post-body li > ul,
+  .post-body li > ol {
+    margin-top: 0.625rem;
+    margin-bottom: 0;
+  }
 }
 
 @layer utilities {

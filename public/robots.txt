@@ -1,4 +1,39 @@
+# Search crawlers
 User-agent: *
 Allow: /
+
+# AI answer engines, listed explicitly.
+#
+# A wildcard Allow already permits these, but naming them makes the decision
+# auditable and stops anyone adding a broad Disallow later without realising
+# it also cuts off AI citations. Blocking one of these means that platform
+# cannot cite kraftzen.com in an answer, which is the traffic the blog is for.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Admin is auth gated and noindex. Keep it out of crawl budget entirely.
+User-agent: *
+Disallow: /admin
 
 Sitemap: https://kraftzen.com/sitemap.xml

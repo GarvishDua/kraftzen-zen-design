@@ -7,6 +7,7 @@
  *   public/Bro ai logo-Photoroom.png  the Bro AI mark, transparent, heavily padded
  *   public/anniverseXlogo.png         the AniVerseX mark, square, solid black ground
  *   public/GarvishDuaphoto.png        founder headshot, 1MB PNG
+ *   public/Broaidashboard.png         Bro AI dashboard capture, 1897x850
  *   public/og-default.svg             the social card design
  *
  * Outputs (what the app actually references):
@@ -16,6 +17,7 @@
  *   public/logo-bro-ai.png            256px square product icon
  *   public/logo-aniversex.png         256px square product icon
  *   public/founder-garvish.jpg        1000px wide, quality 82
+ *   public/broai-dashboard.jpg        1600px wide product screenshot
  *   public/og-default.png             1200x630 social card
  */
 
@@ -106,6 +108,54 @@ await sharp("public/GarvishDuaphoto.png")
   .jpeg({ quality: 82, mozjpeg: true })
   .toFile(`${OUT}/founder-garvish.jpg`);
 console.log(`wrote ${OUT}/founder-garvish.jpg`);
+
+/**
+ * Product screenshots. Wide UI captures compress far better as JPEG than PNG
+ * and none of them need transparency.
+ */
+const screenshots = [
+  { src: "public/Broaidashboard.png", out: "broai-dashboard.jpg", width: 1600 },
+];
+
+for (const shot of screenshots) {
+  await sharp(shot.src)
+    .flatten({ background: { r: 12, g: 12, b: 16 } })
+    .resize(shot.width, null, { withoutEnlargement: true })
+    .jpeg({ quality: 84, mozjpeg: true })
+    .toFile(`${OUT}/${shot.out}`);
+  console.log(`wrote ${OUT}/${shot.out}`);
+}
+
+/**
+ * Gen-Z Bro tile, cropped out of the dashboard capture.
+ *
+ * There is no standalone Gen-Z Bro screenshot yet, so we lift its card from the
+ * dashboard. The crop is deliberately tight on the icon and labels rather than
+ * the artwork behind them: the dashboard fades that art under a dark gradient,
+ * so any crop of it comes out murky and unreadable at tile size. The label area
+ * is crisp and is still real product UI.
+ *
+ * FRAGILE: these coordinates are tied to the current 1897x850 capture. If
+ * Broaidashboard.png is ever re-shot at a different size or layout, this crop
+ * will be wrong. The guard below skips loudly instead of writing a bad tile.
+ * Delete this whole block once a real Gen-Z Bro capture exists.
+ */
+const GENZ_CROP = { left: 213, top: 610, width: 400, height: 240 };
+const dash = await sharp("public/Broaidashboard.png").metadata();
+
+if (dash.width === 1897 && dash.height === 850) {
+  await sharp("public/Broaidashboard.png")
+    .extract(GENZ_CROP)
+    .resize(900, null, { withoutEnlargement: true })
+    .jpeg({ quality: 84, mozjpeg: true })
+    .toFile(`${OUT}/broai-genz.jpg`);
+  console.log(`wrote ${OUT}/broai-genz.jpg`);
+} else {
+  console.warn(
+    `SKIPPED broai-genz.jpg: expected a 1897x850 dashboard, got ${dash.width}x${dash.height}. ` +
+      `The Gen-Z Bro crop coordinates no longer apply. Take a real Gen-Z Bro capture instead.`
+  );
+}
 
 // Social card. The SVG renderer collapses whitespace between tspans, so the
 // source uses dx for spacing rather than a space character.

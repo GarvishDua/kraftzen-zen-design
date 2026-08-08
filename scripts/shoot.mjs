@@ -18,6 +18,8 @@ const ROUTES = [
   ["home", "/"],
   ["services", "/services"],
   ["products", "/products"],
+  ["blog", "/blog"],
+  ["blog-post", "/blog/why-most-ai-automation-projects-fail"],
   ["about", "/about"],
   ["contact", "/contact"],
 ];

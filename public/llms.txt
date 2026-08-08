@@ -18,9 +18,10 @@ Founder: Garvish Dua
 
 Kraftzen has exactly two products of its own. Both are live.
 
-- **Bro AI** — four narrow AI tools behind one login: Designer Bro (graphics from a
-  brief), Animator Bro (motion from a static design), Portfolio Bro (portfolio sites),
-  Emailer Bro (campaign copy and sequences). https://bro.ai.in
+- **Bro AI** — five narrow AI tools behind one login: Designer Bro (visuals, headshots
+  and thumbnails from a brief), Gen-Z Bro (photos rendered in whatever art style is
+  trending, Ghibli and after), Animator Bro (motion from a static design), Portfolio
+  Bro (portfolio sites), Emailer Bro (campaign copy and sequences). https://bro.ai.in
 - **AniVerseX** — a blog that runs itself: topic research, drafting, internal linking
   and indexing, with no person in the loop unless you want one. The same system is
   what we rebuild for clients. https://aniblogs.vercel.app
@@ -30,10 +31,19 @@ Kraftzen has exactly two products of its own. Both are live.
 - Home: https://kraftzen.com/
 - Services: https://kraftzen.com/services
 - Products: https://kraftzen.com/products
+- Blog: https://kraftzen.com/blog
 - About: https://kraftzen.com/about
 - Contact: https://kraftzen.com/contact
 - Privacy Policy: https://kraftzen.com/privacy
 - Terms of Service: https://kraftzen.com/terms
+
+## Blog
+
+Practical writing on AI engineering, automation, web development and SEO, drawn
+from real projects. Categories: AI engineering, Automation, Web development, SEO,
+Product, Tools. Index at https://kraftzen.com/blog, posts at
+https://kraftzen.com/blog/<slug>, and every published post is listed in
+https://kraftzen.com/sitemap.xml.
 
 ## How engagements work
 
