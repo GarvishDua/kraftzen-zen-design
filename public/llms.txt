@@ -9,10 +9,10 @@ Founder: Garvish Dua
 
 ## Services
 
-- **AI tools and agents** — task specific tools and agents built around one job a team repeats. https://kraftzen.com/services#ai-tools-and-agents
-- **Workflow automation** — pipelines that move work between existing tools, with error handling and a readable run log. https://kraftzen.com/services#workflow-automation
-- **Websites and web apps** — marketing sites, product sites and landing pages in React or WordPress, with technical SEO built in. https://kraftzen.com/services#websites-and-web-apps
-- **Automated content systems** — automated blog engines on your own domain, with research, drafting, internal linking and indexing handled. https://kraftzen.com/services#automated-content-systems
+- **AI tools and agents** — task specific tools and agents built around one job a team repeats. https://kraftzen.in/services#ai-tools-and-agents
+- **Workflow automation** — pipelines that move work between existing tools, with error handling and a readable run log. https://kraftzen.in/services#workflow-automation
+- **Websites and web apps** — marketing sites, product sites and landing pages in React or WordPress, with technical SEO built in. https://kraftzen.in/services#websites-and-web-apps
+- **Automated content systems** — automated blog engines on your own domain, with research, drafting, internal linking and indexing handled. https://kraftzen.in/services#automated-content-systems
 
 ## Products
 
@@ -28,22 +28,22 @@ Kraftzen has exactly two products of its own. Both are live.
 
 ## Pages
 
-- Home: https://kraftzen.com/
-- Services: https://kraftzen.com/services
-- Products: https://kraftzen.com/products
-- Blog: https://kraftzen.com/blog
-- About: https://kraftzen.com/about
-- Contact: https://kraftzen.com/contact
-- Privacy Policy: https://kraftzen.com/privacy
-- Terms of Service: https://kraftzen.com/terms
+- Home: https://kraftzen.in/
+- Services: https://kraftzen.in/services
+- Products: https://kraftzen.in/products
+- Blog: https://kraftzen.in/blog
+- About: https://kraftzen.in/about
+- Contact: https://kraftzen.in/contact
+- Privacy Policy: https://kraftzen.in/privacy
+- Terms of Service: https://kraftzen.in/terms
 
 ## Blog
 
 Practical writing on AI engineering, automation, web development and SEO, drawn
 from real projects. Categories: AI engineering, Automation, Web development, SEO,
-Product, Tools. Index at https://kraftzen.com/blog, posts at
-https://kraftzen.com/blog/<slug>, and every published post is listed in
-https://kraftzen.com/sitemap.xml.
+Product, Tools. Index at https://kraftzen.in/blog, posts at
+https://kraftzen.in/blog/<slug>, and every published post is listed in
+https://kraftzen.in/sitemap.xml.
 
 ## How engagements work
 

@@ -1,6 +1,6 @@
 # Design System — Kraftzen
 
-Source of truth for every visual decision on kraftzen.com. Read this before touching
+Source of truth for every visual decision on kraftzen.in. Read this before touching
 any UI. Do not deviate without explicit user approval.
 
 Created 2026-08-07 by `/design-consultation`.

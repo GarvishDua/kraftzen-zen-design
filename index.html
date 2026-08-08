@@ -6,6 +6,21 @@
     <meta name="theme-color" content="#FBF8F3" />
     <meta name="google-site-verification" content="pAuhzUDvSlG6PR7OvDkTaIP8cGqfdXT7rM9OHxCfgG4" />
 
+    <!-- AdSense. The publisher id is public by design and ships in the HTML on
+         every site running ads, so it is not a secret and does not belong in an
+         env var. `async` keeps it off the critical path.
+
+         This tag must be present for the site review. It does not place ads on
+         its own: that happens when Auto ads is switched on in the dashboard.
+         When you do, exclude /admin there, so ads never render in a tool you
+         are signed into. Ads served to the site owner are how accidental self
+         clicks happen, and self clicks are a permanent ban. -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1631267597697170"
+      crossorigin="anonymous"
+    ></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,17 +46,17 @@
     />
     <meta name="author" content="Kraftzen" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://kraftzen.com/" />
+    <link rel="canonical" href="https://kraftzen.in/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Kraftzen" />
-    <meta property="og:url" content="https://kraftzen.com/" />
+    <meta property="og:url" content="https://kraftzen.in/" />
     <meta property="og:title" content="Kraftzen | AI tools, automation and websites for small teams" />
     <meta
       property="og:description"
       content="An AI studio in Delhi building tools, automation and sites that take repeat work off small teams. Two products live. Fixed quotes. You own the code."
     />
-    <meta property="og:image" content="https://kraftzen.com/og-default.png" />
+    <meta property="og:image" content="https://kraftzen.in/og-default.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -51,15 +66,15 @@
       name="twitter:description"
       content="An AI studio in Delhi building tools, automation and sites that take repeat work off small teams."
     />
-    <meta name="twitter:image" content="https://kraftzen.com/og-default.png" />
+    <meta name="twitter:image" content="https://kraftzen.in/og-default.png" />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
-        "@id": "https://kraftzen.com/#organization",
+        "@id": "https://kraftzen.in/#organization",
         "name": "Kraftzen",
-        "url": "https://kraftzen.com",
+        "url": "https://kraftzen.in",
         "email": "officialkraftzen@gmail.com",
         "telephone": "+91 9310367672",
         "description": "Kraftzen is an AI studio in Delhi that builds AI tools, workflow automation, websites and automated content systems for small teams.",
@@ -69,12 +84,12 @@
           "addressCountry": "IN"
         },
         "areaServed": "Worldwide",
-        "logo": "https://kraftzen.com/logo-mark.png",
+        "logo": "https://kraftzen.in/logo-mark.png",
         "founder": {
           "@type": "Person",
           "name": "Garvish Dua",
           "jobTitle": "Founder",
-          "image": "https://kraftzen.com/founder-garvish.jpg"
+          "image": "https://kraftzen.in/founder-garvish.jpg"
         }
       }
     </script>

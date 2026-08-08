@@ -7,7 +7,7 @@ Allow: /
 # A wildcard Allow already permits these, but naming them makes the decision
 # auditable and stops anyone adding a broad Disallow later without realising
 # it also cuts off AI citations. Blocking one of these means that platform
-# cannot cite kraftzen.com in an answer, which is the traffic the blog is for.
+# cannot cite kraftzen.in in an answer, which is the traffic the blog is for.
 User-agent: GPTBot
 Allow: /
 
@@ -36,4 +36,4 @@ Allow: /
 User-agent: *
 Disallow: /admin
 
-Sitemap: https://kraftzen.com/sitemap.xml
+Sitemap: https://kraftzen.in/sitemap.xml

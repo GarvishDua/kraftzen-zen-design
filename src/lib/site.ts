@@ -9,7 +9,7 @@
 
 export const SITE = {
   name: "Kraftzen",
-  domain: "https://kraftzen.com",
+  domain: "https://kraftzen.in",
   tagline: "We build AI tools that take the busywork off your team.",
   email: "officialkraftzen@gmail.com",
   phone: "+91 9310367672",

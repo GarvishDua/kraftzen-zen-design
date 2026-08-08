@@ -284,7 +284,7 @@ These are the ones worth building into every post:
 | **Keyword stuffing** | **-10%** | **Actively harmful. Do not do it.** |
 
 Statistics plus fluency is the strongest pairing. Sites with lower authority
-gain the most from citations, up to a 115% lift, which describes kraftzen.com
+gain the most from citations, up to a 115% lift, which describes kraftzen.in
 today.
 
 ### The extractability rules

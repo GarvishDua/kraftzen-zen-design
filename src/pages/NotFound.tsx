@@ -17,7 +17,7 @@ export default function NotFound() {
     <Layout>
       <Seo
         title="Page not found"
-        description="That page does not exist on kraftzen.com."
+        description="That page does not exist on kraftzen.in."
         path={location.pathname}
         noIndex
       />

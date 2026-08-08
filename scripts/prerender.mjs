@@ -24,7 +24,7 @@ import { createClient } from "@supabase/supabase-js";
 const CHROME = "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const DIST = "dist";
 const PORT = 4178;
-const ORIGIN = "https://kraftzen.com";
+const ORIGIN = "https://kraftzen.in";
 
 /** Routes that always exist, regardless of what is in the database. */
 const STATIC_ROUTES = [
@@ -173,9 +173,34 @@ const browser = await puppeteer.launch({
 let ok = 0;
 const failed = [];
 
+/** Ad and analytics hosts that must never be contacted from a build. */
+const BLOCKED_HOSTS = [
+  "pagead2.googlesyndication.com",
+  "googleads.g.doubleclick.net",
+  "partner.googleadservices.com",
+  "adservice.google.com",
+];
+
 for (const route of routes) {
   const page = await browser.newPage();
   try {
+    /**
+     * Block the ad scripts.
+     *
+     * This loop opens every route in a real browser on every build. Left alone
+     * it would load adsbygoogle.js and fire genuine ad requests from a headless
+     * client, which is the textbook invalid traffic pattern and risks the
+     * AdSense account. It would also bake ad containers into the static HTML.
+     *
+     * Same class of bug as the view counter counting our own prerenders.
+     */
+    await page.setRequestInterception(true);
+    page.on("request", (req) => {
+      const url = req.url();
+      if (BLOCKED_HOSTS.some((host) => url.includes(host))) req.abort();
+      else req.continue();
+    });
+
     await page.goto(`http://localhost:${PORT}${route.path}`, {
       waitUntil: "load",
       timeout: 45000,

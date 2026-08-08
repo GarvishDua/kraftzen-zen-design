@@ -48,7 +48,7 @@ const sections: LegalSection[] = [
   {
     title: "Links to other sites",
     body: [
-      "This site links out to products we run, such as Bro AI and AniVerseX, and occasionally to third party tools. Once you leave kraftzen.com, the privacy policy of that site applies instead of this one.",
+      "This site links out to products we run, such as Bro AI and AniVerseX, and occasionally to third party tools. Once you leave kraftzen.in, the privacy policy of that site applies instead of this one.",
     ],
   },
   {
