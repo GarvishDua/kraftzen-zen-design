@@ -333,10 +333,13 @@ the size is the wrong end of the problem.
 sits **beside** the h1 instead of in a band below it. That is the whole point of
 the layout: the first screen shows the positioning and the newest article at once.
 
-- **The featured post is excluded from the library grid, always.** It is already
-  on screen in the hero. An earlier rule only excluded it once there were more
-  than three posts, which put the same card on the page twice while the archive
-  was small. When that leaves the library empty the section says so.
+- **The library lists every post, including the featured one.** Garvish's call,
+  2026-08-08. The hero is a highlight, not a replacement for the archive: a
+  reader who scrolls past it and starts filtering expects the newest post in the
+  grid and expects the count to match the real total. A version that excluded it
+  was tried and rejected, because it made the archive read as incomplete and
+  left the grid empty while there was only one post. Yes, the newest post
+  appears twice on the first screen. That is intended.
 - **Ten posts per page.** Pagination is the reason the grid stays smooth, so do
   not swap it for infinite scroll or raise the number much.
 - Sort is three buttons, not a select, because one option is always active and a

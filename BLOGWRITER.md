@@ -1,4 +1,4 @@
-# Blog writing spec — Kraftzen
+# Blog writing spec, Kraftzen
 
 Read this in full before drafting any post for the Kraftzen blog. It is the
 source of truth for tone, structure, SEO and images.
@@ -162,34 +162,169 @@ Rules:
 belongs, write an image prompt block that Garvish can paste straight into an
 image generator, then replace with the real URL.
 
-Use exactly this format so the blocks are easy to find and replace:
+### Blog imagery is loud. The marketing site is not.
+
+**This is a deliberate split, confirmed by Garvish on 2026-08-08. Do not
+"correct" blog image prompts back to the site palette.**
+
+`DESIGN.md` governs the site: restrained, one accent, no gradients. That is
+right for a page someone already chose to visit. A blog cover competes in a
+social feed, a search result and a card grid, where restrained reads as
+invisible. So blog images are **bold, saturated and graphic**.
+
+Every image prompt must be a **diagram, flowchart, chart or graphic that carries
+the idea**. Never a decorative abstract. If the image does not explain something
+a reader would otherwise have to work out from the prose, cut it.
+
+---
+
+### The cover template
+
+**Every cover uses the same layout. Do not invent a new one per post.**
+
+The point of a template is the series. Five posts sharing one structure read as a
+publication; five posts with five layouts read as clip art. The reference is the
+enally.in cover set, studied 2026-08-08. Garvish supplies his own photo with the
+prompt, so the prompt's job is to describe the frame the photo drops into.
+
+**The layout, left to right:**
+
+The frame is a wide 16:9 card. The left 55 to 60% is a typographic zone. The
+right 40 to 45% is Garvish's supplied photo, waist up, at a desk, cut into the
+composition so he sits inside the scene rather than pasted on a plate.
+
+Stacked down the left zone, in this order:
+
+1. **Badge**, top left. A small rounded pill in vermilion with white caps text
+   and a sparkle glyph. Always carries the year: `✦ 2026 GUIDE`, `✦ 2026 COMPARISON`.
+2. **Headline**, the largest thing in the frame. Heavy geometric sans, tight
+   leading, left aligned, three lines at most. **The first line or the key
+   number is vermilion, the rest near-black.** That single colour switch is what
+   makes the series recognisable, so never colour the whole headline.
+3. **Short vermilion rule**, a stubby horizontal bar under the headline. Roughly
+   one quarter of the headline width.
+4. **Subhead**, one line or two, medium weight, near-black, with **the audience
+   or the payoff in vermilion**. "Which Architecture Platform Is Best for
+   *Students & Professionals*?"
+5. **Icon chip row**, four or five chips across the bottom of the text zone.
+   Each chip is a small vermilion-outlined rounded-square icon above a two or
+   three word label in small near-black caps. These name what the post covers.
+   This row is what stops the cover looking like a quote card.
+6. **Author strip**, bottom left. Small circular avatar, then the author name in
+   bold near-black, then a thin vertical divider, then the Kraftzen mark and the
+   `kraftzen.in` wordmark.
+
+**Ground and texture:** warm off-white (`#FBF8F3`) behind the text zone, with a
+small dotted grid pattern tucked into the top-left and bottom-left corners in
+faint vermilion. The photo brings its own room behind it: shelves, plants, a
+laptop, a mug, softly out of focus.
+
+**Where the saturated palette goes.** The template above is the warm brand version
+and it is the safe default. A post whose cover is carrying a chart or a
+comparison can swap the ground for a deep saturated field and colour-block the
+data, the way the n8n and Muse Code covers do. What never changes is the
+structure: badge, big headline with one vermilion element, chips or data blocks,
+author strip, photo right. **Change the colour, keep the skeleton.**
+
+**Fill-in template.** Copy this and replace the bracketed parts:
 
 ```markdown
 > **[IMAGE PROMPT]**
-> **Alt:** ADK multi-agent system with a coordinator routing to four sub-agents
-> **Prompt:** Clean technical diagram on a warm off-white background (#FBF8F3),
-> near-black labels, one vermilion accent (#E5502A). A single "Coordinator Agent"
-> box at the top connected by thin arrows to four boxes below labelled Research,
-> Code, Data and Deploy. Flat vector, thin hairline strokes, generous whitespace,
-> no gradients, no glow, no 3D. Wide 16:9.
+> **Alt:** [what the cover shows, as a sentence]
+> **Prompt:** Wide 16:9 blog cover card, warm editorial style, rounded corners.
+> I am supplying a photo of a man at a desk. Place him on the RIGHT 40% of the
+> frame, waist up, keeping his room behind him softly out of focus. Do not alter
+> his face.
+> LEFT 60% is a typographic zone on warm off-white (#FBF8F3) with a faint
+> vermilion dotted grid in the top-left and bottom-left corners.
+> Stacked down the left zone:
+> 1. A small vermilion (#E5502A) rounded pill with a sparkle glyph and white caps
+>    text reading "[✦ 2026 GUIDE]".
+> 2. A very large heavy geometric sans headline, tight leading, left aligned:
+>    "[FIRST LINE]" in vermilion, then "[SECOND LINE]" and "[THIRD LINE]" in
+>    near-black (#16130F).
+> 3. A short stubby vermilion rule beneath the headline.
+> 4. A subhead in medium weight near-black reading "[SUBHEAD]", with
+>    "[EMPHASIS WORDS]" in vermilion.
+> 5. A row of [four] chips, each a small vermilion-outlined rounded-square icon
+>    above a short near-black caps label: "[LABEL 1]", "[LABEL 2]", "[LABEL 3]",
+>    "[LABEL 4]".
+> 6. A bottom author strip: small circular avatar, "Garvish Dua" in bold
+>    near-black, a thin vertical divider, then a small mark and "kraftzen.in".
+> STYLE: clean editorial, flat vector graphics over a real photo, crisp type,
+> generous whitespace. No gradients on the type, no glow, no 3D bevels.
+> TEXT RULE: only the labels quoted above. No paragraphs, no invented words.
+```
+
+**Two rules that will bite you otherwise.** Keep the headline to three lines or
+it stops being readable at card size, which is where most people see it. And
+always end with the TEXT RULE line, because image models invent extra words into
+empty space and a typo baked into a cover is permanent once it is in the OG card.
+
+---
+
+### In-body diagrams
+
+These are where the loud, saturated treatment belongs. Use exactly this format
+so the blocks are easy to find and replace:
+
+```markdown
+> **[IMAGE PROMPT]**
+> **Alt:** A coordinator agent routing work to four specialist sub-agents
+> **Prompt:** Bold editorial poster illustration, saturated flat-vector pop style,
+> wide 16:9.
+> CONCEPT: one coordinator delegating to four specialists.
+> BACKGROUND: deep saturated indigo (#1B1B3A) with a faint halftone dot texture.
+> COMPOSITION: one large rounded panel at the top in bright vermilion (#E5502A)
+> labelled "COORDINATOR" in heavy cream condensed caps. Four thick cream arrows
+> fan down to four rounded panels: "RESEARCH" in electric blue (#2E6BFF),
+> "CODE" in mint green (#3DDC97), "DATA" in acid yellow (#FFD93D) with
+> near-black type, "DEPLOY" in electric violet (#7B2FF7). Each panel carries one
+> big numeral 01 to 04 in its corner.
+> STYLE: flat vector, thick confident shapes, high saturation, heavy geometric
+> sans, strong colour blocking, slight retro-print grain. Crisp edges, no soft
+> shadows, no 3D bevels, no photorealism.
+> TEXT RULE: only the short caps labels and numerals listed above.
 ```
 
 Rules for the prompts:
 
-- Always name the palette: warm off-white `#FBF8F3`, near-black `#16130F`,
-  one vermilion accent `#E5502A`. This keeps every post's imagery on brand.
-- Always say **no gradients, no glow, no 3D**. Those are banned sitewide.
-- Always give an aspect ratio. Cover images are 16:9. In-body diagrams are 16:9
-  or 4:3.
+- **Lead with CONCEPT.** State what the picture has to prove before describing
+  how it looks. A prompt that only describes style produces decoration.
+- **Structure every prompt** as CONCEPT, BACKGROUND, COMPOSITION, STYLE, TEXT
+  RULE. Composition is the long part: say where things sit, how big they are
+  relative to each other, and what each one is labelled.
+- **Use the saturated palette.** Vermilion `#E5502A` stays the anchor so the blog
+  still reads as ours, then draw from electric blue `#2E6BFF`, mint green
+  `#3DDC97`, acid yellow `#FFD93D`, electric violet `#7B2FF7`, hot coral
+  `#FF5A3C`, against a deep ground like indigo `#1B1B3A` or near-black `#141419`.
+- **Size differences must carry meaning.** If one number is the point of the
+  chart, say it is twice the size of the others. Flat hierarchy wastes the image.
+- **Always exactly 16:9.** Cover containers are `aspect-[16/9]` with
+  `object-contain`, so a true 16:9 render fills the frame with no letterboxing.
+  A square or 4:3 render shows cream bars down both sides.
+- **Cap the on-image text.** Image models garble sentences. Short caps labels,
+  big numerals and short mono tags only. End every prompt with a TEXT RULE line
+  naming exactly what may appear. Regenerate rather than accept mangled letters,
+  because a typo in a cover is permanent once it is in the OG card.
+- Banned in diagrams: soft drop shadows, 3D bevels, photorealism, stock
+  illustration. Bold and flat, not glossy. The cover is the one exception,
+  because it composites a real photo of Garvish, and even there the graphics
+  laid over that photo stay flat.
 - The **Alt** line becomes the real alt text and the caption, so write it as a
   description of what the image shows, not as a keyword dump.
 
 Where to place images:
 
-- One cover image per post, always.
-- One diagram per major concept that has structure worth drawing. Do not add a
-  decorative image just to break up text. If it does not explain something, cut it.
-- Screenshots of real product UI beat generated diagrams every time. Use a real
+- One cover image per post, always, built from **the cover template above**.
+  This is the one that has to stop a scroll, and the one that has to look like
+  it belongs to the same publication as the last five.
+- One diagram, flowchart or chart per major concept that has structure worth
+  drawing. Two to three images in a 2,000 word post is the right density.
+- Charts that carry real numbers stay legible first and loud second. A cost
+  curve or a benchmark comparison can be saturated and bold, but if the reader
+  cannot read the axis at blog-body width the image failed.
+- Screenshots of real product UI beat generated graphics every time. Use a real
   capture wherever one exists.
 
 ---

@@ -43,14 +43,16 @@ export default function Blog() {
   const featured = all.find((p) => p.featured) ?? all[0];
 
   /**
-   * The featured post is always dropped from the library, because it is now in
-   * the hero rather than in its own band further down. Keeping it in both put
-   * the same card on screen twice.
+   * The library lists every post, including the one in the hero.
    *
-   * When that empties the library the section says so, which is honest. The
-   * earlier version repeated the post instead, to avoid an empty grid.
+   * Garvish's call, 2026-08-08. The hero is a highlight, not a substitute for
+   * the archive: a reader who scrolls past it and starts filtering expects the
+   * newest article to be in the grid with everything else, and expects the
+   * count to match the real total. An earlier version dropped it to avoid
+   * showing the same card twice, which made the archive read as incomplete
+   * and left the grid empty while there was only one post.
    */
-  const library = featured ? all.filter((p) => p.id !== featured.id) : all;
+  const library = all;
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -225,11 +227,9 @@ export default function Blog() {
                   All articles
                 </h2>
                 <p className="t-small text-muted-foreground">
-                  {library.length === 0
-                    ? "Everything published so far is above."
-                    : `${filtered.length} of ${library.length} ${
-                        library.length === 1 ? "article" : "articles"
-                      } across ${categories.data?.length ?? 0} categories`}
+                  {filtered.length} of {library.length}{" "}
+                  {library.length === 1 ? "article" : "articles"} across{" "}
+                  {categories.data?.length ?? 0} categories
                 </p>
               </div>
 
@@ -306,15 +306,11 @@ export default function Blog() {
             </div>
           ) : visible.length === 0 ? (
             <div className="rounded-lg border border-line bg-surface p-12 text-center">
-              <p className="t-h3 mb-2">
-                {library.length === 0 ? "That is the whole archive" : "Nothing matches that"}
-              </p>
+              <p className="t-h3 mb-2">Nothing matches that</p>
               <p className="t-small text-muted-foreground">
                 {all.length === 0
                   ? "The first post is not published yet."
-                  : library.length === 0
-                    ? "One article so far. The next one is being written."
-                    : "Try a different search, or clear the category filter."}
+                  : "Try a different search, or clear the category filter."}
               </p>
             </div>
           ) : (
