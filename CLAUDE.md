@@ -293,30 +293,42 @@ the same row dated one minute ago returned 1.
 - The `datetime-local` input is converted through `toLocalInput`, not by slicing
   the ISO string. Slicing shows UTC and schedules posts hours off.
 
-**`api/publish-due.ts` is a daily Vercel cron that only exists for the static
-HTML.** Readers get a scheduled post the moment it goes live regardless. What
-they do not get until a rebuild is the prerendered page and its per-post social
-card, so the cron looks for posts that crossed their publish time and pings the
-deploy hook.
+**The rebuild runs in Postgres, not on Vercel.** Migration
+`20260809081916_scheduled_post_rebuild`, kept in `supabase/migrations/` so it is
+findable from the repo. `pg_cron` calls
+`public.trigger_rebuild_for_due_posts()` every five minutes; when a post has
+crossed its publish time since the last build, `pg_net` posts to the deploy
+hook.
 
-- Needs `CRON_SECRET` set on Vercel. Vercel then sends it as
-  `Authorization: Bearer <secret>` and the function **refuses when it is unset**,
-  because an open endpoint lets anyone burn build minutes.
-- Also needs `DEPLOY_HOOK_URL` (no `VITE_` prefix). Without it the function logs
-  a warning and returns 200, since the posts are live either way.
-- The lookback window is **48 hours, deliberately wider than the daily
-  interval**. Vercel documents cron delivery as best effort: runs can be skipped
-  entirely, and Hobby fires anywhere inside the scheduled hour. A 24 hour window
-  would drop a post whose moment fell in the gap. The overlap costs one extra
-  rebuild, which is harmless because a rebuild is idempotent.
-- Hobby allows **one run per day maximum**, so the static version of a scheduled
-  post can lag its go-live by up to a day. Pro allows per-minute schedules if
-  that ever matters.
+- **To arm it, store the hook in Vault**, which is the one manual step:
+  ```sql
+  select vault.create_secret('https://api.vercel.com/v1/integrations/deploy/...', 'deploy_hook_url');
+  ```
+  Until that secret exists the job runs, finds the due posts, and writes
+  `build_state.last_reason` explaining that it is not armed. It deliberately
+  **does not advance the marker** in that state, so arming it later still
+  catches everything.
+- **`build_state` is a one row table holding `last_build_at`.** That marker is
+  the whole reason this lives in the database. A stateless function cannot
+  remember where it got to, so it has to guess a lookback window and either
+  double-build or drop posts. This just asks "what published after the marker",
+  which is exact.
+- It advances the marker to the **newest post consumed, not to `now()`**. A post
+  landing between the count and the update stays unconsumed for the next run
+  instead of being skipped forever.
+- **`build_state` has RLS on and no policies**, so anon and authenticated cannot
+  touch it. The function is `security definer` with execute revoked from
+  `public`, `anon` and `authenticated`, because otherwise it is a public button
+  that spends build minutes.
+- Debug with `select * from public.build_state` and
+  `select status_code, error_msg, created from net._http_response order by created desc`.
 
-**Prerequisite nobody should discover later: this only pays off once the
-prerender runs on the builder.** Vercel has no Chrome, so a hook-triggered build
-produces the SPA shell and the cron gains you nothing yet. It costs nothing and
-breaks nothing in the meantime. See the Vercel routing section.
+**Vercel cron was the first version and was replaced.** Hobby caps cron at one
+run per day with ±59 minutes of jitter and best-effort delivery, which forced a
+48 hour lookback window and occasional duplicate builds. `pg_cron` runs every
+five minutes with exact state. If you ever go back, the constraint to remember
+is that a stateless endpoint has no marker, so the window has to be wider than
+the interval.
 
 ### Content conventions
 
@@ -614,10 +626,17 @@ file, so they fall back to client rendering and still load, while everything
 present at build time keeps its real HTML.
 
 Two consequences worth knowing:
-- **Prerendering does not happen on Vercel.** There is no Chrome on the builder.
-  The site works there through the rewrite alone, but with no per-route HTML. To
-  get the SEO version, run `npm run build:static` locally and deploy that `dist`,
-  or install a Chromium package on the builder and set `CHROME_PATH`.
+- **Prerendering now runs on Vercel.** `vercel.json` sets
+  `"buildCommand": "npm run build:static"`, and `prerender.mjs` falls back to
+  `@sparticuz/chromium` when it finds no local Chrome. That fallback exists
+  because the builder is Amazon Linux 2023, which **has no Chromium in its
+  repositories at all**, so `dnf install chromium` is not an option and every
+  path in `CHROME_CANDIDATES` is missing there. The package is a headless
+  Chromium with the shared libraries Amazon Linux lacks bundled alongside it,
+  and it unpacks itself to /tmp.
+  The fallback is tried **last**, so a developer machine still uses its real
+  Chrome, and if the import fails the script drops through to the existing
+  skip-with-a-warning path rather than failing the deploy.
 - A newly published post is readable immediately but has no static HTML until the
   next `build:static`. That is the same rebuild the social card already needs.
 

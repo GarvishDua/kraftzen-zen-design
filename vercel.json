@@ -1,15 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build:static",
   "rewrites": [
     {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/publish-due",
-      "schedule": "0 2 * * *"
     }
   ],
   "headers": [

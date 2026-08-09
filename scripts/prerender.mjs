@@ -42,7 +42,37 @@ const CHROME_CANDIDATES = [
   "/usr/bin/chromium",
 ].filter(Boolean);
 
-const CHROME = CHROME_CANDIDATES.find((path) => existsSync(path));
+/**
+ * Last resort: a Chromium that ships as an npm package.
+ *
+ * Vercel's build image is Amazon Linux 2023, which has no Chromium in its
+ * repositories at all, so none of the paths above exist there and the deploy
+ * used to go out as an SPA shell. `@sparticuz/chromium` is a headless build with
+ * the shared libraries Amazon Linux is missing bundled alongside it. It extracts
+ * itself to /tmp on first use, so nothing needs installing into the image.
+ *
+ * Deliberately last. A real local Chrome is faster and is what runs on a
+ * developer machine, and this download only earns its keep on a build server.
+ *
+ * If the import fails for any reason the script still falls through to the
+ * existing skip-with-a-warning path, so a broken browser never fails a deploy.
+ */
+async function serverlessChrome() {
+  try {
+    const { default: chromium } = await import("@sparticuz/chromium");
+    return { path: await chromium.executablePath(), args: chromium.args };
+  } catch (err) {
+    console.warn(`  (@sparticuz/chromium unavailable: ${err.message})`);
+    return null;
+  }
+}
+
+const localChrome = CHROME_CANDIDATES.find((path) => existsSync(path));
+const fallback = localChrome ? null : await serverlessChrome();
+
+const CHROME = localChrome ?? fallback?.path ?? null;
+/** Sandbox flags. The bundled Chromium needs its own set on a build container. */
+const CHROME_ARGS = fallback?.args ?? ["--no-sandbox", "--disable-dev-shm-usage"];
 
 const DIST = "dist";
 const PORT = 4178;
@@ -176,6 +206,7 @@ if (!existsSync(DIST)) {
 if (!CHROME) {
   console.warn("! Chrome not found. Skipping prerender.");
   console.warn(`  Looked in:\n    ${CHROME_CANDIDATES.join("\n    ")}`);
+  console.warn("  ...then tried the bundled @sparticuz/chromium, which also failed.");
   console.warn("  Set CHROME_PATH to point at a Chrome or Chromium binary.");
   console.warn("  The build still works, but every route ships as an empty SPA");
   console.warn("  shell: no static HTML, and shared links use the default card.");
@@ -189,10 +220,11 @@ const routes = [...STATIC_ROUTES.map((path) => ({ path, lastmod: null })), ...po
 console.log(`Prerendering ${routes.length} routes (${posts.length} blog posts)`);
 
 const server = await serveDist();
+console.log(`Using Chrome at ${CHROME}`);
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: "new",
-  args: ["--no-sandbox", "--disable-dev-shm-usage"],
+  args: CHROME_ARGS,
 });
 
 let ok = 0;
