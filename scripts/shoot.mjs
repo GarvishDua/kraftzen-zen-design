@@ -19,7 +19,13 @@ const ROUTES = [
   ["services", "/services"],
   ["products", "/products"],
   ["blog", "/blog"],
-  ["blog-post", "/blog/why-most-ai-automation-projects-fail"],
+  /**
+   * Any published slug will do, this is just a sample of the article layout.
+   * It was hardcoded to a post that has since been deleted, so the shot was a
+   * 404 page for a while without anything failing. Update it when the post it
+   * points at goes away, or the capture quietly stops testing the layout.
+   */
+  ["blog-post", "/blog/n8n-vs-zapier-vs-make-2026-real-cost"],
   ["about", "/about"],
   ["contact", "/contact"],
 ];

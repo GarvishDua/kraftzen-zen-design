@@ -54,9 +54,11 @@ https://kraftzen.in/sitemap.xml.
 
 Engagement shapes:
 
-- **Sprint** — from ₹60,000, 1 to 2 weeks. One scoped deliverable.
-- **Build** — ₹1L to ₹5L, 3 to 8 weeks. A custom tool, content system or full site.
+- **Sprint** — 1 to 2 weeks. One scoped deliverable.
+- **Build** — 3 to 8 weeks. A custom tool, content system or full site.
 - **Ongoing** — monthly, cancel anytime. We keep running and extending what we built.
+
+Pricing is quoted per project after one call. No published rate card.
 
 We work with clients outside India. Clients own the code, the accounts and the
 documentation at the end of every project.

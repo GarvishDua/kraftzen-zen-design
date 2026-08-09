@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import Layout from "@/components/site/Layout";
 import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo";
 import PageHeader from "@/components/site/PageHeader";
+import ContactVisual from "@/components/motion/ContactVisual";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { SITE, CONTACT } from "@/lib/site";
 import {
@@ -139,6 +140,7 @@ export default function Contact() {
         title="Tell us what is eating your"
         accent="week."
         lead={CONTACT.lead}
+        aside={<ContactVisual />}
       />
 
       <section className="py-section md:py-section-md">
@@ -190,16 +192,10 @@ export default function Contact() {
                 </StaggerItem>
               </Stagger>
 
-              <Reveal delay={0.2}>
-                <div className="mt-10 rounded-lg border border-line bg-surface p-6">
-                  <p className="t-label mb-3 text-brand">What happens next</p>
-                  <ol className="t-small space-y-2.5 text-muted-foreground">
-                    <li>1. We read it and reply within one business day.</li>
-                    <li>2. A 30 minute call to understand the actual work.</li>
-                    <li>3. A fixed price and a date, in writing.</li>
-                  </ol>
-                </div>
-              </Reveal>
+              {/* The "what happens next" list used to live here as plain text.
+                  It is now the illustrated flow in the header aside, which
+                  shows at every size, so keeping this would be the same three
+                  steps twice on one page. */}
             </div>
           </div>
 

@@ -286,6 +286,23 @@ for (const route of routes) {
         el.setAttribute("as", "style");
       }
 
+      /**
+       * Drop the fallback organisation schema once the real one exists.
+       *
+       * index.html carries a standalone `ProfessionalService` block so a route
+       * that never gets prerendered still has organisation markup. On a
+       * prerendered page the Seo component has already written the full graph,
+       * so keeping both ships the organisation twice. They share an `@id` and
+       * consumers merge them, but there is no reason to send it twice.
+       */
+      if (document.getElementById("route-schema")) {
+        for (const el of document.querySelectorAll(
+          'script[type="application/ld+json"]:not([id])'
+        )) {
+          el.remove();
+        }
+      }
+
       for (const el of document.querySelectorAll("[style]")) {
         const style = /** @type {HTMLElement} */ (el).style;
         if (style.opacity !== "" && Number(style.opacity) < 1) {

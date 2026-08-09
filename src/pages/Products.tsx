@@ -1,6 +1,7 @@
 import Layout from "@/components/site/Layout";
 import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo";
 import PageHeader from "@/components/site/PageHeader";
+import ProductConstellation from "@/components/motion/ProductConstellation";
 import ProductShowcase from "@/components/site/ProductShowcase";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { ArrowLink, PillLink } from "@/components/site/Cta";
@@ -45,6 +46,14 @@ export default function Products() {
         title="Two products, both"
         accent="live."
         lead="We build our own things alongside client work. It keeps us honest, and it means you can go and click on what we make instead of reading a case study about it."
+        /* Desktop only. The jump links below already list both products, so on
+           a stacked mobile layout the constellation is the same two names
+           again, immediately underneath. */
+        aside={
+          <div className="hidden lg:block">
+            <ProductConstellation />
+          </div>
+        }
       >
         {/* Jump links. With only two products a directory beats a grid. */}
         <Stagger as="ul" className="mt-10 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">

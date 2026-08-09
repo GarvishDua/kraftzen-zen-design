@@ -1,6 +1,7 @@
 import Layout from "@/components/site/Layout";
 import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo";
 import PageHeader from "@/components/site/PageHeader";
+import AboutVisual from "@/components/motion/AboutVisual";
 import { PillLink } from "@/components/site/Cta";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { ABOUT, PRINCIPLES, FOUNDER, SITE } from "@/lib/site";
@@ -33,6 +34,7 @@ export default function About() {
         title="A small studio that would rather show you the"
         accent="thing."
         lead={ABOUT.lead}
+        aside={<AboutVisual />}
       />
 
       {/* Narrative */}

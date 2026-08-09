@@ -6,6 +6,7 @@ import { ArrowLeft, Eye } from "lucide-react";
 import Layout from "@/components/site/Layout";
 import Seo, { breadcrumbSchema, faqSchema, organizationSchema } from "@/components/site/Seo";
 import PostBody from "@/components/blog/PostBody";
+import ShareButtons from "@/components/blog/ShareButtons";
 import { Reveal } from "@/components/motion/Reveal";
 import { ArrowLink, PillLink } from "@/components/site/Cta";
 import {
@@ -169,27 +170,33 @@ export default function BlogPost() {
               </Reveal>
             )}
 
-            {p.author && (
-              <Reveal delay={0.16}>
-                <div className="flex items-center gap-4 border-t border-line pt-7">
-                  {p.author.avatar_url && (
-                    <img
-                      src={p.author.avatar_url}
-                      alt=""
-                      width={112}
-                      height={112}
-                      className="h-12 w-12 rounded-full border border-line object-cover"
-                    />
-                  )}
-                  <div>
-                    <p className="font-semibold tracking-tight text-ink">{p.author.name}</p>
-                    {p.author.role && (
-                      <p className="t-small text-muted-foreground">{p.author.role}</p>
+            <Reveal delay={0.16}>
+              <div className="flex flex-wrap items-center justify-between gap-6 border-t border-line pt-7">
+                {p.author ? (
+                  <div className="flex items-center gap-4">
+                    {p.author.avatar_url && (
+                      <img
+                        src={p.author.avatar_url}
+                        alt=""
+                        width={112}
+                        height={112}
+                        className="h-12 w-12 rounded-full border border-line object-cover"
+                      />
                     )}
+                    <div>
+                      <p className="font-semibold tracking-tight text-ink">{p.author.name}</p>
+                      {p.author.role && (
+                        <p className="t-small text-muted-foreground">{p.author.role}</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Reveal>
-            )}
+                ) : (
+                  <span />
+                )}
+
+                <ShareButtons title={p.title} url={url} />
+              </div>
+            </Reveal>
           </div>
         </header>
 
@@ -202,7 +209,8 @@ export default function BlogPost() {
                 alt={p.cover_alt ?? ""}
                 /* This is the LCP element on an article page. */
                 loading="eager"
-                fetchPriority="high"
+                /* Lowercase and spread: React 18 drops camelCase fetchPriority. */
+                {...{ fetchpriority: "high" }}
                 decoding="async"
                 width={1600}
                 height={900}

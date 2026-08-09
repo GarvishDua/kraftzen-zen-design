@@ -364,8 +364,26 @@ set a shorter `seo.title` separately.
 
 ### FAQ writing
 
-The FAQ block is emitted as `FAQPage` JSON-LD, which is how a post wins the
-expandable Google result. Treat it as a ranking surface, not an afterthought.
+The FAQ block is emitted as `FAQPage` JSON-LD. Treat it as a ranking surface,
+not an afterthought.
+
+**Correction, checked 2026-08-08.** An earlier version of this file said the
+FAQ block "wins the expandable Google result". That is no longer true. Google
+restricted FAQ rich results to authoritative government and health sites on
+14 September 2023, then removed the feature from Search entirely on
+15 June 2026 and deleted the documentation.
+
+Keep writing the FAQs anyway, for reasons that still hold:
+
+- **AI answer engines still read them.** ChatGPT, Perplexity and Claude extract
+  question and answer pairs, and a direct answer in 40 to 80 words is the
+  easiest thing in a post to lift into a cited response. This is the AEO play
+  and it is now the main one.
+- **They cover the fan-out queries** the post body does not have room for.
+- **They are good writing.** A reader scanning for one specific answer finds it.
+
+What changed is the expected payoff, not the practice. Do not promise anyone an
+expandable Google result from them.
 
 - Write the question as a person would type it into Google, not as a heading.
   "How long does a first automation usually take?" not "Automation timelines."

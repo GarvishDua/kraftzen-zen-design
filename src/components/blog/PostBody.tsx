@@ -38,9 +38,26 @@ export default function PostBody({ content }: { content: string }) {
               {children}
             </h4>
           ),
-          p: ({ children }) => (
-            <p className="mb-6 text-[1.0625rem] leading-[1.75] text-ink-soft">{children}</p>
-          ),
+          /**
+           * Markdown wraps a standalone image in a paragraph, and the `img`
+           * renderer below returns a `<figure>`. A figure inside a paragraph is
+           * invalid HTML: React warns, and the browser silently closes the `<p>`
+           * early, so the figure escapes the paragraph and the surrounding
+           * spacing collapses. Rendering a fragment when the only child is an
+           * image keeps the figure where it belongs.
+           */
+          p: ({ children, node }) => {
+            const onlyChild =
+              node?.children?.length === 1 ? node.children[0] : undefined;
+            const isLoneImage =
+              onlyChild?.type === "element" && onlyChild.tagName === "img";
+
+            if (isLoneImage) return <>{children}</>;
+
+            return (
+              <p className="mb-6 text-[1.0625rem] leading-[1.75] text-ink-soft">{children}</p>
+            );
+          },
           a: ({ children, href }) => {
             const external = href?.startsWith("http");
             return (

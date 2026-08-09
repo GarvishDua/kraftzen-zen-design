@@ -467,7 +467,11 @@ function Cover({
          fetchPriority tells the browser to pull it first. Everything below the
          fold stays lazy so it does not compete for the same bandwidth. */
       loading={eager ? "eager" : "lazy"}
-      fetchPriority={eager ? "high" : "low"}
+      /* Lowercase, spread, on purpose. React 18 does not know the camelCase
+         `fetchPriority` prop, so it drops it with a console warning and the
+         hint never reaches the HTML. React 19 accepts camelCase; until we are
+         on it, this is the form that actually ships the attribute. */
+      {...{ fetchpriority: eager ? "high" : "low" }}
       decoding="async"
       width={1600}
       height={900}

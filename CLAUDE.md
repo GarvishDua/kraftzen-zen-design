@@ -435,6 +435,27 @@ Full detail in DESIGN.md. The short version:
   loads, which feels slower rather than smoother. It skips the first paint so a
   cold load is not delayed and the prerender is not fighting an opacity of 0.
 
+## Page visuals are drawn, not photographed
+
+`ServicesVisual`, `AboutVisual`, `ContactVisual` and `ProductConstellation` in
+`components/motion/` fill the right column of each page header, through the
+optional `aside` prop on `PageHeader`. Pass nothing and the header stays single
+column exactly as before.
+
+- **They are HTML and CSS, not image files.** Zero network requests, they read
+  the brand tokens so they cannot clash, sharp at any size, no licence.
+- **Text is never SVG `<text>`.** It cannot wrap and it scales with the viewBox,
+  which overflowed the longest service title and shrank every label in a narrow
+  column. Only the connector rails are SVG.
+- **Every number in them is real.** `AboutVisual` counts the two live products
+  and nothing else. Stock photography was rejected partly because the proposed
+  About image showed eight people for a one-person studio, which is the visual
+  form of the invented-metrics rule.
+- **Check both breakpoints when adding one.** The aside shows at every size, so
+  a visual that repeats something already on the page collides on mobile where
+  the layout stacks. `ProductConstellation` is wrapped in `hidden lg:block` for
+  exactly that reason: the jump links below it already name both products.
+
 ## Never use a native `<select>` on a public page
 
 A native `<select>` renders its option list through the operating system, so no
@@ -557,9 +578,20 @@ agency queries. Keep its four `<h2>` blocks keyword-clear and keep the FAQ answe
 substantive, since they feed the `FAQPage` schema.
 
 The blog is the traffic play. Every post should carry a filled in `seo.description`
-and at least three FAQs, because the `FAQPage` block is what wins the expandable
-result. Comparison tables earn featured snippets, so use one wherever a post is
-genuinely comparing options.
+and at least three FAQs. Comparison tables earn featured snippets, so use one
+wherever a post is genuinely comparing options.
+
+**FAQ rich results no longer exist on Google.** They were restricted to
+government and health sites in September 2023 and removed from Search entirely
+on 15 June 2026. `FAQPage` markup stays because AI answer engines still extract
+question and answer pairs from it, which is the citation play. Do not expect an
+expandable blue-link result from it.
+
+Schema is verified in the built output, not in the source. Checking `Seo.tsx`
+tells you what should be emitted; only `dist` tells you what shipped. The
+regex to match a JSON-LD block must allow attributes before `type`, because the
+component writes `<script id="route-schema" type="application/ld+json">` and a
+naive `<script type=...>` pattern silently misses every route-level graph.
 
 ### AEO and GEO
 

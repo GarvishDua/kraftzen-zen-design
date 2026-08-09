@@ -1,5 +1,5 @@
 import Layout from "@/components/site/Layout";
-import Seo, { breadcrumbSchema } from "@/components/site/Seo";
+import Seo, { breadcrumbSchema, organizationSchema } from "@/components/site/Seo";
 import { Reveal } from "@/components/motion/Reveal";
 
 export interface LegalSection {
@@ -31,6 +31,7 @@ export default function LegalPage({
         description={description}
         path={path}
         schema={[
+          organizationSchema,
           breadcrumbSchema([
             { name: "Home", path: "/" },
             { name: title, path },
