@@ -642,6 +642,11 @@ Things that are load bearing:
 - **`vercel.json` excludes `/api` from the SPA rewrite.** The rule is
   `/((?!api/).*)`. Without that exclusion the catch-all rewrite swallows the
   endpoint and a POST gets an HTML page back instead of JSON.
+  **Do not explain that inside the file.** Vercel validates `vercel.json`
+  against a strict schema, so the `"//"` comment key convention that works in
+  most JSON configs fails the build outright with `rewrites[0] should NOT have
+  additional property '//'`. Nothing is deployed when that happens. Comments
+  about routing belong here, not in the config.
 - **The mailto draft is still there as a fallback.** If the endpoint fails for
   any reason the mail app opens carrying the same content. An enquiry is the
   most valuable thing this site collects, so a failure must never end with
