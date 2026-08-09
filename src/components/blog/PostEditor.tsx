@@ -117,7 +117,12 @@ export default function PostEditor({
         category_id: categoryId || null,
         author_id: authorId || null,
         tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
-        faqs: faqs.filter((f) => f.q.trim() && f.a.trim()),
+        // Read through `?.` rather than `.trim()` directly. A row written
+        // outside this editor can arrive with the wrong keys, and an undefined
+        // `q` used to throw here and kill the whole save with a bare
+        // "Cannot read properties of undefined" toast. Dropping the bad row is
+        // the right failure: the editor shows it as missing, nothing is lost.
+        faqs: faqs.filter((f) => f?.q?.trim() && f?.a?.trim()),
         seo: {
           title: seoTitle.trim() || undefined,
           description: seoDescription.trim() || undefined,
@@ -460,7 +465,7 @@ export default function PostEditor({
                 <input
                   className={`${FIELD} mb-2`}
                   placeholder="Question"
-                  value={faq.q}
+                  value={faq.q ?? ""}
                   onChange={(e) =>
                     setFaqs(faqs.map((f, j) => (j === i ? { ...f, q: e.target.value } : f)))
                   }
@@ -469,7 +474,7 @@ export default function PostEditor({
                   className={`${FIELD} resize-none`}
                   rows={3}
                   placeholder="Answer"
-                  value={faq.a}
+                  value={faq.a ?? ""}
                   onChange={(e) =>
                     setFaqs(faqs.map((f, j) => (j === i ? { ...f, a: e.target.value } : f)))
                   }

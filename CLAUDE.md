@@ -268,6 +268,15 @@ Full spec in `BLOGWRITER.md`. The parts that bite you in code:
   container, so a wide table never makes the page scroll sideways.
 - Raw HTML in post bodies is deliberately **not** rendered. `rehype-raw` is left
   out so a post body can never inject a script tag.
+- **`faqs` rows are `{ q, a }`, not `{ question, answer }`.** The `Faq` type in
+  `src/lib/supabase.ts` is the shape every consumer reads: the editor inputs,
+  the article accordion and `faqSchema` in `Seo.tsx`. Inserting a draft through
+  SQL or the Supabase MCP with the long key names looks fine in the database and
+  then renders zero FAQs, and `PostEditor.save()` threw
+  "Cannot read properties of undefined (reading 'trim')" on it. The filter is
+  now optional-chained so a bad row is dropped rather than killing the save, but
+  the row is still silently lost, so write the right keys. Verify after any
+  scripted insert with `select jsonb_object_keys(...)`.
 - **`CARD_COLUMNS` rows are partial. Never edit from one.** The admin list and
   the public blog both fetch with `CARD_COLUMNS`, which omits `content`, `faqs`
   and `seo` because they are large and never shown in a list. Handing that row
