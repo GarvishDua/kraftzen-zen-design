@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Eye, Code2, ImagePlus, Loader2, Plus, Trash2, ExternalLink } from "lucide-react";
+import { Eye, Clock, Code2, ImagePlus, Loader2, Plus, Trash2, ExternalLink } from "lucide-react";
 import PostBody from "./PostBody";
 import {
   estimateReadingMinutes,
+  postState,
   slugify,
   uploadBlogImage,
   upsertPost,
@@ -67,6 +68,7 @@ export default function PostEditor({
     (post?.seo?.keywords ?? seedFromIdea?.keywords ?? []).join(", ")
   );
   const [featured, setFeatured] = useState(post?.featured ?? false);
+  const [publishAt, setPublishAt] = useState(toLocalInput(post?.published_at));
 
   const [preview, setPreview] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -82,10 +84,40 @@ export default function PostEditor({
   }, [title, isNew]);
 
   const readingMinutes = estimateReadingMinutes(content);
+  /** Derived, not stored. A future `published_at` means scheduled. */
+  const state = post ? postState(post) : "draft";
 
-  async function save(status: "draft" | "published") {
+  /**
+   * Three actions, two stored statuses.
+   *
+   * "schedule" writes `status: published` with a future `published_at`, which
+   * the anon RLS policy already hides until that moment arrives. See
+   * `postState` in `lib/supabase.ts` for why scheduling needs no new status.
+   */
+  async function save(action: "draft" | "publish" | "schedule") {
     if (!title.trim()) return toast.error("The post needs a title");
     if (!slug.trim()) return toast.error("The post needs a slug");
+
+    let scheduledFor: string | null = null;
+    if (action === "schedule") {
+      if (!publishAt) return toast.error("Pick a date and time to publish");
+      const when = new Date(publishAt);
+      if (Number.isNaN(when.getTime())) return toast.error("That date is not valid");
+      if (when.getTime() <= Date.now()) {
+        return toast.error("That time has already passed", {
+          description: "Pick a future time, or hit Publish to put it live now.",
+        });
+      }
+      if (!coverUrl.trim()) {
+        const ok = window.confirm(
+          "This post has no cover image, so its social card will fall back to the site default. Schedule anyway?"
+        );
+        if (!ok) return;
+      }
+      scheduledFor = when.toISOString();
+    }
+
+    const status: "draft" | "published" = action === "draft" ? "draft" : "published";
 
     // Defence in depth against a partially loaded post. If an existing post
     // arrives without its `content` field the editor shows an empty body, and
@@ -131,17 +163,27 @@ export default function PostEditor({
         reading_minutes: readingMinutes,
         featured,
         status,
-        // Set the publish date the first time it goes live, never overwrite it.
-        published_at:
-          status === "published" ? post?.published_at ?? new Date().toISOString() : null,
+        published_at: publishedAtFor(action, scheduledFor, post?.published_at),
       });
 
-      toast.success(status === "published" ? "Published" : "Draft saved");
+      if (action === "schedule" && scheduledFor) {
+        toast.success(`Scheduled for ${formatWhen(scheduledFor)}`, {
+          description:
+            "Readers cannot see it until then. The daily rebuild picks it up after it goes live.",
+        });
+      } else {
+        toast.success(action === "publish" ? "Published" : "Draft saved");
+      }
 
       // Prerendered HTML is baked at build time, so publishing needs a rebuild
       // for the static version of the post to exist. Optional, skipped if unset.
+      //
+      // Scheduling deliberately does NOT ping the hook: at schedule time the
+      // post is still hidden by RLS, so a build now would bake nothing. The
+      // daily cron in `api/publish-due.ts` fires the hook once it is actually
+      // live.
       const hook = import.meta.env.VITE_DEPLOY_HOOK_URL as string | undefined;
-      if (status === "published" && hook) {
+      if (action === "publish" && hook) {
         try {
           await fetch(hook, { method: "POST" });
           toast("Rebuild triggered", {
@@ -295,11 +337,11 @@ export default function PostEditor({
             <button
               type="button"
               disabled={saving}
-              onClick={() => save("published")}
+              onClick={() => save("publish")}
               className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[0.875rem] font-medium text-paper transition-colors duration-short hover:bg-brand disabled:opacity-50"
             >
               {saving && <Loader2 size={14} className="animate-spin" aria-hidden />}
-              Publish
+              {state === "scheduled" ? "Publish now" : "Publish"}
             </button>
             <button
               type="button"
@@ -318,6 +360,41 @@ export default function PostEditor({
             </button>
           </div>
 
+          <div className="mb-4 rounded-md border border-line bg-paper p-3.5">
+            <label className={LABEL} htmlFor="publish-at">
+              <Clock size={12} className="mr-1.5 inline" aria-hidden />
+              Schedule for later
+            </label>
+            <div className="flex flex-wrap items-center gap-2">
+              <input
+                id="publish-at"
+                type="datetime-local"
+                className={`${FIELD} flex-1 !py-2`}
+                value={publishAt}
+                min={toLocalInput(new Date().toISOString())}
+                onChange={(e) => setPublishAt(e.target.value)}
+              />
+              <button
+                type="button"
+                disabled={saving || !publishAt}
+                onClick={() => save("schedule")}
+                className="rounded-full border border-line-strong px-4 py-2 text-[0.875rem] font-medium transition-colors duration-short hover:border-ink disabled:opacity-40"
+              >
+                {state === "scheduled" ? "Reschedule" : "Schedule"}
+              </button>
+            </div>
+
+            {state === "scheduled" && post?.published_at ? (
+              <p className="t-small mt-2.5 text-brand">
+                Goes live {formatWhen(post.published_at)}. Hidden from readers until then.
+              </p>
+            ) : (
+              <p className="t-small mt-2.5 text-muted-foreground">
+                Your local time. The post stays invisible to readers until it lands.
+              </p>
+            )}
+          </div>
+
           <label className="flex cursor-pointer items-center gap-2.5">
             <input
               type="checkbox"
@@ -328,7 +405,7 @@ export default function PostEditor({
             <span className="t-small">Feature at the top of the blog</span>
           </label>
 
-          {post?.slug && post.status === "published" && (
+          {post?.slug && state === "published" && (
             <a
               href={`/blog/${post.slug}`}
               target="_blank"
@@ -442,8 +519,10 @@ export default function PostEditor({
 
         <Panel title="FAQs">
           <p className="t-small mb-4 text-muted-foreground">
-            These render as an accordion and are also emitted as FAQPage schema, which
-            is what can win you the expandable results in Google.
+            These render as an accordion and are also emitted as FAQPage schema. Google
+            retired FAQ rich results in June 2026, but ChatGPT, Perplexity and Claude
+            still lift question and answer pairs straight out of it, so keep each answer
+            complete on its own in 40 to 80 words.
           </p>
 
           <div className="space-y-4">
@@ -535,6 +614,50 @@ export default function PostEditor({
       </aside>
     </div>
   );
+}
+
+/**
+ * Which `published_at` a save should write.
+ *
+ * The case worth spelling out is Publish on a post that is already scheduled.
+ * "Keep the existing date" is right for a live post, because an edit should not
+ * bump it back to the top of the blog. It is wrong for a scheduled one, where
+ * the stored date is in the future and keeping it would mean Publish quietly
+ * did nothing. So a future date is replaced with now, and a past one is kept.
+ */
+function publishedAtFor(
+  action: "draft" | "publish" | "schedule",
+  scheduledFor: string | null,
+  existing: string | null | undefined
+): string | null {
+  if (action === "draft") return null;
+  if (action === "schedule") return scheduledFor;
+
+  const now = Date.now();
+  if (existing && new Date(existing).getTime() <= now) return existing;
+  return new Date(now).toISOString();
+}
+
+/**
+ * ISO timestamp to the value a `datetime-local` input wants, in the browser's
+ * own timezone. The input has no timezone of its own, so slicing the ISO string
+ * would silently show a UTC time and schedule posts hours off.
+ */
+function toLocalInput(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
+
+function formatWhen(iso: string): string {
+  return new Date(iso).toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
 }
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {

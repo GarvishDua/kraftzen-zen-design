@@ -17,6 +17,8 @@ import {
   updateIdeaStatus,
   formatPostDate,
   isSupabaseConfigured,
+  postState,
+  type PostState,
   type PostWithRelations,
   type PostIdeaWithCategory,
 } from "@/lib/supabase";
@@ -234,8 +236,11 @@ function Dashboard({ email }: { email: string }) {
   }
 
   const all = posts.data ?? [];
-  const drafts = all.filter((p) => p.status === "draft");
-  const live = all.filter((p) => p.status === "published");
+  // `scheduled` is derived from a future published_at, not a stored status.
+  // See `postState` in lib/supabase.ts.
+  const drafts = all.filter((p) => postState(p) === "draft");
+  const scheduled = all.filter((p) => postState(p) === "scheduled");
+  const live = all.filter((p) => postState(p) === "published");
 
   return (
     <div className="mx-auto max-w-[1400px] px-5 py-8 md:px-8">
@@ -306,6 +311,7 @@ function Dashboard({ email }: { email: string }) {
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
             <div className="flex gap-3">
               <Stat label="Published" value={live.length} />
+              <Stat label="Scheduled" value={scheduled.length} />
               <Stat label="Drafts" value={drafts.length} />
               <Stat
                 label="Total views"
@@ -354,15 +360,7 @@ function Dashboard({ email }: { email: string }) {
 
                   <div className="min-w-0 flex-1">
                     <div className="mb-1 flex flex-wrap items-center gap-2.5">
-                      <span
-                        className={`t-label rounded-full px-2.5 py-1 ${
-                          post.status === "published"
-                            ? "bg-brand-soft text-brand"
-                            : "bg-surface-sunken text-muted-foreground"
-                        }`}
-                      >
-                        {post.status}
-                      </span>
+                      <StateBadge state={postState(post)} />
                       {post.featured && (
                         <span className="t-label text-faint">featured</span>
                       )}
@@ -372,9 +370,11 @@ function Dashboard({ email }: { email: string }) {
                     </div>
                     <p className="truncate font-medium text-ink">{post.title}</p>
                     <p className="t-label t-mono text-faint">
-                      {post.status === "published"
+                      {postState(post) === "published"
                         ? formatPostDate(post.published_at)
-                        : `edited ${formatPostDate(post.updated_at)}`}
+                        : postState(post) === "scheduled"
+                          ? `goes live ${formatPostDate(post.published_at)}`
+                          : `edited ${formatPostDate(post.updated_at)}`}
                       {" · "}
                       {post.views} views
                     </p>
@@ -439,6 +439,21 @@ function TabBar({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
         </button>
       ))}
     </div>
+  );
+}
+
+const STATE_STYLES: Record<PostState, string> = {
+  published: "bg-brand-soft text-brand",
+  // Scheduled reads as pending rather than live, so it must not borrow the
+  // published colour. Someone scanning this list needs to see at a glance which
+  // posts readers can already reach.
+  scheduled: "border border-line-strong text-ink-soft",
+  draft: "bg-surface-sunken text-muted-foreground",
+};
+
+function StateBadge({ state }: { state: PostState }) {
+  return (
+    <span className={`t-label rounded-full px-2.5 py-1 ${STATE_STYLES[state]}`}>{state}</span>
   );
 }
 

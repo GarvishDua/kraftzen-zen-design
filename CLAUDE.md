@@ -258,6 +258,66 @@ at build time, so a newly published post is live for readers immediately but its
 static version, and therefore its social card, only exists after a rebuild. Set
 `VITE_DEPLOY_HOOK_URL` to your host's build hook and the Publish button pings it.
 
+### Scheduling posts
+
+**`scheduled` is a derived state, not a stored one.** The `status` column still
+only ever holds `draft` or `published`. A scheduled post is `published` with a
+`published_at` in the future, and the anon RLS policy is already
+
+```sql
+status = 'published' AND published_at IS NOT NULL AND published_at <= now()
+```
+
+so the post is invisible to readers and appears by itself at the right moment.
+No job flips anything, no column was added, no migration was needed.
+
+That shape was chosen over a third `status` value on purpose: a new value means
+editing the RLS policy, and that policy is the only thing standing between a
+draft and the public internet. Verified both directions against the live
+database on 2026-08-09: a post dated two days out returned 0 rows to `anon`, and
+the same row dated one minute ago returned 1.
+
+- `postState(post)` in `src/lib/supabase.ts` is the single place the mapping
+  lives. Use it, do not re-derive `published_at > now()` inline. Tested in
+  `src/test/post-state.test.ts`, including `published` with a null date, which
+  reports as `draft` because RLS hides it.
+- **`fetchPosts` filters `published_at <= now()` as well as `status`.** RLS
+  already does this for anon, but a signed in admin browsing `/blog` would
+  otherwise see their own scheduled posts and think the schedule had leaked.
+- **Scheduling deliberately does not ping the deploy hook.** At schedule time
+  the post is still hidden, so a build then would bake nothing.
+- Publish on an already scheduled post replaces the future date with now.
+  Keeping the stored date is right for a live post, so an edit does not bump it
+  back to the top of the blog, and wrong for a scheduled one, where it would
+  mean Publish silently did nothing. `publishedAtFor` in `PostEditor.tsx`.
+- The `datetime-local` input is converted through `toLocalInput`, not by slicing
+  the ISO string. Slicing shows UTC and schedules posts hours off.
+
+**`api/publish-due.ts` is a daily Vercel cron that only exists for the static
+HTML.** Readers get a scheduled post the moment it goes live regardless. What
+they do not get until a rebuild is the prerendered page and its per-post social
+card, so the cron looks for posts that crossed their publish time and pings the
+deploy hook.
+
+- Needs `CRON_SECRET` set on Vercel. Vercel then sends it as
+  `Authorization: Bearer <secret>` and the function **refuses when it is unset**,
+  because an open endpoint lets anyone burn build minutes.
+- Also needs `DEPLOY_HOOK_URL` (no `VITE_` prefix). Without it the function logs
+  a warning and returns 200, since the posts are live either way.
+- The lookback window is **48 hours, deliberately wider than the daily
+  interval**. Vercel documents cron delivery as best effort: runs can be skipped
+  entirely, and Hobby fires anywhere inside the scheduled hour. A 24 hour window
+  would drop a post whose moment fell in the gap. The overlap costs one extra
+  rebuild, which is harmless because a rebuild is idempotent.
+- Hobby allows **one run per day maximum**, so the static version of a scheduled
+  post can lag its go-live by up to a day. Pro allows per-minute schedules if
+  that ever matters.
+
+**Prerequisite nobody should discover later: this only pays off once the
+prerender runs on the builder.** Vercel has no Chrome, so a hook-triggered build
+produces the SPA shell and the cron gains you nothing yet. It costs nothing and
+breaks nothing in the meantime. See the Vercel routing section.
+
 ### Content conventions
 
 Full spec in `BLOGWRITER.md`. The parts that bite you in code:

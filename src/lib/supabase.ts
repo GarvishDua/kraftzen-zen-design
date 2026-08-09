@@ -108,15 +108,38 @@ const CARD_COLUMNS =
 /* ------------------------------------------------------------------ */
 
 /**
- * Published posts, newest first. RLS already hides drafts from anon, but the
- * status filter is repeated here so a signed in admin browsing the public blog
- * sees the same thing a reader would.
+ * The three states a post can be in, from the reader's point of view.
+ *
+ * **`scheduled` is derived, not stored.** The `status` column only ever holds
+ * `draft` or `published`, and a scheduled post is simply `published` with a
+ * `published_at` in the future. That is deliberate: the anon RLS policy is
+ * already `status = 'published' AND published_at IS NOT NULL AND
+ * published_at <= now()`, so a future date hides the post from readers and
+ * reveals it at the right moment with no job, no extra column and no migration.
+ *
+ * Adding a third `status` value would have meant changing that policy, which is
+ * the one thing standing between a draft and the public internet.
+ */
+export type PostState = "draft" | "scheduled" | "published";
+
+export function postState(post: Pick<Post, "status" | "published_at">): PostState {
+  if (post.status !== "published") return "draft";
+  if (!post.published_at) return "draft";
+  return new Date(post.published_at).getTime() > Date.now() ? "scheduled" : "published";
+}
+
+/**
+ * Published posts, newest first. RLS already hides drafts and scheduled posts
+ * from anon, but both filters are repeated here so a signed in admin browsing
+ * the public blog sees exactly what a reader would. Without the date filter an
+ * admin previews their own future posts and thinks the schedule leaked.
  */
 export async function fetchPosts(): Promise<PostWithRelations[]> {
   const { data, error } = await supabase
     .from("posts")
     .select(CARD_COLUMNS)
     .eq("status", "published")
+    .lte("published_at", new Date().toISOString())
     .order("published_at", { ascending: false });
 
   if (error) throw error;
