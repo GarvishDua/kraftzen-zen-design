@@ -310,10 +310,7 @@ export default function Blog() {
           {posts.isLoading ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="h-[380px] animate-pulse rounded-lg border border-line bg-surface"
-                />
+                <CardSkeleton key={i} />
               ))}
             </div>
           ) : visible.length === 0 ? (
@@ -456,27 +453,66 @@ function Cover({
   eager?: boolean;
   className?: string;
 }) {
-  if (!post.cover_url) return <CoverFallback title={post.title} />;
+  /**
+   * Three states, because two was the bug.
+   *
+   * The card grid has its own skeleton while the query runs, but the query
+   * resolves long before the covers download. The cards then rendered with an
+   * empty `aspect-[16/9]` box over `bg-paper`, which is a white rectangle the
+   * exact size of the image, for as long as the network took. It read as
+   * broken rather than as loading.
+   *
+   * `error` is separate from `loading` on purpose: a cover that 404s would
+   * otherwise shimmer forever, which is a worse lie than the white box was.
+   */
+  const [state, setState] = useState<"loading" | "ready" | "error">("loading");
+  const ref = useRef<HTMLImageElement>(null);
+
+  /**
+   * A cached or prerendered image can finish before React attaches `onLoad`,
+   * and that event never fires for it. Without this check those covers stay
+   * shimmering permanently, which is exactly the bug this component exists to
+   * fix, just wearing a nicer animation.
+   */
+  useEffect(() => {
+    const img = ref.current;
+    if (img?.complete) setState(img.naturalWidth > 0 ? "ready" : "error");
+  }, []);
+
+  if (!post.cover_url || state === "error") {
+    return <CoverFallback title={post.title} />;
+  }
 
   return (
-    <img
-      src={post.cover_url}
-      alt={post.cover_alt ?? ""}
-      /* The featured cover is the largest element on the page, so it is the
-         LCP element. `eager` alone still leaves it queued behind the scripts;
-         fetchPriority tells the browser to pull it first. Everything below the
-         fold stays lazy so it does not compete for the same bandwidth. */
-      loading={eager ? "eager" : "lazy"}
-      /* Lowercase, spread, on purpose. React 18 does not know the camelCase
-         `fetchPriority` prop, so it drops it with a console warning and the
-         hint never reaches the HTML. React 19 accepts camelCase; until we are
-         on it, this is the form that actually ships the attribute. */
-      {...{ fetchpriority: eager ? "high" : "low" }}
-      decoding="async"
-      width={1600}
-      height={900}
-      className={`h-full w-full object-contain transition-transform duration-long ease-out group-hover:scale-[1.02] ${className}`}
-    />
+    <div className="relative h-full w-full">
+      {state === "loading" && <Shimmer className="absolute inset-0" />}
+
+      <img
+        ref={ref}
+        src={post.cover_url}
+        alt={post.cover_alt ?? ""}
+        /* The featured cover is the largest element on the page, so it is the
+           LCP element. `eager` alone still leaves it queued behind the scripts;
+           fetchPriority tells the browser to pull it first. Everything below the
+           fold stays lazy so it does not compete for the same bandwidth. */
+        loading={eager ? "eager" : "lazy"}
+        /* Lowercase, spread, on purpose. React 18 does not know the camelCase
+           `fetchPriority` prop, so it drops it with a console warning and the
+           hint never reaches the HTML. React 19 accepts camelCase; until we are
+           on it, this is the form that actually ships the attribute. */
+        {...{ fetchpriority: eager ? "high" : "low" }}
+        decoding="async"
+        width={1600}
+        height={900}
+        onLoad={() => setState("ready")}
+        onError={() => setState("error")}
+        /* Fade in rather than appear. The image arrives at full opacity over
+           the shimmer otherwise, which flickers on a fast connection. */
+        className={`h-full w-full object-contain transition-[opacity,transform] duration-long ease-out group-hover:scale-[1.02] ${
+          state === "ready" ? "opacity-100" : "opacity-0"
+        } ${className}`}
+      />
+    </div>
   );
 }
 
@@ -603,6 +639,50 @@ function AuthorRow({ post, compact }: { post: PostWithRelations; compact?: boole
           {formatPostDate(post.published_at)}
         </p>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Placeholder shaped like a real card, not a grey slab.
+ *
+ * The point of a skeleton is that nothing moves when the content arrives. A
+ * plain rectangle of roughly the right height still makes the whole grid jump
+ * as the internals appear, so this mirrors the card: 16:9 cover, a meta row,
+ * two title lines and an excerpt.
+ */
+function CardSkeleton() {
+  return (
+    <div className="flex h-full flex-col overflow-hidden rounded-lg border border-line bg-surface">
+      <Shimmer className="aspect-[16/9] border-b border-line" />
+      <div className="flex flex-1 flex-col p-6">
+        <div className="mb-4 flex gap-2.5">
+          <Shimmer className="h-3 w-20 rounded-full" />
+          <Shimmer className="h-3 w-12 rounded-full" />
+        </div>
+        <Shimmer className="mb-2.5 h-5 w-full rounded" />
+        <Shimmer className="mb-5 h-5 w-3/5 rounded" />
+        <Shimmer className="mb-2 h-3 w-full rounded" />
+        <Shimmer className="h-3 w-4/5 rounded" />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * One loading block. A sweeping highlight over a sunken ground.
+ *
+ * `prefers-reduced-motion` gets the static ground with no sweep, which still
+ * reads as a placeholder because it is darker than both the card and the paper.
+ * The sweep is the affordance, not the only signal.
+ */
+function Shimmer({ className = "" }: { className?: string }) {
+  return (
+    <div
+      aria-hidden
+      className={`relative overflow-hidden bg-surface-sunken ${className}`}
+    >
+      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-line-strong to-transparent motion-reduce:animate-none" />
     </div>
   );
 }

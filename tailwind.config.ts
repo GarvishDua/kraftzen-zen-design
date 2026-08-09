@@ -115,10 +115,19 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        /* Loading shimmer. `animate-pulse` alone was not enough here: it
+           oscillates opacity, and surface-sunken sits only 4% in lightness
+           away from paper, so a pulsing placeholder still read as the white
+           box it was meant to replace. A sweep moves, and movement is what
+           says "loading" at a glance. */
+        shimmer: {
+          "100%": { transform: "translateX(100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 240ms cubic-bezier(0.22, 1, 0.36, 1)",
         "accordion-up": "accordion-up 240ms cubic-bezier(0.22, 1, 0.36, 1)",
+        shimmer: "shimmer 1.6s infinite",
       },
     },
   },

@@ -180,20 +180,23 @@ a reader would otherwise have to work out from the prose, cut it.
 
 ### The cover template
 
-**Every cover uses the same layout. Do not invent a new one per post.**
+**The left rail is fixed. Everything else is chosen per post.**
 
-The point of a template is the series. Five posts sharing one structure read as a
-publication; five posts with five layouts read as clip art. The reference is the
-enally.in cover set, studied 2026-08-08. Garvish supplies his own photo with the
-prompt, so the prompt's job is to describe the frame the photo drops into.
+That split is the whole rule, and it was corrected on 2026-08-09 after four
+covers in a row came back looking like the same image. The earlier version of
+this file said the right 40% is always Garvish at a desk, and following it
+produced a series that was recognisable and boring.
 
-**The layout, left to right:**
+The reference is the enally.in cover set, studied 2026-08-08. Look at what it
+actually does: the PageSpeed post floats real product UI and a score gauge next
+to the author, the LinkedIn post stages a recruiter and a candidate at a desk,
+the human rights post uses a photo-illustration and no author at all. **One rail,
+many right sides.**
 
-The frame is a wide 16:9 card. The left 55 to 60% is a typographic zone. The
-right 40 to 45% is Garvish's supplied photo, waist up, at a desk, cut into the
-composition so he sits inside the scene rather than pasted on a plate.
-
-Stacked down the left zone, in this order:
+**The fixed part.** A wide 16:9 card. Roughly the left 50 to 60% is a
+typographic zone on warm off-white (`#FBF8F3`), with a faint vermilion dotted
+grid tucked into the top-left and bottom-left corners. Stacked down it, in this
+order:
 
 1. **Badge**, top left. A small rounded pill in vermilion with white caps text
    and a sparkle glyph. Always carries the year: `✦ 2026 GUIDE`, `✦ 2026 COMPARISON`.
@@ -214,17 +217,29 @@ Stacked down the left zone, in this order:
    bold near-black, then a thin vertical divider, then the Kraftzen mark and the
    `kraftzen.in` wordmark.
 
-**Ground and texture:** warm off-white (`#FBF8F3`) behind the text zone, with a
-small dotted grid pattern tucked into the top-left and bottom-left corners in
-faint vermilion. The photo brings its own room behind it: shelves, plants, a
-laptop, a mug, softly out of focus.
+**The variable part: read the post, then decide what goes beside the rail.**
 
-**Where the saturated palette goes.** The template above is the warm brand version
-and it is the safe default. A post whose cover is carrying a chart or a
-comparison can swap the ground for a deep saturated field and colour-block the
-data, the way the n8n and Muse Code covers do. What never changes is the
-structure: badge, big headline with one vermilion element, chips or data blocks,
-author strip, photo right. **Change the colour, keep the skeleton.**
+Pick the treatment from what the post is, not from habit. Rough mapping:
+
+| Post shape | What fills the rest of the frame |
+|---|---|
+| How-to, setup, tutorial | The real product UI as floating glass cards: a terminal with the actual command, a settings panel, a number badge for the step count. Author photo optional, usually small and low |
+| Comparison, "X vs Y" | A head-to-head. Two contender cards angled toward each other with a vermilion `VS` disc between, each carrying that model's two decisive numbers. Usually **no author photo**, avatar only in the strip |
+| Data or cost story | One chart that carries the finding, colour-blocked, with the key numeral two to four times the size of the others |
+| Opinion, process, "what we learned" | A staged scene or photo-illustration of the situation, with small handwritten-style annotations and arrows naming what you are looking at |
+| Everything else | Garvish's photo, waist up at a desk, room softly out of focus |
+
+**Where the photo goes is a per-post decision, not a rule.** Right 40% is the
+safe default and should stay the most common. But it can sit centre, low-left,
+cropped small in a corner behind floating cards, or be absent entirely with only
+the avatar in the author strip. Vary it deliberately across consecutive posts. If
+the last two covers put him on the right, the next one should do something else.
+
+**Where the saturated palette goes.** The warm off-white ground is the safe
+default. A cover carrying a chart or a comparison can swap it for a deep
+saturated field and colour-block the data. What never changes is the left rail:
+badge, big headline with one vermilion element, short rule, subhead, chip row,
+author strip. **Change the colour and the right side, keep the rail.**
 
 **Fill-in template.** Copy this and replace the bracketed parts:
 
