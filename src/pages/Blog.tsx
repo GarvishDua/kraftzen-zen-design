@@ -310,7 +310,7 @@ export default function Blog() {
           {posts.isLoading ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {[0, 1, 2].map((i) => (
-                <CardSkeleton key={i} />
+                <CardSkeleton key={i} index={i} />
               ))}
             </div>
           ) : visible.length === 0 ? (
@@ -651,7 +651,19 @@ function AuthorRow({ post, compact }: { post: PostWithRelations; compact?: boole
  * as the internals appear, so this mirrors the card: 16:9 cover, a meta row,
  * two title lines and an excerpt.
  */
-function CardSkeleton() {
+/**
+ * Placeholder shaped like a real card, with the text lines typing themselves in.
+ *
+ * The cover keeps the plain sweep, because an image does not get written. The
+ * text lines grow from zero width on a stagger, which reads as a post being
+ * drafted rather than as a generic grey box. `index` offsets each card so three
+ * of them do not type in lockstep.
+ *
+ * Reduced motion gets the finished state: full-width bars, no growth, no caret.
+ */
+function CardSkeleton({ index = 0 }: { index?: number }) {
+  const offset = index * 220;
+
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-line bg-surface">
       <Shimmer className="aspect-[16/9] border-b border-line" />
@@ -660,11 +672,53 @@ function CardSkeleton() {
           <Shimmer className="h-3 w-20 rounded-full" />
           <Shimmer className="h-3 w-12 rounded-full" />
         </div>
-        <Shimmer className="mb-2.5 h-5 w-full rounded" />
-        <Shimmer className="mb-5 h-5 w-3/5 rounded" />
-        <Shimmer className="mb-2 h-3 w-full rounded" />
-        <Shimmer className="h-3 w-4/5 rounded" />
+        <TypedLine className="mb-2.5 h-5" width="100%" delay={offset} />
+        <TypedLine className="mb-5 h-5" width="60%" delay={offset + 160} caret />
+        <TypedLine className="mb-2 h-3" width="100%" delay={offset + 320} />
+        <TypedLine className="h-3" width="80%" delay={offset + 440} />
       </div>
+    </div>
+  );
+}
+
+/**
+ * One line of "text" being written. Width animates from 0, so the eye reads it
+ * as typing rather than as a bar fading in.
+ */
+function TypedLine({
+  width,
+  delay,
+  caret,
+  className = "",
+}: {
+  width: string;
+  delay: number;
+  caret?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={`relative ${className}`} aria-hidden>
+      {/* `blog-skeleton-line` carries transform-origin: left, which is what
+          makes scaleX read as writing rather than as growing from the centre.
+          It also cancels the animation under prefers-reduced-motion, which a
+          Tailwind motion-reduce variant could not do because the inline
+          animation would win. */}
+      <div
+        className="blog-skeleton-line h-full rounded bg-surface-sunken"
+        style={{
+          width,
+          animation: `type-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms infinite`,
+        }}
+      />
+      {caret && (
+        <span
+          className="absolute top-0 h-full w-[2px] bg-brand/50 motion-reduce:hidden"
+          style={{
+            left: width,
+            animation: `caret-blink 1s steps(2, start) ${delay}ms infinite`,
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -563,7 +563,21 @@ JSON-LD and full article text with no JavaScript.
 `index.html` still carries a complete standalone OG set as the fallback for any
 route that fails to prerender.
 
-Two things to know about the prerender step:
+Three things to know about the prerender step:
+- **Routes whose content comes from a query need a `waitFor` selector.** The
+  capture used to wait only for an `h1`. On `/blog/:slug` the h1 IS the post
+  title, so that implicitly waited for Supabase. On `/blog` the h1 is the static
+  hero copy, which exists on first paint, so the capture happened while the
+  posts query was still in flight and **the loading skeletons were baked into
+  the static HTML**. Every visitor then paid the whole chain before seeing a
+  card: download 420 KB of JS, hydrate, query, render, only then fetch covers.
+  `/blog` now waits for `a[href^="/blog/"]`. Add a `waitFor` to any new route
+  that renders fetched data, and check the built HTML actually contains a post
+  title rather than trusting the `ok` line.
+- **The LCP image is hoisted into a `<head>` preload.** The largest image
+  carries `fetchpriority="high"` but sits thousands of bytes into the body, so
+  the preload scanner reaches it late. Only the first one is hoisted; preloading
+  several makes them compete, which is the problem it exists to avoid.
 - It force-sets `opacity:1` before capturing, because `whileInView` reveals start
   at opacity 0 and would otherwise be baked into the HTML invisible. **It then
   removes that rule and strips the inline start states, inside a single

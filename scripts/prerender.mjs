@@ -79,15 +79,22 @@ const PORT = 4178;
 const ORIGIN = "https://kraftzen.in";
 
 /** Routes that always exist, regardless of what is in the database. */
+/**
+ * `waitFor` is an optional selector that must exist before the page is
+ * captured. Routes whose content comes from a query need one, because their h1
+ * renders before the data does. See the wait block in the capture loop.
+ */
 const STATIC_ROUTES = [
-  "/",
-  "/services",
-  "/products",
-  "/blog",
-  "/about",
-  "/contact",
-  "/privacy",
-  "/terms",
+  { path: "/" },
+  { path: "/services" },
+  { path: "/products" },
+  // The card links. Without this the posts query is still in flight at capture
+  // time and the blog index ships its loading skeletons as static HTML.
+  { path: "/blog", waitFor: 'a[href^="/blog/"]' },
+  { path: "/about" },
+  { path: "/contact" },
+  { path: "/privacy" },
+  { path: "/terms" },
 ];
 
 /** /admin is deliberately never prerendered. It is noindex and auth gated. */
@@ -215,7 +222,7 @@ if (!CHROME) {
 
 const env = await loadEnv();
 const posts = await blogRoutes(env);
-const routes = [...STATIC_ROUTES.map((path) => ({ path, lastmod: null })), ...posts];
+const routes = [...STATIC_ROUTES.map((r) => ({ ...r, lastmod: null })), ...posts];
 
 console.log(`Prerendering ${routes.length} routes (${posts.length} blog posts)`);
 
@@ -265,7 +272,53 @@ for (const route of routes) {
 
     // Wait for the router to resolve and the page to actually render content.
     await page.waitForSelector("#main h1, article h1, main h1", { timeout: 30000 });
+
+    /**
+     * An h1 is not enough on every route, and getting this wrong is expensive.
+     *
+     * On `/blog/:slug` the h1 IS the post title, so waiting for it implicitly
+     * waits for the Supabase query. On `/blog` the h1 is the static hero copy,
+     * which exists on first paint, so the capture used to happen while the
+     * posts query was still in flight and the LOADING SKELETONS were baked into
+     * the static HTML. Every visitor then paid the full chain before seeing a
+     * single card: download the JS, hydrate, query, render, only then fetch
+     * covers.
+     *
+     * So routes that render data wait for the data. `waitFor` is set per route
+     * in `blogRoutes`/`STATIC_ROUTES`; anything without one keeps the old
+     * behaviour.
+     */
+    if (route.waitFor) {
+      try {
+        await page.waitForSelector(route.waitFor, { timeout: 20000 });
+      } catch {
+        // Never fail a deploy over this. Warn loudly, because the symptom is a
+        // page that looks fine and silently ships as a skeleton.
+        console.warn(
+          `  !  ${route.path}: "${route.waitFor}" never appeared, capturing anyway.`
+        );
+      }
+    }
+
     await page.evaluate(() => document.fonts.ready);
+
+    /**
+     * Let the cover images decode so the capture is not taken mid-load. Bounded
+     * on purpose: a single broken image must not hold the build.
+     */
+    await page
+      .evaluate(
+        () =>
+          Promise.race([
+            Promise.all(
+              [...document.images].map((img) =>
+                img.complete ? null : img.decode().catch(() => null)
+              )
+            ),
+            new Promise((r) => setTimeout(r, 4000)),
+          ])
+      )
+      .catch(() => {});
 
     // Reveal animations start at opacity 0. A crawler reading the HTML does not
     // care, but a human viewing source or a scraper grabbing text does, so force
@@ -301,6 +354,28 @@ for (const route of routes) {
     const html = await page.evaluate((forceCss) => {
       for (const el of document.querySelectorAll("style")) {
         if (el.textContent?.includes(forceCss)) el.remove();
+      }
+
+      /**
+       * Hoist the LCP image into a <head> preload.
+       *
+       * The largest image on a page carries `fetchpriority="high"`, but it sits
+       * thousands of bytes into the body, so the preload scanner only reaches it
+       * after parsing all of that. On the blog index the featured cover was at
+       * byte 43,000 with </head> at 37,000. A preload in the head starts the
+       * download during the very first chunk instead.
+       *
+       * Only the first such image is hoisted. Preloading several would make them
+       * compete for bandwidth, which is the problem this is meant to avoid.
+       */
+      const lcp = document.querySelector('img[fetchpriority="high"][src]');
+      if (lcp && !document.querySelector('link[rel="preload"][as="image"]')) {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "image";
+        link.setAttribute("href", lcp.getAttribute("src"));
+        link.setAttribute("fetchpriority", "high");
+        document.head.appendChild(link);
       }
 
       /**

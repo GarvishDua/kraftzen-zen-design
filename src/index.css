@@ -354,3 +354,45 @@
     }
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Blog loading skeleton                                               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Text lines that write themselves in, used by the blog card skeleton.
+ *
+ * A plain pulse reads as "a box is here". Width growing from zero reads as
+ * "a post is being written", which is the right metaphor for a blog and costs
+ * nothing extra. The pause at the end of each cycle stops it feeling frantic.
+ */
+@keyframes type-in {
+  0% {
+    transform: scaleX(0);
+  }
+  55%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.blog-skeleton-line {
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-skeleton-line {
+    animation: none !important;
+    transform: none !important;
+  }
+}
