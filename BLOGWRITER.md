@@ -522,8 +522,19 @@ PerplexityBot, ClaudeBot, anthropic-ai, Google-Extended and Bingbot. Naming them
 is deliberate. A broad `Disallow` added later would silently cut off the exact
 citations this blog is chasing.
 
-`public/llms.txt` is the context file those systems read. Keep it current when
-services or products change.
+**`public/llms.txt` is not read by anything, on current evidence.** An earlier
+version of this file called it "the context file those systems read". Server log
+data published through the first half of 2026 says otherwise: across 19 customer
+log sets from February to April 2026 the file was requested 41 times against
+roughly 1.1 million AI crawler page fetches, on 3 of 19 sites, and a separate 48
+day set of 12,099 bot requests recorded zero fetches. Google has said since July
+2025 that it does not support the format.
+
+Keep the file current anyway, because it costs minutes and adoption could
+change. Do not treat it as an AEO lever, and do not let it displace the things
+those same logs show crawlers actually fetching: real HTML in the response, a
+complete `sitemap.xml`, and correct named groups in `robots.txt`. See the post
+`does-llms-txt-do-anything-2026-crawler-logs` for the sourced version.
 
 ### One thing Google says that cuts against the rest
 

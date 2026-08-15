@@ -8,6 +8,7 @@ import Seo, { breadcrumbSchema, faqSchema, organizationSchema } from "@/componen
 import PostBody from "@/components/blog/PostBody";
 import ShareButtons from "@/components/blog/ShareButtons";
 import { Reveal } from "@/components/motion/Reveal";
+import ArticleVisual from "@/components/motion/ArticleVisual";
 import { ArrowLink, PillLink } from "@/components/site/Cta";
 import {
   fetchPost,
@@ -160,15 +161,32 @@ export default function BlogPost() {
               </div>
             </Reveal>
 
-            <Reveal delay={0.08}>
-              <h1 className="t-h1 mb-7 max-w-[20ch]">{p.title}</h1>
-            </Reveal>
+            {/* Two columns from lg up. The h1 is capped at 20ch, so on a wide
+                screen the right half of this header was empty. The visual is
+                hidden below lg rather than stacked, because on a phone it would
+                push the excerpt and the author strip below the fold for no
+                gain. Same reasoning as ProductConstellation. */}
+            <div className="grid items-center gap-12 lg:grid-cols-12">
+              <div className="lg:col-span-7">
+                <Reveal delay={0.08}>
+                  <h1 className="t-h1 mb-7 max-w-[20ch]">{p.title}</h1>
+                </Reveal>
 
-            {p.excerpt && (
-              <Reveal delay={0.12}>
-                <p className="t-lead mb-10 max-w-measure">{p.excerpt}</p>
-              </Reveal>
-            )}
+                {p.excerpt && (
+                  <Reveal delay={0.12}>
+                    <p className="t-lead max-w-measure">{p.excerpt}</p>
+                  </Reveal>
+                )}
+              </div>
+
+              <div className="hidden lg:col-span-5 lg:block">
+                <Reveal delay={0.16} x={16}>
+                  <ArticleVisual />
+                </Reveal>
+              </div>
+            </div>
+
+            <div className="mb-10" />
 
             <Reveal delay={0.16}>
               <div className="flex flex-wrap items-center justify-between gap-6 border-t border-line pt-7">

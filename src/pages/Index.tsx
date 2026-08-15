@@ -7,7 +7,7 @@ import Seo, { organizationSchema, websiteSchema } from "@/components/site/Seo";
 import { PillLink, ArrowLink } from "@/components/site/Cta";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import WordReveal from "@/components/motion/WordReveal";
-import HeroVisual from "@/components/motion/HeroVisual";
+import HeroConstellation from "@/components/motion/HeroConstellation";
 import CapabilityMarquee from "@/components/motion/CapabilityMarquee";
 import ProcessPipeline from "@/components/motion/ProcessPipeline";
 import { HERO, HERO_PROOF, SERVICES, PRODUCTS, ABOUT, FOUNDER, SITE } from "@/lib/site";
@@ -48,8 +48,11 @@ function Hero() {
     <section ref={ref} className="grain relative overflow-hidden pb-16 pt-28 md:pb-20 md:pt-32">
       <motion.div style={{ y }} className="shell relative z-10">
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
-          {/* Copy */}
-          <div className="lg:col-span-7">
+          {/* Copy. Six and six rather than seven and five: the constellation
+              needs real width or it reads as a few small chips, which is the
+              failure the old panel version was avoiding. The h1 is capped at
+              15ch so it still breaks the same way. */}
+          <div className="lg:col-span-6">
             <Reveal>
               <p className="t-label mb-6 text-brand">{HERO.eyebrow}</p>
             </Reveal>
@@ -77,9 +80,12 @@ function Hero() {
             </Reveal>
           </div>
 
-          {/* Visual */}
-          <div className="lg:col-span-5 lg:pl-6 xl:pl-12">
-            <HeroVisual />
+          {/* Visual. The rails were removed with the panel: they existed to
+              show work flowing INTO a panel, and with the panel gone they had
+              nothing to point at. `HeroVisual` and `HeroRails` are both still
+              in the repo if this needs reverting. */}
+          <div className="lg:col-span-6 lg:pl-4 xl:pl-8">
+            <HeroConstellation />
           </div>
         </div>
 

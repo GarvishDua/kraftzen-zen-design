@@ -63,6 +63,14 @@ export default function WordReveal({
           >
             {p.word}
           </motion.span>
+          {/* A real space, so the heading is still words when read as text.
+              Word gaps are drawn with `pr-[0.24em]`, which produces no
+              character, so `textContent` on the h1 used to come back as
+              "Lessonsthatcostusmoney." That is the highest-weight element on
+              the page for both search and AI extraction, and it was arriving
+              as one unbroken string. A trailing space at the end of an
+              inline-block is trimmed for rendering, so this is invisible. */}
+          {i < parts.length - 1 ? " " : ""}
         </span>
       ))}
     </span>

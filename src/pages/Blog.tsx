@@ -152,8 +152,8 @@ export default function Blog() {
 
               <h1 className="t-h1 mb-7 max-w-[13ch]">
                 <WordReveal
-                  text="Notes from the work, including what went"
-                  accent="wrong."
+                  text="Lessons that cost us money."
+                  accent="Yours free."
                   delay={0.08}
                 />
               </h1>
