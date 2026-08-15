@@ -25,9 +25,22 @@ const initial = {
   email: "",
   company: "",
   topic: CONTACT.topics[0],
-  budget: CONTACT.budgets[0],
+  /** Empty, not a default band. Budget is optional and a prefilled figure
+      would be a number we invented on the sender's behalf. */
+  budget: "",
   message: "",
 };
+
+/**
+ * The raw input holds digits so the number keypad works on a phone. This is
+ * what actually goes in the email, because "₹50,000" is readable and "50000"
+ * makes the reader count zeroes.
+ */
+function budgetLabel(raw: string): string {
+  const n = Number(raw);
+  if (!raw.trim() || !Number.isFinite(n) || n <= 0) return "";
+  return `₹${n.toLocaleString("en-IN")}`;
+}
 
 export default function Contact() {
   const [form, setForm] = useState(initial);
@@ -47,7 +60,7 @@ export default function Contact() {
       `Email: ${form.email}`,
       form.company ? `Company: ${form.company}` : null,
       `Looking for: ${form.topic}`,
-      `Budget: ${form.budget}`,
+      budgetLabel(form.budget) ? `Budget: ${budgetLabel(form.budget)}` : null,
       "",
       form.message,
     ]
@@ -75,7 +88,11 @@ export default function Contact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...form, website: honeypot }),
+        body: JSON.stringify({
+          ...form,
+          budget: budgetLabel(form.budget),
+          website: honeypot,
+        }),
       });
 
       const data = (await res.json().catch(() => ({}))) as {
@@ -274,18 +291,36 @@ export default function Contact() {
                     <label className={LABEL} htmlFor="budget">
                       Rough budget
                     </label>
-                    <Select value={form.budget} onValueChange={set("budget")}>
-                      <SelectTrigger id="budget" className={FIELD}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {CONTACT.budgets.map((b) => (
-                          <SelectItem key={b} value={b}>
-                            {b}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    {/* A number rather than a band. The old dropdown forced
+                        people into four buckets whose figures nobody had
+                        verified, and a band tells us less than the number the
+                        person already has in mind. Optional on purpose: making
+                        budget mandatory loses enquiries from people who
+                        genuinely do not know yet. */}
+                    <div className="relative">
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+                      >
+                        ₹
+                      </span>
+                      <input
+                        id="budget"
+                        name="budget"
+                        type="number"
+                        inputMode="numeric"
+                        min={0}
+                        step={10000}
+                        placeholder="Approximate, or leave blank"
+                        value={form.budget}
+                        onChange={(e) => set("budget")(e.target.value)}
+                        /* A number input changes value when the wheel scrolls
+                           over a focused field, so a page scroll can silently
+                           edit the amount. Blur instead. */
+                        onWheel={(e) => e.currentTarget.blur()}
+                        className={`${FIELD} pl-8`}
+                      />
+                    </div>
                   </div>
 
                   <div className="sm:col-span-2">

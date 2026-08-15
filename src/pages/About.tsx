@@ -11,7 +11,7 @@ export default function About() {
     <Layout>
       <Seo
         title="About"
-        description="Kraftzen is a small AI studio in Delhi, founded by Garvish Dua. We build our own products alongside client work, quote fixed numbers, and hand over everything we build."
+        description="Kraftzen is an AI studio in Delhi, founded by Garvish Dua. We build our own products alongside client work, quote fixed numbers, and hand over everything we build."
         path="/about"
         schema={[
           organizationSchema,
@@ -31,7 +31,7 @@ export default function About() {
 
       <PageHeader
         eyebrow="About"
-        title="A small studio that would rather show you the"
+        title="An AI studio that would rather show you the"
         accent="thing."
         lead={ABOUT.lead}
         aside={<AboutVisual />}

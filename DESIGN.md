@@ -9,7 +9,7 @@ Created 2026-08-07 by `/design-consultation`.
 
 ## Product Context
 
-- **What this is:** Marketing site for Kraftzen, a small studio that builds AI tools,
+- **What this is:** Marketing site for Kraftzen, an AI studio that builds AI tools,
   automation and websites. It sells services and shows shipped products.
 - **Who it's for:** Founders and small teams (2 to 50 people) who want a working thing
   built, not a strategy deck. Secondary: people evaluating Bro AI and AniVerseX.
@@ -192,7 +192,7 @@ The copy is part of the design. Rules are binding.
 | 2026-08-07 | Process pipeline restricted to Home, pin shortened to 250vh | It appeared on Home and Services, which was the most visible repetition. 320vh made the pinned section outstay its four steps. |
 | 2026-08-07 | Official Bro AI and AniVerseX marks adopted as product icons | Product cards were carrying the whole identity load through screenshots that are inconsistent. The marks give each product a stable visual anchor that survives a screenshot swap. |
 | 2026-08-07 | AniVerseX mark keeps its own black ground | Its neon artwork is designed against black. Keying it out or plating it light would break the glow. `Product.logoOnDark` exists to carry this exception rather than hardcoding it per placement. |
-| 2026-08-07 | Home closes on a founder section | The last thing before the CTA is now a person and a name, not another claim. Proof of a real small studio is the point of the whole positioning. |
+| 2026-08-07 | Home closes on a founder section | The last thing before the CTA is now a person and a name, not another claim. Proof of a real studio with a real person behind it is the point of the whole positioning. |
 | 2026-08-08 | Blog added, article body uses the same tokens as the rest of the site | Article elements are mapped one by one in `PostBody.tsx` rather than handed to a prose plugin, so headings, tables and code inherit the real type scale instead of a generic default. A blog that looks like a different product undoes the studio positioning. |
 | 2026-08-08 | Comparison tables scroll inside their own container | Wide tables are worth ranking for, but a table that makes the whole page scroll sideways breaks the reading experience on a phone. |
 | 2026-08-08 | Unordered list markers are hairline dashes, not bullets | A filled bullet fights the editorial serif. A rule matches the dividers used everywhere else on the site. |

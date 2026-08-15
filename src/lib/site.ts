@@ -36,8 +36,13 @@ export const HERO = {
   headingLead: "We build AI tools that",
   headingAccent: "remove",
   headingTail: "the busywork.",
+  /* Never describe Kraftzen as small, a small studio, a small company or a
+     startup. Garvish's call, 2026-08-15. It reads as an apology before the
+     reader has decided anything, and the proof on this page is what carries the
+     positioning instead. Describing the CLIENT as a small team is fine and
+     stays: that is who the work is for, not a hedge about who we are. */
   body:
-    "Kraftzen is a small studio. We design and ship AI products, automation and websites for teams who would rather have a working thing than a slide deck.",
+    "Kraftzen is an AI studio in Delhi. We design and ship AI products, automation and websites for teams who would rather have a working thing than a slide deck.",
   primaryCta: { label: "Start a project", to: "/contact" },
   secondaryCta: { label: "See the products", to: "/products" },
 } as const;
@@ -348,7 +353,7 @@ export const ABOUT = {
   lead:
     "Kraftzen started because too much software is sold on what it might do one day. We would rather show you the thing running.",
   body: [
-    "We are a small studio in Delhi working with founders and small teams. Most of our clients are somewhere between five and fifty people, past the point where spreadsheets hold and short of the point where they can hire an engineering team for it.",
+    "We are an AI studio in Delhi working with founders and operators. Most of our clients are somewhere between five and fifty people, past the point where spreadsheets hold and short of the point where they can hire an engineering team for it.",
     "We build our own products in the same week we build client work, which keeps us honest. Bro AI and AniVerseX are both live and both started as something we needed ourselves.",
     "The name is craft plus zen. Careful tools, and less noise once they are running.",
   ],
@@ -414,12 +419,9 @@ export const FOUNDER = {
 export const CONTACT = {
   lead:
     "The more specific you are, the more useful our reply. We answer within one business day, and it comes from the person who would build the thing.",
-  budgets: [
-    "Under 1 lakh",
-    "1 to 5 lakh",
-    "5 lakh and up",
-    "Not sure yet",
-  ],
+  /* `budgets` was four bands here, and the contact form is a number input now.
+     Removed rather than left unused: those figures were never verified, and a
+     dead export is how an unverified number gets quietly reused later. */
   topics: [
     "AI tools and agents",
     "Workflow automation",

@@ -473,6 +473,14 @@ it feel padded. These pairings are deliberate, do not undo them:
 These exist because the previous copy read as machine written. Enforce them.
 
 - **No em dashes.** Use a period, a comma, or restructure. This is not negotiable.
+- **Never call Kraftzen small.** No "small studio", "small company", "small
+  startup", "small agency", "just a", "only a". Garvish's call, 2026-08-15. It
+  is an apology offered before the reader has decided anything, and the proof on
+  the page carries the positioning better than a hedge does. Write "an AI studio
+  in Delhi".
+  **Describing the client as a small team is different and stays.** "Automation
+  for teams of 5 to 50" is who the work is for, not a claim about us, and it is
+  load bearing for search. Do not strip those.
 - **Banned words:** delve, crucial, robust, comprehensive, nuanced, multifaceted,
   furthermore, moreover, additionally, pivotal, landscape, tapestry, underscore,
   foster, showcase, intricate, vibrant, seamless, cutting-edge, leverage, empower,
