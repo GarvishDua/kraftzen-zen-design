@@ -68,7 +68,7 @@ function json(body: unknown, status: number): Response {
   });
 }
 
-export default async function handler(request: Request): Promise<Response> {
+async function handler(request: Request): Promise<Response> {
   if (request.method !== "POST") {
     return json({ error: "Method not allowed" }, 405);
   }
@@ -164,3 +164,23 @@ export default async function handler(request: Request): Promise<Response> {
     return json({ error: "Could not send that. Try again in a moment." }, 500);
   }
 }
+
+/**
+ * Exported as `{ fetch }`, NOT as a bare default function.
+ *
+ * This is the bug that made the form silently fall back to the mail draft for
+ * every visitor. Vercel's Node runtime supports three handler shapes: an object
+ * with a `fetch` method, per-method exports like `export function POST`, or the
+ * legacy `(req, res)` pair. A default-exported *function* is read as the legacy
+ * shape, so Vercel called this with Node's `IncomingMessage`, `request.json()`
+ * threw because that object has no such method, and the returned `Response` was
+ * discarded because the legacy shape expects `res.send()`.
+ *
+ * The failure is invisible from the outside: the invocation errors, the form's
+ * catch runs, and the visitor gets the mailto fallback instead of an error. So
+ * it looks like a mail client preference rather than a broken endpoint.
+ *
+ * Keep this export shape. Writing `export default async function handler` here
+ * again reintroduces it.
+ */
+export default { fetch: handler };

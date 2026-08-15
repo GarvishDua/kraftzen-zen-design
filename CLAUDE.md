@@ -741,6 +741,18 @@ Two optional vars, both with sane fallbacks:
 
 Things that are load bearing:
 
+- **The handler is exported as `export default { fetch: handler }`.** Not as
+  `export default async function handler`. Vercel's Node runtime accepts three
+  shapes: an object with a `fetch` method, per-method exports like
+  `export function POST`, or the legacy `(req, res)` pair. A default-exported
+  *function* is read as the legacy shape, so Vercel invoked it with Node's
+  `IncomingMessage`, `await request.json()` threw because that object has no
+  such method, and the returned `Response` was thrown away because the legacy
+  shape expects `res.send()`.
+  **The failure mode is why this took so long to spot:** the invocation errors,
+  the form's `catch` opens the mail draft, and the visitor sees a mail client
+  rather than an error. From the outside it looks like the form preferring
+  mailto, not a broken endpoint. Found 2026-08-15.
 - **`vercel.json` excludes `/api` from the SPA rewrite.** The rule is
   `/((?!api/).*)`. Without that exclusion the catch-all rewrite swallows the
   endpoint and a POST gets an HTML page back instead of JSON.
