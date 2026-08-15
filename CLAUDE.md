@@ -826,9 +826,29 @@ page-speed cost for something that compresses to a tenth of that.
 
 Two rules that will bite you otherwise:
 
-- **The Kraftzen mark must sit on a white surface.** Keying the white ground out
-  leaves a faint halo on anti aliased edges, invisible on white and visible on
-  paper. Nav, footer and hero panel all place it on `bg-surface` or `bg-paper`.
+- **The Kraftzen mark now carries its own dark ground, like AniVerseX.**
+  Reversed on 2026-08-15 when the logo was replaced. The old mark was drawn on
+  white, so the pipeline keyed white out with `unflatten()` and every render
+  site put it on `bg-surface` or `bg-paper` to hide the halo that left.
+  **All of that is now wrong and was removed:**
+  - `build-assets.mjs` no longer calls `unflatten()`. The current artwork uses
+    white *inside* it, in the KRAFTZEN wordmark, the eyes, the teeth and the
+    tagline, and unflattening punched holes through every one of them. It trims
+    on alpha instead, the same as `logo-bro-ai`.
+  - No render site gives it a light plate, padding or a ring any more, and none
+    crops it to a circle. It is `rounded-lg object-cover` everywhere, so its own
+    ground is the shape. A white circle behind a dark square logo looked exactly
+    as bad as it sounds.
+  If the logo is ever replaced with transparent artwork again, both of those
+  decisions flip back.
+- **Use `logo-mark-128.png` in the UI, never `logo-mark.png`.** Nothing on the
+  site renders the mark larger than 56 CSS px, and the 512px file is around
+  400 KB against 31 KB for the small one. `Seo.tsx` keeps the 512px version,
+  which is correct for JSON-LD and the OG card.
+- **The mark is a full lockup, not an icon.** It contains the KRAFTZEN wordmark
+  and a tagline, and at 32px in the nav neither is legible. The nav prints the
+  word "Kraftzen" beside it anyway, so the name is not lost, but a cropped
+  icon-only variant for sizes under 64px is the real fix if it ever matters.
 - **AniVerseX carries its own dark ground**, so it must not get a light plate
   behind it. That is what `Product.logoOnDark` is for. Bro AI is transparent and
   does need one. Every place that renders a product mark branches on this flag.

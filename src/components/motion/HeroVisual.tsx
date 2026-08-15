@@ -46,13 +46,13 @@ export default function HeroVisual() {
         {/* Identity row */}
         <div className="flex items-center gap-3.5 border-b border-line p-5 md:p-6">
           <img
-            src="/logo-mark.png"
+            src="/logo-mark-128.png"
             alt=""
             width={128}
             height={128}
             loading="eager"
             decoding="async"
-            className="h-11 w-11 shrink-0 rounded-full bg-paper object-contain p-1 ring-1 ring-line"
+            className="h-11 w-11 shrink-0 rounded-lg object-cover"
           />
           <div className="min-w-0">
             <p className="font-semibold tracking-tight text-ink">Kraftzen</p>

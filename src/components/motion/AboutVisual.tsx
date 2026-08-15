@@ -27,13 +27,13 @@ export default function AboutVisual() {
             repetition this site keeps having to be saved from. */}
         <div className="mb-5 flex items-center gap-3 border-b border-line pb-5">
           <img
-            src="/logo-mark.png"
+            src="/logo-mark-128.png"
             alt=""
             width={128}
             height={128}
             loading="lazy"
             decoding="async"
-            className="h-10 w-10 shrink-0 rounded-full bg-surface object-contain p-0.5 ring-1 ring-line"
+            className="h-10 w-10 shrink-0 rounded-lg object-cover"
           />
           <div className="min-w-0">
             <p className="truncate text-[0.9375rem] font-semibold tracking-tight text-ink">

@@ -42,12 +42,12 @@ export default function SiteFooter() {
           <div className="md:col-span-4">
             <div className="mb-4 flex items-center gap-3">
               <img
-                src="/logo-mark.png"
+                src="/logo-mark-128.png"
                 alt=""
                 width={128}
                 height={128}
                 loading="lazy"
-                className="h-11 w-11 rounded-full bg-paper object-contain p-1"
+                className="h-11 w-11 rounded-lg object-cover"
               />
               <p className="flex items-baseline gap-1.5 text-lg font-semibold tracking-tight">
                 {SITE.name}

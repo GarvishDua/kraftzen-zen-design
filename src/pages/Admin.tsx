@@ -113,11 +113,11 @@ function SignIn() {
       >
         <div className="mb-7 flex items-center gap-2.5">
           <img
-            src="/logo-mark.png"
+            src="/logo-mark-128.png"
             alt=""
             width={128}
             height={128}
-            className="h-8 w-8 rounded-full bg-paper object-contain p-0.5 ring-1 ring-line"
+            className="h-8 w-8 rounded-lg object-cover"
           />
           <span className="font-semibold tracking-tight">{SITE.name}</span>
         </div>
@@ -247,7 +247,7 @@ function Dashboard({ email }: { email: string }) {
       <header className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-line pb-6">
         <div className="flex items-center gap-3">
           <img
-            src="/logo-mark.png"
+            src="/logo-mark-128.png"
             alt=""
             width={128}
             height={128}

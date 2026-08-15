@@ -33,28 +33,30 @@ const TRANSPARENT = { r: 0, g: 0, b: 0, alpha: 0 };
 await mkdir(OUT, { recursive: true });
 
 /**
- * Trim the artwork's white margin, square it, then key the white ground out.
+ * Trim the artwork's transparent margin and square it.
  *
- * `unflatten` only clears pixels that are exactly white, so anti aliased edges
- * keep a faint light halo. That is fine here because the mark is always placed
- * on a white surface in the UI, never directly on paper.
+ * **`unflatten()` used to run here and must not come back.** The original mark
+ * was drawn on a solid white ground, so keying exactly-white pixels to
+ * transparent was how it got its alpha. The 2026 logo is already transparent
+ * and uses white *inside* the artwork: the KRAFTZEN wordmark, the eyes, the
+ * teeth, the laptop lid and the tagline. Unflattening it punches holes through
+ * every one of those.
+ *
+ * The trim is on alpha now (threshold 1) rather than on a white margin, which
+ * is the same treatment `logo-bro-ai` already gets a few lines below.
  */
-const trimmed = await sharp(SRC_LOGO).trim({ threshold: 10 }).toBuffer();
+const trimmed = await sharp(SRC_LOGO).trim({ threshold: 1 }).toBuffer();
 const { width, height } = await sharp(trimmed).metadata();
 const side = Math.max(width, height);
 
 const squared = await sharp(trimmed)
-  .resize(side, side, {
-    fit: "contain",
-    background: { r: 255, g: 255, b: 255, alpha: 1 },
-  })
+  .resize(side, side, { fit: "contain", background: TRANSPARENT })
   .toBuffer();
 
 for (const size of [512, 128]) {
   const name = size === 512 ? "logo-mark.png" : `logo-mark-${size}.png`;
   await sharp(squared)
-    .unflatten()
-    .resize(size, size, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(size, size, { fit: "contain", background: TRANSPARENT })
     .png({ compressionLevel: 9 })
     .toFile(`${OUT}/${name}`);
   console.log(`wrote ${OUT}/${name}`);

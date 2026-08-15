@@ -313,12 +313,12 @@ function FounderNote() {
           <Reveal delay={0.18}>
             <div className="mb-9 flex items-center gap-4 border-t border-line pt-6">
               <img
-                src="/logo-mark.png"
+                src="/logo-mark-128.png"
                 alt=""
                 width={128}
                 height={128}
                 loading="lazy"
-                className="h-11 w-11 shrink-0 rounded-full bg-surface object-contain p-1 ring-1 ring-line"
+                className="h-11 w-11 shrink-0 rounded-lg object-cover"
               />
               <div>
                 <p className="font-semibold tracking-tight text-ink">{FOUNDER.name}</p>

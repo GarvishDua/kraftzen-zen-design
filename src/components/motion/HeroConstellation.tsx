@@ -103,34 +103,34 @@ export default function HeroConstellation() {
 
   return (
     <div className="relative mx-auto aspect-[5/4] w-full max-w-[460px] lg:max-w-none">
-      {/* Centre tile.
-          The positioning lives on a plain wrapper and the animation on the
-          child, on purpose. Framer writes `transform` inline when you animate
-          `scale`, which silently overrode the `-translate-x-1/2
-          -translate-y-1/2` utilities and dropped the tile to the bottom right
-          of the box. Never put Tailwind translate classes on an element Framer
-          is transforming. */}
-      <div className="absolute left-1/2 top-1/2 h-[50%] w-[44%] -translate-x-1/2 -translate-y-1/2">
-        <motion.div
+      {/* Centre: the logo, and nothing else.
+          It used to be a dark tile with the mark, the name and "Delhi, India"
+          stacked inside. Once the logo gained its own dark ground that tile was
+          drawing a box around a box, and the wordmark inside the artwork already
+          says Kraftzen. So the logo IS the tile now.
+
+          Positioning lives on a plain wrapper and the animation on the child, on
+          purpose. Framer writes `transform` inline when you animate `scale`,
+          which silently overrode the `-translate-x-1/2 -translate-y-1/2`
+          utilities and dropped the tile to the bottom right of the box. Never
+          put Tailwind translate classes on an element Framer is transforming.
+
+          The 512px raster is the right source here: this is the one place the
+          mark is rendered large, at roughly 200px, so the 128px version used
+          everywhere else would be visibly soft. */}
+      <div className="absolute left-1/2 top-1/2 aspect-square w-[46%] -translate-x-1/2 -translate-y-1/2">
+        <motion.img
+          src="/logo-mark.png"
+          alt="Kraftzen"
+          width={512}
+          height={512}
+          loading="eager"
+          decoding="async"
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
-          className="flex h-full w-full flex-col items-center justify-center rounded-[16%] bg-ink px-3 text-center"
-        >
-          <img
-            src="/logo-mark.png"
-            alt=""
-            width={128}
-            height={128}
-            loading="eager"
-            decoding="async"
-            className="mb-3 h-14 w-14 rounded-full bg-paper object-contain p-1.5"
-          />
-          <p className="text-[1.125rem] font-semibold leading-none tracking-tight text-paper">
-            Kraftzen
-          </p>
-          <p className="t-label t-mono mt-2 whitespace-nowrap text-paper/55">Delhi, India</p>
-        </motion.div>
+          className="h-full w-full rounded-[16%] object-cover"
+        />
       </div>
 
       {/* Product satellites */}

@@ -67,11 +67,11 @@ export default function SiteNav() {
             className="group flex items-center gap-2.5"
           >
             <img
-              src="/logo-mark.png"
+              src="/logo-mark-128.png"
               alt=""
               width={128}
               height={128}
-              className="h-8 w-8 rounded-full bg-surface object-contain p-0.5 ring-1 ring-line transition-transform duration-short ease-out group-hover:-rotate-6"
+              className="h-8 w-8 rounded-lg object-cover transition-transform duration-short ease-out group-hover:-rotate-6"
             />
             <span className="flex items-baseline gap-1.5 text-[1.0625rem] font-semibold tracking-tight text-ink">
               {SITE.name}
