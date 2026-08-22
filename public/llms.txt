@@ -1,64 +1,49 @@
 # Kraftzen
 
 > An AI studio in Delhi, India. We build AI tools, workflow automation, websites
-> and automated content systems for small teams. Two of our own products are live
-> in public. Clients get a fixed quote, a date, and full ownership of the code.
+> and automated content systems for teams of five to fifty people. Two of our own
+> products are live in public. Clients get a fixed quote, a date, and full
+> ownership of the code.
 
-Contact: officialkraftzen@gmail.com · +91 9310367672
-Founder: Garvish Dua
+Contact: officialkraftzen@gmail.com, +91 9310367672. Founder: Garvish Dua.
+
+Pricing is quoted per project after one call. There is no published rate card.
+We work with clients outside India. Clients own the code, the accounts and the
+documentation at the end of every project.
 
 ## Services
 
-- **AI tools and agents** — task specific tools and agents built around one job a team repeats. https://kraftzen.in/services#ai-tools-and-agents
-- **Workflow automation** — pipelines that move work between existing tools, with error handling and a readable run log. https://kraftzen.in/services#workflow-automation
-- **Websites and web apps** — marketing sites, product sites and landing pages in React or WordPress, with technical SEO built in. https://kraftzen.in/services#websites-and-web-apps
-- **Automated content systems** — automated blog engines on your own domain, with research, drafting, internal linking and indexing handled. https://kraftzen.in/services#automated-content-systems
+- [AI tools and agents](https://kraftzen.in/services#ai-tools-and-agents): task specific tools and agents built around one job a team repeats.
+- [Workflow automation](https://kraftzen.in/services#workflow-automation): pipelines that move work between existing tools, with error handling and a readable run log.
+- [Websites and web apps](https://kraftzen.in/services#websites-and-web-apps): marketing sites, product sites and landing pages in React or WordPress, with technical SEO built in.
+- [Automated content systems](https://kraftzen.in/services#automated-content-systems): automated blog engines on your own domain, with research, drafting, internal linking and indexing handled.
 
 ## Products
 
 Kraftzen has exactly two products of its own. Both are live.
 
-- **Bro AI** — five narrow AI tools behind one login: Designer Bro (visuals, headshots
-  and thumbnails from a brief), Gen-Z Bro (photos rendered in whatever art style is
-  trending, Ghibli and after), Animator Bro (motion from a static design), Portfolio
-  Bro (portfolio sites), Emailer Bro (campaign copy and sequences). https://bro.ai.in
-- **AniVerseX** — a blog that runs itself: topic research, drafting, internal linking
-  and indexing, with no person in the loop unless you want one. The same system is
-  what we rebuild for clients. https://aniblogs.vercel.app
+- [Bro AI](https://bro.ai.in): five narrow AI tools behind one login. Designer Bro for visuals, headshots and thumbnails from a brief. Gen-Z Bro for photos rendered in whatever art style is trending. Animator Bro for motion from a static design. Portfolio Bro for portfolio sites. Emailer Bro for campaign copy and sequences.
+- [AniVerseX](https://aniblogs.vercel.app): a blog that runs itself, covering topic research, drafting, internal linking and indexing, with no person in the loop unless you want one. The same system is what we rebuild for clients.
 
 ## Pages
 
-- Home: https://kraftzen.in/
-- Services: https://kraftzen.in/services
-- Products: https://kraftzen.in/products
-- Blog: https://kraftzen.in/blog
-- About: https://kraftzen.in/about
-- Contact: https://kraftzen.in/contact
-- Privacy Policy: https://kraftzen.in/privacy
-- Terms of Service: https://kraftzen.in/terms
-
-## Blog
-
-Practical writing on AI engineering, automation, web development and SEO, drawn
-from real projects. Categories: AI engineering, Automation, Web development, SEO,
-Product, Tools. Index at https://kraftzen.in/blog, posts at
-https://kraftzen.in/blog/<slug>, and every published post is listed in
-https://kraftzen.in/sitemap.xml.
+- [Home](https://kraftzen.in/): what we build and who it is for.
+- [Services](https://kraftzen.in/services): the four service lines in detail, with engagement shapes and FAQs.
+- [Products](https://kraftzen.in/products): Bro AI and AniVerseX in full detail.
+- [Blog](https://kraftzen.in/blog): practical writing on AI engineering, automation, web development and SEO.
+- [About](https://kraftzen.in/about): who runs the studio and how it works.
+- [Contact](https://kraftzen.in/contact): enquiry form, replied to within one business day.
 
 ## How engagements work
 
-1. Send an enquiry. We reply within one business day.
-2. A 30 minute call to understand the actual work.
-3. A fixed price and a date, in writing.
-4. We build, hand over the code and accounts, and walk you through it.
+- [Start a project](https://kraftzen.in/contact): send an enquiry, get a reply within one business day, then a 30 minute call to understand the actual work, then a fixed price and a date in writing.
+- [Sprint](https://kraftzen.in/services): one to two weeks, one scoped deliverable.
+- [Build](https://kraftzen.in/services): three to eight weeks, a custom tool, content system or full site.
+- [Ongoing](https://kraftzen.in/services): monthly, cancel anytime. We keep running and extending what we built.
 
-Engagement shapes:
+## Optional
 
-- **Sprint** — 1 to 2 weeks. One scoped deliverable.
-- **Build** — 3 to 8 weeks. A custom tool, content system or full site.
-- **Ongoing** — monthly, cancel anytime. We keep running and extending what we built.
-
-Pricing is quoted per project after one call. No published rate card.
-
-We work with clients outside India. Clients own the code, the accounts and the
-documentation at the end of every project.
+- [Sitemap](https://kraftzen.in/sitemap.xml): every published page and blog post.
+- [Privacy Policy](https://kraftzen.in/privacy): what the site collects and why.
+- [Terms of Service](https://kraftzen.in/terms): the terms that apply to using the site.
+- [robots.txt](https://kraftzen.in/robots.txt): crawler rules, with AI crawlers named explicitly.
