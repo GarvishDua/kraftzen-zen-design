@@ -313,7 +313,7 @@ function FounderNote() {
           <Reveal delay={0.18}>
             <div className="mb-9 flex items-center gap-4 border-t border-line pt-6">
               <img
-                src="/logo-mark-128.png"
+                src="/logo-mark-128.webp"
                 alt=""
                 width={128}
                 height={128}

@@ -42,7 +42,7 @@ export default function SiteFooter() {
           <div className="md:col-span-4">
             <div className="mb-4 flex items-center gap-3">
               <img
-                src="/logo-mark-128.png"
+                src="/logo-mark-128.webp"
                 alt=""
                 width={128}
                 height={128}

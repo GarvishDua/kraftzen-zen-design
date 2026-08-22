@@ -6,15 +6,21 @@
     <meta name="theme-color" content="#FBF8F3" />
     <meta name="google-site-verification" content="pAuhzUDvSlG6PR7OvDkTaIP8cGqfdXT7rM9OHxCfgG4" />
 
-    <!-- AdSense. The publisher id is public by design and ships in the HTML on
+    <!-- AdSense. The publisher id is public by design and ships in the HTML of
          every site running ads, so it is not a secret and does not belong in an
          env var. `async` keeps it off the critical path.
 
-         This tag must be present for the site review. It does not place ads on
-         its own: that happens when Auto ads is switched on in the dashboard.
-         When you do, exclude /admin there, so ads never render in a tool you
-         are signed into. Ads served to the site owner are how accidental self
-         clicks happen, and self clicks are a permanent ban. -->
+         This is global on purpose. Google verifies a site by finding this code,
+         and their setup instructions say to put it in the head of every page.
+         An earlier version injected it only on /blog routes to avoid serving
+         inventory on thin pages. That was wrong: the tag being present is not
+         the same as an ad rendering. Where ads actually appear is an Auto ads
+         setting, and restricting the tag risks failing verification, which is
+         the step that matters.
+
+         /admin is the one exception, handled in src/components/site/AdSense.tsx,
+         because ads shown to the signed-in owner are how accidental self clicks
+         happen and self clicks are an automated permanent ban. -->
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1631267597697170"

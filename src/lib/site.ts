@@ -219,7 +219,7 @@ export const PRODUCTS: Product[] = [
         name: "Designer Bro",
         // Wording follows the product's own dashboard copy.
         detail: "Visuals, professional headshots and cinematic thumbnails from a brief.",
-        image: "/designerbro.png",
+        image: "/broai-designer.webp",
         alt: "A product visual produced by Designer Bro",
       },
       {
@@ -232,28 +232,28 @@ export const PRODUCTS: Product[] = [
       {
         name: "Animator Bro",
         detail: "Short motion pieces, and animated variants of a static design.",
-        image: "/Animatorbro.png",
+        image: "/broai-animator.webp",
         alt: "Animator Bro turning a static design into motion inside Bro AI",
       },
       {
         name: "Portfolio Bro",
         detail: "A portfolio site built from your work, ready to publish.",
-        image: "/PortfolioBro.png",
+        image: "/broai-portfolio.webp",
         alt: "Portfolio Bro assembling a portfolio site inside Bro AI",
       },
       {
         name: "Emailer Bro",
         detail: "Campaign copy and sequences that read like a person wrote them.",
-        image: "/Emailerbro.png",
+        image: "/broai-emailer.webp",
         alt: "Emailer Bro drafting an email sequence inside Bro AI",
       },
     ],
     tags: ["Product design", "Multi tool platform", "AI"],
     cover: {
-      src: "/broai-dashboard.jpg",
+      src: "/broai-dashboard.webp",
       alt: "The Bro AI dashboard, with Designer Bro, Gen-Z Bro and Animator Bro on it",
     },
-    logo: "/logo-bro-ai.png",
+    logo: "/logo-bro-ai.webp",
   },
   {
     n: "02",
@@ -292,8 +292,8 @@ export const PRODUCTS: Product[] = [
       },
     ],
     tags: ["Automation", "Content pipeline", "SEO"],
-    cover: { src: "/aniversex.png", alt: "The AniVerseX automated blog homepage" },
-    logo: "/logo-aniversex.png",
+    cover: { src: "/aniversex-cover.webp", alt: "The AniVerseX automated blog homepage" },
+    logo: "/logo-aniversex.webp",
     logoOnDark: true,
   },
 ] as const;
@@ -397,7 +397,7 @@ export const PRINCIPLES = [
 export const FOUNDER = {
   name: "Garvish Dua",
   role: "Founder",
-  photo: "/founder-garvish.jpg",
+  photo: "/founder-garvish.webp",
   /** One line, used on the home page founder block. */
   kicker: "Founder, and the person who writes the code",
   body: [

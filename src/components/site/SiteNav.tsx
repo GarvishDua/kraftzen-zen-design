@@ -67,7 +67,7 @@ export default function SiteNav() {
             className="group flex items-center gap-2.5"
           >
             <img
-              src="/logo-mark-128.png"
+              src="/logo-mark-128.webp"
               alt=""
               width={128}
               height={128}

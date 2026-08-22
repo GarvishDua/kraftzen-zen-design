@@ -43,7 +43,7 @@ export default function ProductConstellation() {
           className="flex aspect-square w-[168px] flex-col items-center justify-center rounded-[28px] bg-ink px-4 text-center shadow-[0_18px_50px_-24px_rgba(22,19,15,0.55)]"
         >
           <img
-            src="/logo-mark-128.png"
+            src="/logo-mark-128.webp"
             alt=""
             width={128}
             height={128}

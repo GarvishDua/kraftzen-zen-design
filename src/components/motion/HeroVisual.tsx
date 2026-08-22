@@ -46,7 +46,7 @@ export default function HeroVisual() {
         {/* Identity row */}
         <div className="flex items-center gap-3.5 border-b border-line p-5 md:p-6">
           <img
-            src="/logo-mark-128.png"
+            src="/logo-mark-128.webp"
             alt=""
             width={128}
             height={128}

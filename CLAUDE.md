@@ -605,34 +605,44 @@ Three things to know about the prerender step:
 
 ### Performance
 
-PageSpeed Insights on 2026-08-08 scored mobile 59 and desktop 86, with FCP 5.4s
-and LCP 9.7s on mobile. Accessibility 95, Best Practices 100, SEO 100.
+**Measured 2026-08-22 with Lighthouse against a local `build:static` preview.**
+Production PageSpeed before this work was desktop 57, mobile 60.
 
-**The cause was the deploy, not the code.** Every live route was serving the same
-301-word SPA shell while the local prerendered build had 1,249 to 1,850 words per
-route. With nothing in the HTML a phone has to download the JS, parse it, mount
-React, query Supabase and only then start fetching images, which is where a 9.7s
-LCP comes from. Deploying a `build:static` `dist` is the single biggest
-performance change available, and it costs nothing.
+| | Desktop | Mobile |
+|---|---|---|
+| After the image work | **89 to 93** | 62 |
+| Same build, ad hosts blocked | n/a | **81** |
 
-Three code-level fixes went in alongside it:
+**Images were the whole desktop story.** The home page was loading 1,333 KB of
+images and is now 168 KB. Two separate instances of the same mistake:
 
-- **Google Fonts no longer block the first paint.** A plain
-  `<link rel="stylesheet">` to a third party stops the browser painting anything
-  until that round trip finishes. It now ships as `rel="preload"` with an
-  `onload` that swaps it to a stylesheet, plus a `<noscript>` fallback.
-  `display=swap` means text is readable in the fallback face meanwhile.
-- **The prerender resets that link to `rel="preload"` before serializing.** By
-  capture time the onload has already run, so the live DOM holds a plain
-  render-blocking stylesheet. Without this reset the optimisation was undone on
-  exactly the prerendered routes real visitors land on.
-- **LCP images carry `fetchPriority="high"`** plus explicit `width`/`height`.
-  `loading="eager"` alone still queues the image behind the scripts. Everything
-  below the fold stays `lazy` and `fetchPriority="low"` so it does not compete.
+- `site.ts` referenced `/aniversex.png`, a 610 KB raw source capture, as the
+  AniVerseX cover.
+- Four Bro AI module tiles were raw source PNGs totalling 1,781 KB on
+  `/products`. `Animatorbro.png` alone was 886 KB for a tile that renders about
+  600 px wide.
 
-Still open if more is needed: the main bundle is ~132 KB gzipped, and the
-AdSense script costs real time on mobile. Neither is worth touching before the
-prerendered build is actually deployed, because that change dwarfs both.
+Both are exactly what the asset table below warns about. Every capture now goes
+through the `screenshots` loop in `build-assets.mjs`, which emits a right-sized
+JPEG and a WebP, and the UI references the WebP. **Never reference a file from
+`public/` that the pipeline did not generate.**
+
+Also done: WebP for every logo (the 512px mark went 386 KB to 35 KB), a
+`Cache-Control` header for root images in `vercel.json` (they sit outside
+`/assets` so they had no cache policy at all), and `fetchpriority="high"` on the
+hero logo so `prerender.mjs` hoists it into a `<head>` preload.
+
+**AdSense costs about 19 mobile points, and that is not fixable in code.**
+Blocking only the ad hosts on the same build moves mobile from 62 to 81, FCP
+from 5.3s to 3.3s and LCP from 7.7s to 3.9s. The tag pulls in doubleclick,
+adtrafficquality, recaptcha and sodar, all executing on a 4x throttled main
+thread. The LCP breakdown is almost entirely render delay, 7.3s of 7.7s.
+
+**Mobile 90 is not reachable while ads run.** Even with ads blocked it is 81,
+and the remaining gap is the JS bundle: roughly 137 KB gzipped costing 1.8s of
+CPU under Lighthouse's 4x mobile throttle. Closing that means cutting Framer
+Motion out of the critical path, which DESIGN.md currently mandates everywhere.
+That is a design decision, not a tuning exercise.
 
 ### Vercel routing
 
@@ -786,10 +796,22 @@ Redis or Vercel KV rather than trying to solve it in the function.
 
 ## AdSense
 
-Publisher id `ca-pub-1631267597697170`. The script is hardcoded in `index.html`
-and the id is in `public/ads.txt`. Neither is a secret: the id ships in the HTML
-of every site running ads, so putting it in an env var would only add a moving
-part.
+Publisher id `ca-pub-1631267597697170`, in `public/ads.txt`. Not a secret: the
+id ships in the HTML of every site running ads, so an env var would only add a
+moving part.
+
+**The site was rejected for "Low value content" on 2026-08-20.** The dominant
+cause is volume and age, not code: 9 posts, the oldest 12 days old, 41 total
+views. No technical change fixes that. What code could fix was the second half
+of the same policy, below.
+
+**The script is global in `index.html`, and it must stay that way.** Google
+verifies a site by finding that code, and their setup instructions say to put it
+in the head of every page. It was briefly restricted to `/blog` routes on
+inventory-value grounds. That was a mistake and was reverted the same day: a tag
+being present is not the same as an ad rendering, where ads appear is an Auto
+ads setting in the dashboard, and restricting the tag risks failing the
+verification step that approval actually depends on.
 
 Three things keep the account safe, and all three are easy to undo by accident:
 
@@ -800,9 +822,17 @@ Three things keep the account safe, and all three are easy to undo by accident:
   Same class of bug as the view counter counting its own prerenders.
 - **`robots.txt` must let `Mediapartners-Google` through.** Blocking it does not
   stop ads, it makes them untargeted. See the note above about named groups.
-- **Ads must never render on `/admin`.** Exclude it in the AdSense dashboard when
-  Auto ads is switched on. Ads shown to the signed-in owner are how accidental
-  self clicks happen, and self clicks are an automated permanent ban.
+- **Ads must never render on `/admin`.** Ads shown to the signed-in owner are how
+  accidental self clicks happen, and self clicks are an automated permanent ban.
+  This is now enforced in code rather than by a dashboard checkbox:
+  `src/components/site/AdSense.tsx` strips the tag and anything it injected while
+  the admin route is mounted, and the rule lives in `src/lib/adsense.ts`.
+- **`adsAllowed` blocks exactly one route, `/admin`.** Everything else, including
+  the landing page and the legal pages, keeps the tag so verification cannot
+  fail on a missing snippet. Pinned in `src/test/adsense.test.ts`.
+- **The admin guard uses a MutationObserver, not a one-off removal.** Auto ads
+  can inject after first paint, so clearing only on route entry leaves a window
+  where an ad renders in a tool the owner is signed into.
 
 ## Facts about the business
 

@@ -27,7 +27,7 @@ export default function AboutVisual() {
             repetition this site keeps having to be saved from. */}
         <div className="mb-5 flex items-center gap-3 border-b border-line pb-5">
           <img
-            src="/logo-mark-128.png"
+            src="/logo-mark-128.webp"
             alt=""
             width={128}
             height={128}

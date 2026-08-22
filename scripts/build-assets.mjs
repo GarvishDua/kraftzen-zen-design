@@ -54,12 +54,25 @@ const squared = await sharp(trimmed)
   .toBuffer();
 
 for (const size of [512, 128]) {
-  const name = size === 512 ? "logo-mark.png" : `logo-mark-${size}.png`;
+  const stem = size === 512 ? "logo-mark" : `logo-mark-${size}`;
+
   await sharp(squared)
     .resize(size, size, { fit: "contain", background: TRANSPARENT })
     .png({ compressionLevel: 9 })
-    .toFile(`${OUT}/${name}`);
-  console.log(`wrote ${OUT}/${name}`);
+    .toFile(`${OUT}/${stem}.png`);
+  console.log(`wrote ${OUT}/${stem}.png`);
+
+  /* WebP as well, and it is what the UI actually loads.
+     The 2026 logo is a detailed illustration, so as PNG the 512px mark is about
+     386 KB. The hero renders it at 239 CSS px and it was the single heaviest
+     asset on the home page. WebP at the same dimensions is roughly a tenth of
+     that with no visible difference. The PNG stays for the OG card and JSON-LD,
+     where some consumers still do not accept WebP. */
+  await sharp(squared)
+    .resize(size, size, { fit: "contain", background: TRANSPARENT })
+    .webp({ quality: 86 })
+    .toFile(`${OUT}/${stem}.webp`);
+  console.log(`wrote ${OUT}/${stem}.webp`);
 }
 
 // Favicon sits on paper so it reads on a light browser tab strip.
@@ -96,36 +109,66 @@ for (const mark of productMarks) {
     });
   }
 
-  await img
+  const sized = await img
     .resize(256, 256, { fit: "contain", background: TRANSPARENT })
-    .png({ compressionLevel: 9 })
-    .toFile(`${OUT}/${mark.out}`);
+    .toBuffer();
+
+  await sharp(sized).png({ compressionLevel: 9 }).toFile(`${OUT}/${mark.out}`);
   console.log(`wrote ${OUT}/${mark.out}`);
+
+  /* WebP too, and it is what the UI loads. These render at 36 CSS px in the
+     hero cards, so shipping 132 KB of PNG for Bro AI was most of an entire
+     image budget spent on an icon. */
+  const webp = mark.out.replace(/.png$/, ".webp");
+  await sharp(sized).webp({ quality: 86 }).toFile(`${OUT}/${webp}`);
+  console.log(`wrote ${OUT}/${webp}`);
 }
 
 // Founder headshot. The original is a 1MB PNG, which is a poor LCP candidate
 // for a photograph. JPEG at 1000px wide is a fraction of the weight.
-await sharp("public/GarvishDuaphoto.png")
-  .resize(1000, null, { withoutEnlargement: true })
-  .jpeg({ quality: 82, mozjpeg: true })
-  .toFile(`${OUT}/founder-garvish.jpg`);
+/* 800px, not 1000. It renders at roughly 400 CSS px at its largest, so 800
+   covers a 2x display and nothing more. Lighthouse was reporting 67 KB wasted
+   on the extra pixels alone. WebP is what the UI loads; the JPEG stays as a
+   fallback for anything that cannot take WebP. */
+const founder = sharp("public/GarvishDuaphoto.png").resize(800, null, {
+  withoutEnlargement: true,
+});
+await founder.clone().jpeg({ quality: 82, mozjpeg: true }).toFile(`${OUT}/founder-garvish.jpg`);
 console.log(`wrote ${OUT}/founder-garvish.jpg`);
+await founder.clone().webp({ quality: 82 }).toFile(`${OUT}/founder-garvish.webp`);
+console.log(`wrote ${OUT}/founder-garvish.webp`);
 
 /**
  * Product screenshots. Wide UI captures compress far better as JPEG than PNG
  * and none of them need transparency.
  */
 const screenshots = [
-  { src: "public/Broaidashboard.png", out: "broai-dashboard.jpg", width: 1600 },
+  { src: "public/Broaidashboard.png", out: "broai-dashboard.jpg", width: 1200 },
+  /* AniVerseX used to be referenced from site.ts as the raw /aniversex.png,
+     a 610 KB source capture loaded on the home page. That is the exact mistake
+     the note above warns about. It compresses to roughly 40 KB here. */
+  { src: "public/aniversex.png", out: "aniversex-cover.jpg", width: 1200 },
+  /* The Bro AI module tiles. These were referenced from site.ts as raw source
+     PNGs and together came to 1.78 MB on /products: Animatorbro alone was
+     886 KB for a tile that renders about 600 px wide. Same mistake as the
+     AniVerseX cover, four more times. */
+  { src: "public/Animatorbro.png", out: "broai-animator.jpg", width: 900 },
+  { src: "public/designerbro.png", out: "broai-designer.jpg", width: 900 },
+  { src: "public/PortfolioBro.png", out: "broai-portfolio.jpg", width: 900 },
+  { src: "public/Emailerbro.png", out: "broai-emailer.jpg", width: 900 },
 ];
 
 for (const shot of screenshots) {
-  await sharp(shot.src)
+  const img = sharp(shot.src)
     .flatten({ background: { r: 12, g: 12, b: 16 } })
-    .resize(shot.width, null, { withoutEnlargement: true })
-    .jpeg({ quality: 84, mozjpeg: true })
-    .toFile(`${OUT}/${shot.out}`);
+    .resize(shot.width, null, { withoutEnlargement: true });
+
+  await img.clone().jpeg({ quality: 84, mozjpeg: true }).toFile(`${OUT}/${shot.out}`);
   console.log(`wrote ${OUT}/${shot.out}`);
+
+  const webp = shot.out.replace(/.jpg$/, ".webp");
+  await img.clone().webp({ quality: 82 }).toFile(`${OUT}/${webp}`);
+  console.log(`wrote ${OUT}/${webp}`);
 }
 
 /**

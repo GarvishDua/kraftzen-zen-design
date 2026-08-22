@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PageLoader from "@/components/ui/page-loader";
 import { ScrollToTop, RouteTransition } from "@/components/motion/RouteTransition";
+import AdSense from "@/components/site/AdSense";
 
 const Index = lazy(() => import("./pages/Index"));
 const Services = lazy(() => import("./pages/Services"));
@@ -26,6 +27,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
+        {/* Injects the AdSense tag on article routes only. Must sit inside
+            BrowserRouter so it can read the current path. */}
+        <AdSense />
         <Suspense fallback={<PageLoader />}>
           <RouteTransition>
           <Routes>

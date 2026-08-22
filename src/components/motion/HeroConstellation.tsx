@@ -120,11 +120,18 @@ export default function HeroConstellation() {
           everywhere else would be visibly soft. */}
       <div className="absolute left-1/2 top-1/2 aspect-square w-[46%] -translate-x-1/2 -translate-y-1/2">
         <motion.img
-          src="/logo-mark.png"
+          src="/logo-mark.webp"
           alt="Kraftzen"
           width={512}
           height={512}
           loading="eager"
+          /* Lowercase and spread, on purpose: React 18 drops the camelCase
+             `fetchPriority` prop with a console warning, so the attribute never
+             reaches the HTML. This is the LCP element on the home page, and
+             `scripts/prerender.mjs` hoists the first image carrying
+             fetchpriority="high" into a <head> preload. Without it the browser
+             only finds this logo after parsing the whole body. */
+          {...{ fetchpriority: "high" }}
           decoding="async"
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
