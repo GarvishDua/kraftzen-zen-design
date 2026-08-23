@@ -156,8 +156,14 @@ the `officialkraftzen@gmail.com` org). Free tier.
 
 A scheduled cloud agent runs **daily at 02:30 UTC, which is 8am Asia/Calcutta**
 (routine `trig_01Gc968ffsiNH5odytjA2G64`). It searches the web across the niche,
-reads existing `post_ideas` and `posts` so it never duplicates, and inserts 4 to 6
-ideas with a title, angle, keywords, sources, rationale and an honest priority.
+reads existing `post_ideas` and `posts` so it never duplicates, and inserts **2
+ideas** with a title, angle, keywords, sources, rationale and an honest priority.
+
+It was 4 to 6 a day until 2026-08-23. Two is a quality filter, not a slowdown:
+the routine still searches as widely, but the backlog is read by a person picking
+what to write next, and a long list of near-misses makes that harder rather than
+easier. The prompt tells it to file one, or none, on a day when nothing clears
+the bar, so an empty day is a valid outcome and not a sign the routine failed.
 
 It writes through the **Supabase MCP connector**, not a key in the repo. That is
 deliberate: no service role key exists anywhere in this codebase, and none should.

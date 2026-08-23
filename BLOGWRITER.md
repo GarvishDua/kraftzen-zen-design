@@ -109,6 +109,11 @@ Hook                      2 to 4 short paragraphs. No heading. Name the
 
 ## Comparison table       Where the post compares options. See below.
 
+[IMAGE PROMPT]            At least one in-body image, somewhere in the middle
+                          sections. Separate from the cover, which never counts
+                          towards this. Place it against the concept with the
+                          most structure, not at a fixed line number.
+
 ## Common mistakes        Near the end. This is the highest value section in
                           almost every technical post and the reference uses
                           it well. 3 to 5 named mistakes with the fix.
@@ -331,11 +336,22 @@ Rules for the prompts:
 
 Where to place images:
 
-- One cover image per post, always, built from **the cover template above**.
+- **The cover does not count towards the in-body image count.** It is a separate
+  deliverable with its own template, and counting it was how four posts in a row
+  shipped with a cover and nothing else. Garvish's call, 2026-08-23. Read the
+  two rules below as independent requirements, not as a total.
+- **One cover image per post, always**, built from **the cover template above**.
   This is the one that has to stop a scroll, and the one that has to look like
   it belongs to the same publication as the last five.
-- One diagram, flowchart or chart per major concept that has structure worth
-  drawing. Two to three images in a 2,000 word post is the right density.
+- **At least one in-body image per post, always.** A diagram, flowchart or chart
+  for the concept in the post with the most structure worth drawing. One is the
+  floor, not the target: add a second where a second concept genuinely earns it,
+  which in a 2,000 word post it usually does.
+- Pick the in-body image by asking which idea in the post is currently doing all
+  its work in prose and would be clearer as a shape. A stepped cost curve, a
+  four-part structure, a pipeline with a stage people skip. If nothing in the
+  post has structure, the post is probably a list of opinions and that is the
+  real problem to fix.
 - Charts that carry real numbers stay legible first and loud second. A cost
   curve or a benchmark comparison can be saturated and bold, but if the reader
   cannot read the axis at blog-body width the image failed.
@@ -593,6 +609,8 @@ Before a post leaves draft:
 
 **Fields and links**
 - [ ] Every image is either a real URL or an `[IMAGE PROMPT]` block.
+- [ ] One cover image, and **separately** at least one in-body image. The cover
+      never counts towards the in-body requirement. Count them before shipping.
 - [ ] `seo.description` filled, 140 to 160 characters.
 - [ ] 2 to 3 internal links, at least one to a service page.
 - [ ] Every factual claim is either sourced, or something we actually did.
