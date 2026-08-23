@@ -559,6 +559,7 @@ Use one of these. They exist in the database.
 | `seo` | SEO | Technical SEO, content systems, getting found |
 | `product` | Product | Decisions, scope, what we learned building ours |
 | `tools` | Tools | What we actually use, what we dropped, and why |
+| `careers` | Careers | Jobs and opportunities in tech, placement prep, interview and freelancing advice |
 
 ---
 
