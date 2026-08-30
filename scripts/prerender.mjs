@@ -76,7 +76,49 @@ const CHROME_ARGS = fallback?.args ?? ["--no-sandbox", "--disable-dev-shm-usage"
 
 const DIST = "dist";
 const PORT = 4178;
+/**
+ * The canonical host, and it must stay byte-identical to `SITE.domain` in
+ * `src/lib/site.ts`. This constant sets the host in `dist/sitemap.xml`;
+ * `SITE.domain` sets it in every canonical tag, `og:url` and JSON-LD `@id`.
+ *
+ * They are duplicated because this is a plain Node script and `site.ts` is
+ * TypeScript, so it cannot be imported without a build step. The guard below
+ * is the compensation. Do not delete it.
+ *
+ * **The bare apex is deliberate, not an oversight.** Chosen 2026-08-30 over
+ * `www.` because every canonical, sitemap entry, robots rule and llms.txt link
+ * already declared it, so the whole repo agreed and only the Vercel primary
+ * domain setting disagreed. Vercel must therefore redirect `www` TO the apex
+ * with a 308, never the reverse. If that ever flips back, this file and
+ * `site.ts` are both wrong and Search Console fills up with "Alternate page
+ * with proper canonical tag" again.
+ */
 const ORIGIN = "https://kraftzen.in";
+
+/**
+ * Fail the build if the sitemap host and the canonical host have drifted apart.
+ *
+ * This is the exact bug that put 8 pages into Search Console's "Alternate page
+ * with proper canonical tag" bucket: the sitemap advertised one host while the
+ * canonical tags named another, so Google could not index either. Reading
+ * `site.ts` as text rather than importing it keeps this script dependency free.
+ */
+{
+  const siteTs = await readFile("src/lib/site.ts", "utf8");
+  const declared = siteTs.match(/domain:\s*"([^"]+)"/)?.[1];
+  if (declared !== ORIGIN) {
+    console.error(
+      `
+Host mismatch. scripts/prerender.mjs ORIGIN is "${ORIGIN}" but ` +
+        `SITE.domain in src/lib/site.ts is "${declared}".
+` +
+        `The sitemap and the canonical tags would disagree and Google would ` +
+        `index neither. Make them identical, then rebuild.
+`
+    );
+    process.exit(1);
+  }
+}
 
 /** Routes that always exist, regardless of what is in the database. */
 /**

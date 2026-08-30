@@ -25,3 +25,4 @@ dist-ssr
 
 # Local visual-check output from scripts/shoot.mjs
 .shots
+.vercel

@@ -8,6 +8,32 @@ replaced wholesale.
 
 ---
 
+## How to talk to Garvish
+
+**Explain in plain language: what you are doing, why, and how it fixes the
+problem.** Garvish's standing instruction, 2026-08-30. This is not a request for
+shorter answers, it is a request for understandable ones. Depth is welcome, jargon
+that hides the mechanism is not.
+
+Three rules that follow from it:
+
+- **Name the mechanism, not just the label.** "The apex address redirects to www
+  while the page's canonical tag points back to the apex, so Google loops and
+  indexes neither" beats "there is a canonical conflict". A reader who cannot see
+  the mechanism cannot check your reasoning or spot when you are wrong.
+- **Use an everyday comparison when a concept is genuinely abstract**, then drop
+  it once the point has landed. "A shop with two doors, each with a sign pointing
+  at the other door" did more work than three paragraphs of redirect theory.
+- **Say what happens next and roughly when.** A fix with no expected outcome is
+  impossible to verify. "One to three weeks before the numbers move, even though
+  the site is correct today" is part of the answer, not an afterthought.
+
+This applies to everything: code changes, infrastructure, SEO, database work.
+The writing rules further down (no em dashes, no banned vocabulary) apply to
+these explanations too, not only to site copy.
+
+---
+
 ## Read first
 
 **`DESIGN.md` is the source of truth for every visual decision.** Read it before
@@ -679,6 +705,46 @@ Two consequences worth knowing:
   next `build:static`. That is the same rebuild the social card already needs.
 
 What is already wired:
+
+### The canonical host is the bare apex
+
+**`https://kraftzen.in`, never `https://www.kraftzen.in`.** Decided 2026-08-30.
+
+Google is indifferent between the two, so this was an operational call, not an
+SEO one. The apex won because the entire repo already declared it: `SITE.domain`
+in `site.ts`, `ORIGIN` in `prerender.mjs`, every canonical tag, `og:url` and
+JSON-LD `@id`, all 18 sitemap entries, `robots.txt` and `llms.txt`. Only the
+Vercel primary-domain setting disagreed, so flipping one dropdown made 37 URLs
+correct, where switching to www would have meant 37 edits and asking Google to
+re-learn the site's identity.
+
+**Vercel must redirect `www` TO the apex, with a 308.** Both halves matter and
+both were wrong before:
+
+- **Direction.** Vercel served www and redirected the apex to it, while every
+  page's canonical pointed back at the apex. The canonical target redirected to
+  the page it was on, so Google could index neither host and filed 8 pages as
+  "Alternate page with proper canonical tag". The count grew by one per post.
+- **Status code.** It was a **307**, which means *temporary* and tells Google not
+  to consolidate ranking signals onto the target. Host canonicalisation needs a
+  permanent **308**. Even with the direction fixed, a 307 leaves both hosts live
+  in Google's eyes.
+
+**Do not add a `www` to apex redirect in `vercel.json` unless the dashboard is
+already correct.** Domain-level redirects fire at the edge before `vercel.json`
+routing, so a `vercel.json` rule pointing the opposite way to the dashboard is
+an infinite loop that takes the site down. Once the dashboard is right the rule
+is redundant, which is why there isn't one.
+
+`prerender.mjs` fails the build if `ORIGIN` and `SITE.domain` drift apart. That
+guard exists because the two constants cannot be shared (one file is TypeScript,
+the other a plain Node script) and a silent disagreement between them produces
+exactly the indexing failure above.
+
+Search Console should use a **Domain property** for `kraftzen.in` rather than a
+URL-prefix property, because a Domain property covers both hosts and both
+protocols and reports this class of problem once instead of splitting it across
+two properties.
 
 - Per route `<Seo>` with title, description, canonical, OG, Twitter, robots.
 - JSON-LD per route: `ProfessionalService` (org), `WebSite`, `ItemList` of
